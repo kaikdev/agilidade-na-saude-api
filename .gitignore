@@ -1,0 +1,26 @@
+# Node.js
+node_modules/
+
+# Arquivos de banco de dados SQLite
+*.sqlite
+*.sqlite3
+
+# Arquivos de ambiente
+.env
+
+# Logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Arquivos temporários de IDEs (como VSCode, IntelliJ, etc.)
+.vscode/
+.idea/
+
+# Sistema operacional (Windows, macOS)
+Thumbs.db
+.DS_Store
+
+# Pastas de cache e build
+dist/
+build/
