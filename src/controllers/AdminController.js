@@ -93,7 +93,6 @@ const AdminController = {
         )}`,
       });
     }
-
     try {
       const created = await AdminService.createAppointment(adminData);
       return res.status(201).json({
@@ -111,9 +110,9 @@ const AdminController = {
     const { id } = req.params;
     const body = req.body;
     const userId = req.user?.id;
-    console.log("ID do usuário autenticado:", userId);
+
     try {
-      const updated = await AdminService.updateAppointment(body, id);
+      const updated = await AdminService.updateAppointment(body, id, userId);
       return (
         res.status(200).json({
           message: "Agendamento atualizado com sucesso!",

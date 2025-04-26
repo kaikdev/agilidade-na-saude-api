@@ -11,7 +11,7 @@ const AdminModel = {
   },
   getAppointmentsByIdAndDate: async (id, date) => {
     const sql =
-      "SELECT * FROM create_service WHERE user_id = ? AND service_date = ?";
+      "SELECT * FROM create_service WHERE id = ? AND service_date = ?";
     try {
       const result = await db.getAsync(sql, [id, date]);
       return result ? [result] : [];
@@ -44,8 +44,39 @@ const AdminModel = {
       throw new Error("Erro ao consultar o banco de dados: " + err.message);
     }
   },
-  updateAppointment: async (appointmentData, id) => {
-    console.log("updateAppointment: ", appointmentData, id);
-  },
+  // No seu AdminModel
+  updateAppointment: async (updateData, id) => {
+    const query = `
+      UPDATE create_service
+      SET 
+          specialty = ?,
+          locality = ?,
+          qtd_attendance = ?,
+          service_date = ?
+      WHERE 
+          id = ?
+    `;
+    
+    try {
+      const params = [
+        updateData.specialty,
+        updateData.locality,
+        updateData.qtd_attendance,
+        updateData.service_date,
+        id
+      ];
+      
+      // Correção: usar runAsync (com 'r' minúsculo) em vez de runAsync
+      const result = await db.runAsync(query, params);
+      
+      if (result.changes === 0) {
+        throw new Error("Nenhum registro foi atualizado. Verifique o ID fornecido.");
+      }
+      
+      return result;
+    } catch (err) {
+      throw new Error("Erro ao atualizar no banco de dados: " + err.message);
+    }
+},
 };
 module.exports = AdminModel;

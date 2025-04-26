@@ -29,7 +29,6 @@ const AdminService = {
     try {
       const userId = await UserModel.create(name, email, hashedPassword, role, null);
 
-      console.log("ID do usuário criado:", userId); // Log adicional
       await AdminModel.createAdminData(userId, crm, specialty, presentation);
     
       return userId;
@@ -42,33 +41,34 @@ const AdminService = {
     return await AdminModel.getAppointmentsById(userId);
   },
 
-  createAppointment: async (appointmentData) => {
-  const  date = UserRepository.validateAndFormatInputDate( appointmentData.service_date );
-  appointmentData.service_date = date.formattedDate;
+  createAppointment: async (adminData) => {
+  const  date = UserRepository.validateAndFormatInputDate( adminData.service_date );
+  adminData.service_date = date.myDate;
 
   const existingAppointments = await AdminModel.getAppointmentsByIdAndDate(
-    appointmentData.user_id,
-    appointmentData.service_date
+    adminData.user_id,
+    adminData.service_date
   );
 
   if (existingAppointments.length < 0) {
     throw new Error("Já existe um agendamento para esta data.");
   }
-
-  await AdminModel.createAppointment(appointmentData);
+  await AdminModel.createAppointment( adminData );
 },
-updateAppointment: async (appointmentData, id) => {
-  const  date = UserRepository.validateAndFormatInputDate( appointmentData.service_date );
-  appointmentData.service_date = date.formattedDate;
+updateAppointment: async (body, id, userId) => {
+
+  const  date = UserRepository.validateAndFormatInputDate( body.service_date );
+  body.service_date = date.myDate;
   
   const existingAppointments = await AdminModel.getAppointmentsByIdAndDate(
-    appointmentData.user_id,
-    appointmentData.service_date
+    id,
+    body.service_date
   );
+ 
   if (existingAppointments.length > 0) {
     throw new Error("Já existe um agendamento para esta data.");
   }
-  await AdminModel.updateAppointment(appointmentData, id);  
+  await AdminModel.updateAppointment(body, id );  
 }
 };
 

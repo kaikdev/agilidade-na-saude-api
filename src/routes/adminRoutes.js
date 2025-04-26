@@ -9,6 +9,6 @@ const router = express.Router();
 router.post("/admin", AdminController.createAdmin);
 router.get("/admin/appointments/:id", Auth.verifyToken, AdminController.getAppointments); 
 router.post("/admin/appointments", Auth.verifyToken, AdminController.createAppointments); 
-router.post("/admin/appointments/update/:id", Auth.verifyToken, AdminController.updateAppointments); 
+router.put("/admin/appointments/update/:id", Auth.verifyToken, AdminController.updateAppointments); 
 
 module.exports = router;
