@@ -26,23 +26,22 @@ const AdminController = {
     }
     // Defina o role como 'admin' no controlador
     adminData.role = "admin";
-  
+
     try {
       const userId = await AdminService.createAdmin(adminData);
-      
+
       logEvent(`Conta criada - Administrador ID: ${userId}`);
-      
+
       return res.status(201).json({
         success: true,
         message: "Administrador criado com sucesso!",
-        userId: userId 
+        userId: userId,
       });
-      
     } catch (err) {
       console.error("Erro no controller:", err);
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        error: err.message 
+        error: err.message,
       });
     }
   },
@@ -53,7 +52,10 @@ const AdminController = {
 
       const appointmentsWithLinks = getAppointments.map((appointment) => ({
         ...appointment,
-        link: `http://localhost:3000/api/admin/appointments/update/${appointment.id}`,
+        links: {
+          update: `http://localhost:3000/api/admin/appointments/update/${appointment.id}`,
+          delete: `http://localhost:3000/api/admin/appointments/delete/${appointment.id}`,
+        },
       }));
 
       return res.status(200).json({
@@ -73,7 +75,7 @@ const AdminController = {
 
     const adminData = req.body;
 
-    const userId = req.user?.id; 
+    const userId = req.user?.id;
 
     if (!userId) {
       return res.status(401).json({ error: "Usuário não autenticado." });
@@ -125,6 +127,59 @@ const AdminController = {
       return res.status(500).json({
         error: error.message, // Exibe a mensagem real do erro
       });
+    }
+  },
+  searchAppointments: async (req, res) => {
+    const { query } = req.query;  // Pega o valor da query string
+
+    if (!query) {
+      return res.status(400).json({
+        message: "Por favor, forneça um valor para a pesquisa."
+      });
+    }
+    
+    try {
+      const appointments = await AdminService.searchAppointments(query);
+
+      if (appointments.length > 0) {
+        // Adiciona links de atualização e exclusão
+        const appointmentsWithLinks = appointments.map((appointment) => ({
+          ...appointment,
+          links: {
+            update: `http://localhost:3000/api/admin/appointments/update/${appointment.id}`,
+            delete: `http://localhost:3000/api/admin/appointments/delete/${appointment.id}`,
+          },
+        }));
+
+        return res.status(200).json({
+          message: "Consultas encontradas!",
+          appointments: appointmentsWithLinks,
+        });
+      }
+
+      // Caso não encontre nenhum agendamento
+      return res.status(404).json({
+        message: "Nenhum agendamento encontrado.",
+      });
+    } catch (error) {
+      // Retorna erro caso ocorra
+      console.error("Erro ao buscar agendamentos:", error);
+      return res.status(500).json({
+        message: "Erro ao buscar os agendamentos.",
+      });
+    }
+  },
+  deleteAppointments: async (req, res) => {
+    const { id } = req.params;
+    const userId = req.user?.id;
+    try {
+      const message = await AdminService.deleteAppointment(id, userId);
+      logEvent(
+        `Agendamento excluído - Usuário ID: ${userId}, Agendamento ID: ${id}`
+      );
+      res.json({ message });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
     }
   },
 };

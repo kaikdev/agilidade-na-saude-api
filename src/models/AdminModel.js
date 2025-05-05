@@ -13,8 +13,8 @@ const AdminModel = {
     const sql =
       "SELECT * FROM create_service WHERE id = ? AND service_date = ?";
     try {
-      const result = await db.getAsync(sql, [id, date]);
-      return result ? [result] : [];
+      const result = await db.allAsync(sql, [id, date]);
+      return result;
     } catch (err) {
       throw new Error("Erro ao consultar o banco de dados: " + err.message);
     }
@@ -56,27 +56,57 @@ const AdminModel = {
       WHERE 
           id = ?
     `;
-    
+
     try {
       const params = [
         updateData.specialty,
         updateData.locality,
         updateData.qtd_attendance,
         updateData.service_date,
-        id
+        id,
       ];
-      
+
       // Correção: usar runAsync (com 'r' minúsculo) em vez de runAsync
       const result = await db.runAsync(query, params);
-      
+
       if (result.changes === 0) {
-        throw new Error("Nenhum registro foi atualizado. Verifique o ID fornecido.");
+        throw new Error(
+          "Nenhum registro foi atualizado. Verifique o ID fornecido."
+        );
       }
-      
+
       return result;
     } catch (err) {
       throw new Error("Erro ao atualizar no banco de dados: " + err.message);
     }
-},
+  },
+  searchAppointments: async (query) => {
+    const sql = `
+      SELECT * 
+      FROM create_service 
+      WHERE specialty LIKE ? 
+      OR locality LIKE ? 
+    `;
+
+    const searchTerm = `%${query}%`;
+
+    try {
+      const results = await db.allAsync(sql, [searchTerm, searchTerm]);
+      return results; 
+    } catch (error) {
+      throw new Error("Erro ao consultar o banco de dados: " + error.message);
+    }
+  },
+  deleteAppointmentById: async (id) => {
+    {
+      const sql = "DELETE FROM create_service WHERE id = ?";
+      try {
+        const result = await db.runAsync(sql, [id]);
+        return result;
+      } catch (err) {
+        throw new Error("Erro ao deletar agendamento: " + err.message);
+      }
+    }
+  },
 };
 module.exports = AdminModel;

@@ -302,3 +302,30 @@
 [2025-04-26T06:48:20.551Z] Erro ao atualizar agendamento:
 [2025-04-26T06:48:28.632Z] Erro ao atualizar agendamento:
 [2025-04-26T06:51:32.158Z] Agendamento atualizado com sucesso!
+[2025-05-04T19:28:56.812Z] Conta criada - Administrador ID: 3
+[2025-05-04T19:34:54.766Z] Login bem-sucedido - Usuário: joao.silva@example.com
+[2025-05-04T19:36:23.803Z] Login bem-sucedido - Usuário: joao.silva@example.com
+[2025-05-04T19:38:36.841Z] Login bem-sucedido - Usuário: joao.silva@example.com
+[2025-05-04T19:47:45.448Z] Erro ao criar agendamento:
+[2025-05-04T20:13:52.322Z] Erro ao criar agendamento:
+[2025-05-04T20:13:54.658Z] Erro ao criar agendamento:
+[2025-05-04T20:13:59.774Z] Erro ao criar agendamento:
+[2025-05-04T20:14:01.726Z] Erro ao criar agendamento:
+[2025-05-04T20:14:06.269Z] Erro ao criar agendamento:
+[2025-05-04T20:35:06.188Z] Login bem-sucedido - Usuário: joao.silva@example.com
+[2025-05-04T20:45:48.646Z] Conta excluída - Usuário ID: 3
+[2025-05-04T20:47:00.363Z] Conta excluída - Usuário ID: 3
+[2025-05-04T20:50:06.183Z] Login bem-sucedido - Usuário: joao.silva@example.com
+[2025-05-04T21:09:09.442Z] Conta excluída - Usuário ID: 3
+[2025-05-04T21:09:18.321Z] Conta excluída - Usuário ID: 3
+[2025-05-04T21:10:45.229Z] Conta excluída - Usuário ID: 16
+[2025-05-05T01:01:31.900Z] Login bem-sucedido - Usuário: joao.silva@example.com
+[2025-05-05T01:02:10.219Z] Erro ao criar agendamento:
+[2025-05-05T01:02:37.640Z] Erro ao criar agendamento:
+[2025-05-05T01:03:03.442Z] Erro ao criar agendamento:
+[2025-05-05T01:06:20.660Z] Erro ao criar agendamento:
+[2025-05-05T01:08:02.409Z] Erro ao criar agendamento:
+[2025-05-05T01:08:40.985Z] Erro ao criar agendamento:
+[2025-05-05T01:17:03.127Z] Conta excluída - Usuário ID: 17
+[2025-05-05T01:20:02.644Z] Agendamento excluído - Usuário ID: 3, Agendamento ID: 18
+[2025-05-05T02:01:35.889Z] Login bem-sucedido - Usuário: joao.silva@example.com

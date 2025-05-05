@@ -43,7 +43,6 @@ const UserRepository = {
     const today = new Date().toLocaleDateString("pt-BR", {
       timeZone: "America/Sao_Paulo",
     });
-
     if (myDate < today) {
       throw new Error(
         "A data para a consulta não pode ser menor que o dia vigente."
