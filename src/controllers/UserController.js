@@ -75,6 +75,26 @@ const UserController = {
       res.status(500).json({ error: "Erro ao buscar usuários." });
     }
   },
+
+  appointmentsList:async(req, res)=>{
+    try {
+      const getAppointments = await UserService.appointmentsList();
+      if(getAppointments.length > 0 ){
+      const appointmentsWithLinks = getAppointments.map((appointment) => ({
+          ...appointment,
+          links:{
+            create: `http://localhost:3000/api/users/appointments/listOfService/${appointment.id}` 
+          }
+        }));
+      return res.status(200).json({
+          message: "Consultas encontradas!",
+          appointments: appointmentsWithLinks,
+        });
+      }
+    } catch (err) {
+      res.status(500).json({ error: "Erro ao buscar usuários." });
+    }
+  }
 };
 
 module.exports = UserController;

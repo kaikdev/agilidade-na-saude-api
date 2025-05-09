@@ -13,6 +13,8 @@ router.get("/users/:id", Auth.verifyToken, UserController.getUserById);  // Qual
 router.put("/users/:id", Auth.verifyToken, UserController.updateUser);  // Atualizar usuário autenticado
 router.delete("/users/:id", Auth.verifyToken, UserController.deleteUser);  // Excluir conta própria
 
+// inscrição do usuario na fila de atendimento
+router.get("/users/appointments/list", Auth.verifyToken, UserController.appointmentsList)
 // Rotas restritas a administradores
 router.get("/users", Auth.verifyToken, authorize(["admin"]), UserController.listUsers);  // Apenas admin pode listar todos os usuários
 

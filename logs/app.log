@@ -329,3 +329,7 @@
 [2025-05-05T01:17:03.127Z] Conta excluída - Usuário ID: 17
 [2025-05-05T01:20:02.644Z] Agendamento excluído - Usuário ID: 3, Agendamento ID: 18
 [2025-05-05T02:01:35.889Z] Login bem-sucedido - Usuário: joao.silva@example.com
+[2025-05-09T01:10:32.097Z] Falha no login - Senha incorreta para o email: joão@gmail.com
+[2025-05-09T01:12:47.613Z] Conta criada - Usuário ID: 4
+[2025-05-09T01:13:04.543Z] Falha no login - Senha incorreta para o email: maria.oliveira@example.com
+[2025-05-09T01:13:24.753Z] Login bem-sucedido - Usuário: maria.oliveira@example.com

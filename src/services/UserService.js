@@ -85,6 +85,10 @@ const UserService = {
     const users = await UserModel.findAll();
     return users;
   },
+  appointmentsList: async () => {
+    const appointments = await UserModel.getAllAppoiments();
+    return appointments;
+  }
 };
 
 module.exports = UserService;

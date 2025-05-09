@@ -131,7 +131,8 @@ const AdminController = {
   },
   searchAppointments: async (req, res) => {
     const { query } = req.query;  // Pega o valor da query string
-
+    const userId = req.user?.id;
+    
     if (!query) {
       return res.status(400).json({
         message: "Por favor, forneça um valor para a pesquisa."

@@ -60,6 +60,11 @@ const UserModel = {
     const users = await db.allAsync(sql);
     return users;
   },
+  getAllAppoiments: async () => {
+    const sql = `SELECT * FROM create_service`
+    const data = await db.allAsync(sql);
+    return data;
+  }
 };
 
 module.exports = UserModel;
