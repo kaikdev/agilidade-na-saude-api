@@ -86,8 +86,12 @@ const UserService = {
     return users;
   },
   appointmentsList: async () => {
-    const appointments = await UserModel.getAllAppoiments();
+    const appointments = await UserModel.getAllAppointments();
     return appointments;
+  },
+  getAllAppointmentsById: async(id)=>{
+    const appointment = await UserModel.getAllAppointmentsById(id);
+    return appointment;
   }
 };
 

@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "nome": "psd",
+    "nivel": 1
+  },
+  {
+    "id": 2,
+    "nome": "idoso",
+    "nivel": 2
+  },
+  {
+    "id": 3,
+    "nome": "cirurgia",
+    "nivel": 3
+  },
+  {
+    "id": 4,
+    "nome": "grávida",
+    "nivel": 4
+  },
+  {
+    "id": 5,
+    "nome": "lactante",
+    "nivel": 5
+  }
+]

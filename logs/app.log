@@ -333,3 +333,45 @@
 [2025-05-09T01:12:47.613Z] Conta criada - Usuário ID: 4
 [2025-05-09T01:13:04.543Z] Falha no login - Senha incorreta para o email: maria.oliveira@example.com
 [2025-05-09T01:13:24.753Z] Login bem-sucedido - Usuário: maria.oliveira@example.com
+[2025-05-14T02:13:21.884Z] Login bem-sucedido - Usuário: maria.oliveira@example.com
+[2025-05-14T03:32:33.787Z] Login bem-sucedido - Usuário: maria.oliveira@example.com
+[2025-05-14T11:56:37.257Z] Conta criada - Usuário ID: 1
+[2025-05-14T11:56:42.818Z] Login bem-sucedido - Usuário: maria.oliveira@example.com
+[2025-05-14T12:01:11.222Z] Conta criada - Administrador ID: 2
+[2025-05-14T12:03:44.879Z] Login bem-sucedido - Usuário: lucas.almeida@example.com
+[2025-05-14T12:14:11.613Z] Login bem-sucedido - Usuário: lucas.almeida@example.com
+[2025-05-14T12:21:53.588Z] Erro ao criar agendamento:
+[2025-05-14T12:27:01.657Z] Login bem-sucedido - Usuário: lucas.almeida@example.com
+[2025-05-14T12:29:10.252Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 5
+[2025-05-14T12:33:02.836Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 6
+[2025-05-14T12:33:05.762Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 7
+[2025-05-14T12:33:08.612Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 8
+[2025-05-14T12:33:11.080Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 9
+[2025-05-14T12:33:13.464Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 10
+[2025-05-14T12:33:15.207Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 11
+[2025-05-14T12:33:17.139Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 12
+[2025-05-14T12:33:19.367Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 13
+[2025-05-14T12:33:21.185Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 14
+[2025-05-14T12:33:23.343Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 15
+[2025-05-14T12:33:27.188Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 16
+[2025-05-14T12:33:29.545Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 17
+[2025-05-14T12:33:41.675Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 18
+[2025-05-14T12:33:44.528Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 18
+[2025-05-14T12:39:32.220Z] Erro ao criar agendamento:
+[2025-05-14T12:39:57.078Z] Erro ao criar agendamento:
+[2025-05-14T12:39:57.797Z] Erro ao criar agendamento:
+[2025-05-14T12:39:58.060Z] Erro ao criar agendamento:
+[2025-05-14T12:39:58.179Z] Erro ao criar agendamento:
+[2025-05-14T12:39:58.352Z] Erro ao criar agendamento:
+[2025-05-14T12:39:58.574Z] Erro ao criar agendamento:
+[2025-05-14T12:40:08.215Z] Erro ao criar agendamento:
+[2025-05-14T12:40:11.999Z] Erro ao criar agendamento:
+[2025-05-14T12:40:46.173Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 18
+[2025-05-14T12:41:04.822Z] Erro ao criar agendamento:
+[2025-05-14T12:41:05.715Z] Erro ao criar agendamento:
+[2025-05-14T12:41:05.921Z] Erro ao criar agendamento:
+[2025-05-14T12:41:06.160Z] Erro ao criar agendamento:
+[2025-05-14T12:41:06.297Z] Erro ao criar agendamento:
+[2025-05-14T12:41:06.431Z] Erro ao criar agendamento:
+[2025-05-14T12:42:12.377Z] Erro ao criar agendamento:
+[2025-05-14T12:42:13.093Z] Erro ao criar agendamento:

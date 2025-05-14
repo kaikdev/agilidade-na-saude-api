@@ -60,10 +60,15 @@ const UserModel = {
     const users = await db.allAsync(sql);
     return users;
   },
-  getAllAppoiments: async () => {
+  getAllAppointments: async () => {
     const sql = `SELECT * FROM create_service`
     const data = await db.allAsync(sql);
     return data;
+  },
+  getAllAppointmentsById: async (id) =>{
+    const sql = `SELECT * FROM create_service WHERE id = ? `
+    const result = await db.runAsync(sql, [id]);
+    return result.changes;
   }
 };
 

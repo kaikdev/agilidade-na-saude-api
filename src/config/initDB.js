@@ -41,6 +41,16 @@ const db = new sqlite3.Database(dbPath, (err) => {
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       )`);
+      db.run(`CREATE TABLE IF NOT EXISTS scheduled_consultations (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        service_id INTEGER NOT NULL,
+        priority TEXT NOT NULL,
+        level INTEGER NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (service_id) REFERENCES create_service(id) ON DELETE CASCADE
+      )`);
     });
   }
 });

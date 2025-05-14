@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 const UserRepository = {
   // Regras para validar a senha
   validatePassword: (password) => {
@@ -50,5 +53,11 @@ const UserRepository = {
     }
     return { myDate };
   },
+
+ priorates() {
+  const filePath = path.join(__dirname, '../users.json');
+  const data = fs.readFileSync(filePath, 'utf-8');
+  return JSON.parse(data);
+}
 };
 module.exports = UserRepository;
