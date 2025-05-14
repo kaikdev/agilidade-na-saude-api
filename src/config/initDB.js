@@ -45,6 +45,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
         service_id INTEGER NOT NULL,
+        password INTEGER NOT NULL,
         priority TEXT NOT NULL,
         level INTEGER NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

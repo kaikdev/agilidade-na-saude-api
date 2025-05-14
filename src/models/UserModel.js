@@ -71,6 +71,15 @@ const UserModel = {
     const data = await db.allAsync(sql);
     return data;
   },
+  listAllPassword: async (password) => {
+    const sql = 'SELECT password FROM scheduled_consultations WHERE password = ?';
+    try {
+      const result = await db.allAsync(sql, [password]); // Passa o parâmetro corretamente
+      return result;
+    } catch (err) {
+      throw new Error("Erro ao consultar senhas: " + err.message);
+    }
+  },
   getAllAppointmentsById: async (id) => {
     const sql = "SELECT * FROM create_service WHERE id = ?";
     try {

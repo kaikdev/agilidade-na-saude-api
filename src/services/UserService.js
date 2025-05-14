@@ -89,10 +89,22 @@ const UserService = {
     const appointments = await UserModel.getAllAppointments();
     return appointments;
   },
-  getAppointmentsById: async(id)=>{
-    const appointment = await UserModel.getAllAppointmentsById(id);
-    return appointment;
-  }
+  listAllPassword: async (password) => {
+    try {
+      const passwords = await UserModel.listAllPassword(password);
+      return passwords;
+    } catch (error) {
+      throw new Error("Erro ao listar senhas: " + error.message);
+    }
+  },
+  getAppointmentsById: async (id) => {
+    try {
+      const appointment = await UserModel.getAllAppointmentsById(id);
+      return appointment;
+    } catch (error) {
+      throw new Error("Erro ao buscar agendamento: " + error.message);
+    }
+  },
 };
 
 module.exports = UserService;

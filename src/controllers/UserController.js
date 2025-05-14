@@ -105,7 +105,15 @@ const UserController = {
       res.status(500).json({ error: "Erro ao buscar usuários." });
     }
   },
-
+  getAllPassowords: async (req, res, password) =>{
+    console.log(password);
+    try {
+      const passwords = await UserService.listAllPassword(password);
+      res.json(passwords);
+    } catch (err) {
+      res.status(500).json({ error: "Erro ao buscar as senhas de atendimento." });
+    }
+  },
   createLisOfService: async (req, res) => {
     const id_appointments = req.params.id; // Corrigido
     const { priorities, nivel } = req.body;
@@ -118,14 +126,23 @@ const UserController = {
     }
 
     try {
-      const getAppointments = await UserService.getAppointmentsById(
-        id_appointments
-      );
+      const getAppointments = await UserService.getAppointmentsById(id_appointments);
+      const qtd = getAppointments.qtd_attendance;
+      console.log("Qtd Attendance:", qtd);
+
       if (!getAppointments) {
         return res.status(404).json({ error: "Agendamento não encontrado." });
       }
-      const qtd = getAppointments.qtd_attendance;
-      console.log("Qtd Attendance:", qtd);
+      if (qtd > 0) {
+        const waitingLinePassword = await UserRepository.createWaitingLinePassword();
+        console.log(waitingLinePassword);
+        if (waitingLinePassword) {
+          let newQtd = qtd - 1;
+          console.log(newQtd);
+        }
+      } else {
+        return res.status(400).json({ erro: 'Não existe mais vagas para essa consulta' });
+      }
     } catch (error) {
       console.error("Erro:", error.message);
       return res.status(500).json({ error: "Erro ao buscar agendamento." });
