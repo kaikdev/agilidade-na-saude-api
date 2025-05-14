@@ -89,7 +89,7 @@ const UserService = {
     const appointments = await UserModel.getAllAppointments();
     return appointments;
   },
-  getAllAppointmentsById: async(id)=>{
+  getAppointmentsById: async(id)=>{
     const appointment = await UserModel.getAllAppointmentsById(id);
     return appointment;
   }

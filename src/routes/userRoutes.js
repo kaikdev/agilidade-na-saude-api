@@ -15,7 +15,7 @@ router.delete("/users/:id", Auth.verifyToken, UserController.deleteUser);  // Ex
 
 // inscrição do usuario na fila de atendimento
 router.get("/users/appointments/list", Auth.verifyToken, UserController.appointmentsList);
-router.post("/users/appointments/createService/:id", Auth.verifyToken, UserController.createLisOfService)
+router.post("/users/appointments/createListOfService/:id", Auth.verifyToken, UserController.createLisOfService)
 // Rotas restritas a administradores
 router.get("/users", Auth.verifyToken, authorize(["admin"]), UserController.listUsers);  // Apenas admin pode listar todos os usuários
 

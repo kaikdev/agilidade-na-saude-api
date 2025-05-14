@@ -107,19 +107,28 @@ const UserController = {
   },
 
   createLisOfService: async (req, res) => {
-    const id_appointments = req.params;
-    const { priorites, nivel } = req.body;
+    const id_appointments = req.params.id; // Corrigido
+    const { priorities, nivel } = req.body;
     const userId = req.user?.id;
 
-    if (!priorites && !nivel && !userId ) {
+    if (!priorities && !nivel) {
       return res
         .status(400)
         .json({ error: "Todos os campos são obrigatórios." });
     }
+
     try {
-      const getAllAppointmentsById = await UserService.getAllAppointmentsById(id_appointments);
+      const getAppointments = await UserService.getAppointmentsById(
+        id_appointments
+      );
+      if (!getAppointments) {
+        return res.status(404).json({ error: "Agendamento não encontrado." });
+      }
+      const qtd = getAppointments.qtd_attendance;
+      console.log("Qtd Attendance:", qtd);
     } catch (error) {
-      
+      console.error("Erro:", error.message);
+      return res.status(500).json({ error: "Erro ao buscar agendamento." });
     }
   },
 };

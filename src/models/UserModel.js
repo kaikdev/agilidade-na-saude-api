@@ -5,7 +5,13 @@ const UserModel = {
   create: async (name, email, password, role, birth_date) => {
     const sql = `INSERT INTO users (name, email, password, role, birth_date) VALUES (?, ?, ?, ?, ?)`;
     try {
-      const result = await db.runAsync(sql, [name, email, password, role, birth_date]);
+      const result = await db.runAsync(sql, [
+        name,
+        email,
+        password,
+        role,
+        birth_date,
+      ]);
       if (!result || !result.lastID) {
         throw new Error("Não foi possível obter o ID do usuário criado");
       }
@@ -14,7 +20,7 @@ const UserModel = {
       console.error("Erro no UserModel.create:", {
         error: err,
         query: sql,
-        params: [name, email, "***", role, birth_date]
+        params: [name, email, "***", role, birth_date],
       });
       throw err;
     }
@@ -61,15 +67,19 @@ const UserModel = {
     return users;
   },
   getAllAppointments: async () => {
-    const sql = `SELECT * FROM create_service`
+    const sql = `SELECT * FROM create_service`;
     const data = await db.allAsync(sql);
     return data;
   },
-  getAllAppointmentsById: async (id) =>{
-    const sql = `SELECT * FROM create_service WHERE id = ? `
-    const result = await db.runAsync(sql, [id]);
-    return result.changes;
-  }
+  getAllAppointmentsById: async (id) => {
+    const sql = "SELECT * FROM create_service WHERE id = ?";
+    try {
+      const result = await db.getAsync(sql, [id]);
+      return result;
+    } catch (err) {
+      throw new Error("Erro ao consultar o banco de dados: " + err.message);
+    }
+  },
 };
 
 module.exports = UserModel;
