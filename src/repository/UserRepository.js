@@ -41,18 +41,25 @@ const UserRepository = {
     return { formattedDate };
   },
 
-  validateAndFormatInputDate(inputDate) {
-    const myDate= inputDate
-    const today = new Date().toLocaleDateString("pt-BR", {
-      timeZone: "America/Sao_Paulo",
-    });
-    if (myDate < today) {
-      throw new Error(
-        "A data para a consulta não pode ser menor que o dia vigente."
-      );
-    }
-    return { myDate };
-  },
+validateAndFormatInputDate(inputDate) {
+  const [day, month, year] = inputDate.split('/');
+  const input = new Date(`${year}-${month}-${day}T00:00:00`);
+  
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Zera a hora para comparar só a data
+
+  console.log(today);
+  console.log(input);
+  if (input < today) {
+    throw new Error(
+      "A data para a consulta não pode ser menor que o dia vigente."
+    );
+  }
+
+  // Formata a data para o padrão do banco se necessário (ex: yyyy-mm-dd)
+  const formattedDate = `${year}-${month}-${day}`;
+  return { myDate: formattedDate };
+},
 
  priorates() {
   const filePath = path.join(__dirname, '../users.json');

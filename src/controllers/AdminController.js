@@ -45,7 +45,7 @@ const AdminController = {
       });
     }
   },
-  getAppointments: async (req, res) => {
+  getAppointmentsById: async (req, res) => {
     const { id } = req.params;
     try {
       const getAppointments = await AdminService.getAppointmentsById(id);

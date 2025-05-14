@@ -11,7 +11,7 @@ const AdminModel = {
   },
   getAppointmentsByIdAndDate: async (id, date) => {
     const sql =
-      "SELECT * FROM create_service WHERE id = ? AND service_date = ?";
+      "SELECT * FROM create_service WHERE user_id = ? AND service_date = ?";
     try {
       const result = await db.allAsync(sql, [id, date]);
       return result;
@@ -36,7 +36,7 @@ const AdminModel = {
     }
   },
   getAppointmentsById: async (id) => {
-    const sql = "SELECT * FROM create_service WHERE user_id = ?";
+    const sql = "SELECT * FROM create_service WHERE id = ?";
     try {
       const result = await db.allAsync(sql, [id]);
       return result;
@@ -92,20 +92,19 @@ const AdminModel = {
 
     try {
       const results = await db.allAsync(sql, [searchTerm, searchTerm]);
-      return results; 
+      return results;
     } catch (error) {
       throw new Error("Erro ao consultar o banco de dados: " + error.message);
     }
   },
+  // AdminModel.js
   deleteAppointmentById: async (id) => {
-    {
-      const sql = "DELETE FROM create_service WHERE id = ?";
-      try {
-        const result = await db.runAsync(sql, [id]);
-        return result;
-      } catch (err) {
-        throw new Error("Erro ao deletar agendamento: " + err.message);
-      }
+    const sql = "DELETE FROM create_service WHERE id = ?";
+    try {
+      const result = await db.runAsync(sql, [id]);
+      return result;
+    } catch (err) {
+      throw new Error("Erro ao deletar agendamento: " + err.message);
     }
   },
 };

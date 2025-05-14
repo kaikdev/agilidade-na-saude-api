@@ -54,15 +54,19 @@ const AdminService = {
       adminData.service_date
     );
     adminData.service_date = date.myDate;
-
-    const existingAppointments = await AdminModel.getAppointmentsByIdAndDate(
-      adminData.user_id,
-      adminData.service_date
-    );
-    if (existingAppointments.length > 0) {
-      throw new Error("Já existe um agendamento para esta data.");
+    console.log(adminData.service_date);
+    try {
+      const existingAppointments = await AdminModel.getAppointmentsByIdAndDate(
+        adminData.user_id,
+        adminData.service_date
+      );
+      if (existingAppointments.length > 0) {
+        throw new Error("Já existe um agendamento para esta data.");
+      }
+      await AdminModel.createAppointment(adminData);
+    } catch (error) {
+      throw new Error(`Erro ao criar serviço: ${error.message}`);
     }
-    await AdminModel.createAppointment(adminData);
   },
   updateAppointment: async (body, id, userId) => {
     const date = UserRepository.validateAndFormatInputDate(body.service_date);
@@ -83,20 +87,28 @@ const AdminService = {
     try {
       return await AdminModel.searchAppointments(query);
     } catch (error) {
-      throw new Error("Erro no serviço de busca de agendamentos: " + error.message);
+      throw new Error(
+        "Erro no serviço de busca de agendamentos: " + error.message
+      );
     }
   },
- 
-  deleteAppointment: async (id, userId) => {
-    const appointment = await AdminModel.getAppointmentsById(userId);
-    if (!appointment) {
+
+  deleteAppointment: async (id) => {
+    const appointment = await AdminModel.getAppointmentsById(id);
+    if (!appointment || appointment.length === 0) {
       throw new Error("Agendamento não encontrado.");
     }
-    await AdminModel.deleteAppointmentById(id);
-    
+
+    try {
+      await AdminModel.deleteAppointmentById(id);
+    } catch (error) {
+      throw new Error(
+        "Erro ao excluir serviço de agendamentos: " + error.message
+      );
+    }
+
     return "Agendamento excluído com sucesso.";
-  }
-  
+  },
 };
 
 module.exports = AdminService;
