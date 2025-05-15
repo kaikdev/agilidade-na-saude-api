@@ -105,43 +105,64 @@ const UserController = {
       res.status(500).json({ error: "Erro ao buscar usuários." });
     }
   },
-  getAllPassowords: async (req, res, password) =>{
+  getAllPassowords: async (req, res, password) => {
     console.log(password);
     try {
       const passwords = await UserService.listAllPassword(password);
       res.json(passwords);
     } catch (err) {
-      res.status(500).json({ error: "Erro ao buscar as senhas de atendimento." });
+      res
+        .status(500)
+        .json({ error: "Erro ao buscar as senhas de atendimento." });
     }
   },
   createLisOfService: async (req, res) => {
-    const id_appointments = req.params.id; // Corrigido
-    const { priorities, nivel } = req.body;
+    const serviceId = req.params.id;
+    const { priority, level } = req.body;
     const userId = req.user?.id;
 
-    if (!priorities && !nivel) {
+    if (!priority && !level) {
       return res
         .status(400)
         .json({ error: "Todos os campos são obrigatórios." });
     }
 
     try {
-      const getAppointments = await UserService.getAppointmentsById(id_appointments);
+      const getAppointments = await UserService.getAppointmentsById(serviceId);
       const qtd = getAppointments.qtd_attendance;
-      console.log("Qtd Attendance:", qtd);
 
       if (!getAppointments) {
         return res.status(404).json({ error: "Agendamento não encontrado." });
       }
       if (qtd > 0) {
-        const waitingLinePassword = await UserRepository.createWaitingLinePassword();
-        console.log(waitingLinePassword);
+        const waitingLinePassword =
+          await UserRepository.createWaitingLinePassword();
         if (waitingLinePassword) {
-          let newQtd = qtd - 1;
-          console.log(newQtd);
+          const data = {
+            serviceId: serviceId,
+            userId: userId,
+            priority: priority,
+            level: level,
+            password: waitingLinePassword,
+          };
+          const insertPatientInQueue = await UserService.insertPatientInQueue(data);
+          if (insertPatientInQueue.success) {
+              let newQtd = qtd - 1;
+              const updateQtdAttendence = await UserService.updateQtdAttendence(newQtd);
+            return res.status(201).json({
+              message: insertPatientInQueue.message,
+              data: insertPatientInQueue.data,
+            });
+          } else {
+            return res.status(400).json({ error: insertPatientInQueue.message });
+          }
+
+
         }
       } else {
-        return res.status(400).json({ erro: 'Não existe mais vagas para essa consulta' });
+        return res
+          .status(400)
+          .json({ erro: "Não existe mais vagas para essa consulta" });
       }
     } catch (error) {
       console.error("Erro:", error.message);

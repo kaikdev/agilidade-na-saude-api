@@ -72,7 +72,8 @@ const UserModel = {
     return data;
   },
   listAllPassword: async (password) => {
-    const sql = 'SELECT password FROM scheduled_consultations WHERE password = ?';
+    const sql =
+      "SELECT password FROM scheduled_consultations WHERE password = ?";
     try {
       const result = await db.allAsync(sql, [password]); // Passa o parâmetro corretamente
       return result;
@@ -88,6 +89,33 @@ const UserModel = {
     } catch (err) {
       throw new Error("Erro ao consultar o banco de dados: " + err.message);
     }
+  },
+  checkPatientInQueue: async (serviceId, userId) => {
+    const sql = `
+        SELECT * 
+        FROM scheduled_consultations 
+        WHERE service_id = ? AND user_id = ?
+        LIMIT 1
+    `;
+    const result = await db.getAsync(sql, [serviceId, userId]);
+    return !!result; // Retorna true se existir, false se não
+  },
+  
+  insertPatientInQueue: async (data) => {
+    const sql = `
+        INSERT INTO scheduled_consultations 
+        ( user_id, service_id, password, priority, level ) 
+        VALUES (?, ?, ?, ?, ?)
+      `;
+      
+    const params = [
+      data.userId,
+      data.serviceId,
+      data.password,
+      data.priority,
+      data.level
+    ];
+    return db.runAsync(sql, params);
   },
 };
 

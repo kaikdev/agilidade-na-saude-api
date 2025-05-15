@@ -13,16 +13,21 @@ const UserService = {
 
     // Validação do e-mail
     if (!UserRepository.validateEmail(email)) {
-      throw new Error("E-mail inválido. O e-mail não atende os parâmetros necessários.");
+      throw new Error(
+        "E-mail inválido. O e-mail não atende os parâmetros necessários."
+      );
     }
 
     // Validação da senha
     if (!UserRepository.validatePassword(password)) {
-      throw new Error("A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma minúscula, um número e um caractere especial.");
+      throw new Error(
+        "A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma minúscula, um número e um caractere especial."
+      );
     }
 
     // Validação da data de nascimento
-    const birthDateValidation = UserRepository.validateAndFormatBirthDate(birth_date);
+    const birthDateValidation =
+      UserRepository.validateAndFormatBirthDate(birth_date);
     if (birthDateValidation.error) {
       throw new Error(birthDateValidation.error);
     }
@@ -31,7 +36,13 @@ const UserService = {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Criação do usuário
-    const userId = await UserModel.create(name, email, hashedPassword, role, birthDateValidation.formattedDate);
+    const userId = await UserModel.create(
+      name,
+      email,
+      hashedPassword,
+      role,
+      birthDateValidation.formattedDate
+    );
     return userId;
   },
 
@@ -103,6 +114,34 @@ const UserService = {
       return appointment;
     } catch (error) {
       throw new Error("Erro ao buscar agendamento: " + error.message);
+    }
+  },
+  insertPatientInQueue: async (data) => {
+    const { serviceId, userId, priority, level, password } = data;
+
+    try {
+      const existingListQueue = await UserModel.checkPatientInQueue(
+        serviceId,
+        userId
+      );
+      if (existingListQueue) {
+        return {
+          success: false,
+          message: "Você já marcou esta consulta.",
+        };
+      }
+
+      const insertPatientInQueue = await UserModel.insertPatientInQueue(data);
+      return {
+        success: true,
+        data: insertPatientInQueue,
+        message: "Agendamento realizado com sucesso!",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: "Erro ao processar agendamento.",
+      };
     }
   },
 };
