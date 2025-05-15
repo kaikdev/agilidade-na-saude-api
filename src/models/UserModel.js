@@ -117,6 +117,11 @@ const UserModel = {
     ];
     return db.runAsync(sql, params);
   },
+  updateQtdAttendance: async (newQtd, serviceId) => {
+    const sql = `UPDATE create_service SET qtd_attendance = ? WHERE id = ?`;
+    const result = await db.runAsync(sql, [newQtd, serviceId]);
+    return result;
+  }
 };
 
 module.exports = UserModel;

@@ -81,7 +81,7 @@ const UserRepository = {
     }
 
     try {
-      const checkPassword = await UserModel.listAllPassword(password);
+      const checkPassword = await UserModel.listAllPassword(password);// faz um select de todas as senhas no banco e compara para ver se ja foi gerada essa senha é unique
 
       if (checkPassword.length > 0) {
         return await UserRepository.createWaitingLinePassword(); // Recursão

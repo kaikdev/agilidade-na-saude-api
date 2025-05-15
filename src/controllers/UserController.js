@@ -117,9 +117,9 @@ const UserController = {
     }
   },
   createLisOfService: async (req, res) => {
-    const serviceId = req.params.id;
-    const { priority, level } = req.body;
-    const userId = req.user?.id;
+    const serviceId = req.params.id;//id na requisição 
+    const { priority, level } = req.body;// corpo do body, form
+    const userId = req.user?.id;//usuario logado
 
     if (!priority && !level) {
       return res
@@ -128,15 +128,14 @@ const UserController = {
     }
 
     try {
-      const getAppointments = await UserService.getAppointmentsById(serviceId);
-      const qtd = getAppointments.qtd_attendance;
+      const getAppointments = await UserService.getAppointmentsById(serviceId);//pega o serviço por id 
+      const qtd = getAppointments.qtd_attendance;//separa a qtd_attendance-> quantidade de atenmdimento que o medico vai fazer 
 
       if (!getAppointments) {
         return res.status(404).json({ error: "Agendamento não encontrado." });
       }
-      if (qtd > 0) {
-        const waitingLinePassword =
-          await UserRepository.createWaitingLinePassword();
+      if (qtd > 0) { //essa lógica talvez não precise, pode excluir o if, se atrapalhar 
+        const waitingLinePassword = await UserRepository.createWaitingLinePassword();//criação da senha do usario
         if (waitingLinePassword) {
           const data = {
             serviceId: serviceId,
@@ -145,19 +144,16 @@ const UserController = {
             level: level,
             password: waitingLinePassword,
           };
-          const insertPatientInQueue = await UserService.insertPatientInQueue(data);
+          const insertPatientInQueue = await UserService.insertPatientInQueue(data);//insere na tabela o id da consulta e o id do usuario logado
           if (insertPatientInQueue.success) {
-              let newQtd = qtd - 1;
-              const updateQtdAttendence = await UserService.updateQtdAttendence(newQtd);
+              let newQtd = qtd - 1;//pega a quantidade atual do qtd_attendece subtrai 1 e atualiza a consulta médica
+              const updateQtdAttendance = await UserService.updateQtdAttendance(newQtd, serviceId );//update na consulta create service
             return res.status(201).json({
-              message: insertPatientInQueue.message,
-              data: insertPatientInQueue.data,
+              data: insertPatientInQueue,
             });
           } else {
             return res.status(400).json({ error: insertPatientInQueue.message });
           }
-
-
         }
       } else {
         return res

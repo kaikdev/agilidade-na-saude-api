@@ -120,10 +120,7 @@ const UserService = {
     const { serviceId, userId, priority, level, password } = data;
 
     try {
-      const existingListQueue = await UserModel.checkPatientInQueue(
-        serviceId,
-        userId
-      );
+      const existingListQueue = await UserModel.checkPatientInQueue( serviceId, userId );
       if (existingListQueue) {
         return {
           success: false,
@@ -134,9 +131,12 @@ const UserService = {
       const insertPatientInQueue = await UserModel.insertPatientInQueue(data);
       return {
         success: true,
-        data: insertPatientInQueue,
-        message: "Agendamento realizado com sucesso!",
+        insertPatientInQueue,
+        priority: data.priority,
+        password: data.password,
+        message: "Agendamento realizado com sucesso!"
       };
+
     } catch (error) {
       return {
         success: false,
@@ -144,6 +144,10 @@ const UserService = {
       };
     }
   },
+  updateQtdAttendance: async(newQtd, serviceId) =>{
+        const result = await UserModel.updateQtdAttendance(newQtd, serviceId);
+        return result;
+  }
 };
 
 module.exports = UserService;
