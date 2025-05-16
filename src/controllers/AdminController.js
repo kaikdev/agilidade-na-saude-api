@@ -1,5 +1,9 @@
 const logEvent = require("../services/LogService");
 const AdminService = require("../services/AdminService");
+const UserModel = require("../models/UserModel");
+const UserRepository = require("../repository/UserRepository");
+const PasswordController = require("../controllers/PasswordController");
+const bcrypt = require("bcryptjs");
 
 const AdminController = {
   // Criar novo administrador
@@ -45,6 +49,58 @@ const AdminController = {
       });
     }
   },
+  getAdmById: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const userAdmin = await AdminService.getAdminById(id);
+      if (!userAdmin) {
+        return res.status(404).json({ error: "Usuário não encontrado." });
+      }
+      const AdminWithLinks = userAdmin.map((userAdmin) => ({
+        ...userAdmin,
+        links: {
+          update: `http://localhost:3000/api/admin/update/${userAdmin.id}`,
+          delete: `http://localhost:3000/api/admin/delete/delete/${userAdmin.id}`,
+        },
+      }));
+
+      return res.status(201).json({
+        success: true,
+        data:AdminWithLinks
+      });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  },
+
+  updateAdmin: async (req, res) => {
+    const { id } = req.params;
+    const { name, email, password, crm, specialty, presentation } = req.body;
+    const userId = req.user?.id;
+
+    const newPassword = password;
+
+    // Verifica se o e-mail já está cadastrado
+    const existingUser = await UserModel.findByEmail(email);
+    if (existingUser) {
+      throw new Error("E-mail já cadastrado.");
+    }
+
+    // Valida o e-mail
+    if (!UserRepository.validateEmail(email)) {
+      throw new Error("E-mail inválido.");
+    }
+
+    // Valida a senha
+    if (!UserRepository.validatePassword(password)) {
+      throw new Error("Senha fraca.");
+    }
+    console.log("senha Nova", newPassword);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    console.log("Nova Senha", hashedPassword);
+  },
+
   getAppointmentsById: async (req, res) => {
     const { id } = req.params;
     try {
@@ -118,7 +174,7 @@ const AdminController = {
       return (
         res.status(200).json({
           message: "Agendamento atualizado com sucesso!",
-          id: id,
+          data: updated,
         }),
         logEvent("Agendamento atualizado com sucesso!", body.user_id)
       );
@@ -130,15 +186,15 @@ const AdminController = {
     }
   },
   searchAppointments: async (req, res) => {
-    const { query } = req.query;  // Pega o valor da query string
+    const { query } = req.query; // Pega o valor da query string
     const userId = req.user?.id;
-    
+
     if (!query) {
       return res.status(400).json({
-        message: "Por favor, forneça um valor para a pesquisa."
+        message: "Por favor, forneça um valor para a pesquisa.",
       });
     }
-    
+
     try {
       const appointments = await AdminService.searchAppointments(query);
 
@@ -170,11 +226,26 @@ const AdminController = {
       });
     }
   },
+
+  delete: async (req, res) => {
+    const { id } = req.params;
+    const userId = req.user?.id;
+    try {
+      const message = await AdminService.deleteAdmin(id);
+      logEvent(
+        `Agendamento excluído - Usuário ID: ${userId}, Agendamento ID: ${id}`
+      );
+      res.json({ message });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  },
+
   deleteAppointments: async (req, res) => {
     const { id } = req.params;
     const userId = req.user?.id;
     try {
-      const message = await AdminService.deleteAppointment(id, userId);
+      const message = await AdminService.deleteAppointment(id);
       logEvent(
         `Agendamento excluído - Usuário ID: ${userId}, Agendamento ID: ${id}`
       );

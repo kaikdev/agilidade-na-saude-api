@@ -43,7 +43,7 @@ const UserRepository = {
   },
 
   validateAndFormatInputDate(inputDate) {
-    const [day, month, year] = inputDate.split('/');
+    const [day, month, year] = inputDate.split("/");
     const input = new Date(`${year}-${month}-${day}T00:00:00`);
 
     const today = new Date();
@@ -63,14 +63,14 @@ const UserRepository = {
   },
 
   priorates() {
-    const filePath = path.join(__dirname, '../users.json');
-    const data = fs.readFileSync(filePath, 'utf-8');
+    const filePath = path.join(__dirname, "../users.json");
+    const data = fs.readFileSync(filePath, "utf-8");
     return JSON.parse(data);
   },
   createWaitingLinePassword: async () => {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const numbers = '0123456789';
-    let password = '';
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numbers = "0123456789";
+    let password = "";
 
     for (let i = 0; i < 2; i++) {
       password += letters.charAt(Math.floor(Math.random() * letters.length));
@@ -81,19 +81,18 @@ const UserRepository = {
     }
 
     try {
-      const checkPassword = await UserModel.listAllPassword(password);// faz um select de todas as senhas no banco e compara para ver se ja foi gerada essa senha é unique
+      const checkPassword = await UserModel.listAllPassword(password); // faz um select de todas as senhas no banco e compara para ver se ja foi gerada essa senha é unique
 
       if (checkPassword.length > 0) {
         return await UserRepository.createWaitingLinePassword(); // Recursão
       }
 
       return password;
-
     } catch (error) {
-      console.error('Erro ao verificar senha:', error.message);
+      console.error("Erro ao verificar senha:", error.message);
       throw error;
     }
+  },
 
-  }
 };
 module.exports = UserRepository;

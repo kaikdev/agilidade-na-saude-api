@@ -105,17 +105,7 @@ const UserController = {
       res.status(500).json({ error: "Erro ao buscar usuários." });
     }
   },
-  getAllPassowords: async (req, res, password) => {
-    console.log(password);
-    try {
-      const passwords = await UserService.listAllPassword(password);
-      res.json(passwords);
-    } catch (err) {
-      res
-        .status(500)
-        .json({ error: "Erro ao buscar as senhas de atendimento." });
-    }
-  },
+  
   createLisOfService: async (req, res) => {
     const serviceId = req.params.id;//id na requisição 
     const { priority, level } = req.body;// corpo do body, form
@@ -134,7 +124,7 @@ const UserController = {
       if (!getAppointments) {
         return res.status(404).json({ error: "Agendamento não encontrado." });
       }
-      if (qtd > 0) { //essa lógica talvez não precise, pode excluir o if, se atrapalhar 
+      if (qtd > 0) { //essa lógica talvez não precise, pode excluir o if, se atrapalhar, apanas tire se não bloquear lá no front 
         const waitingLinePassword = await UserRepository.createWaitingLinePassword();//criação da senha do usario
         if (waitingLinePassword) {
           const data = {

@@ -402,3 +402,10 @@
 [2025-05-14T13:33:09.203Z] Erro ao criar agendamento:
 [2025-05-14T13:33:28.015Z] Erro ao criar agendamento:
 [2025-05-14T13:49:24.971Z] Login bem-sucedido - Usuário: maria.oliveira@example.com
+[2025-05-15T18:34:24.892Z] Login bem-sucedido - Usuário: maria.oliveira@example.com
+[2025-05-15T20:14:44.504Z] Login bem-sucedido - Usuário: maria.oliveira@example.com
+[2025-05-15T21:13:28.004Z] Login bem-sucedido - Usuário: Fernado.almeida@gmail.com
+[2025-05-15T21:31:27.152Z] Login bem-sucedido - Usuário: Fernado.almeida@gmail.com
+[2025-05-15T22:49:24.333Z] Login bem-sucedido - Usuário: Fernado.almeida@gmail.com
+[2025-05-15T23:24:12.043Z] Login bem-sucedido - Usuário: Fernado.almeida@gmail.com
+[2025-05-16T00:07:20.850Z] Agendamento excluído - Usuário ID: undefined, Agendamento ID: 2

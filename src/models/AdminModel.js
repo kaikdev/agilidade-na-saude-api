@@ -19,6 +19,18 @@ const AdminModel = {
       throw new Error("Erro ao consultar o banco de dados: " + err.message);
     }
   },
+
+  getAdminById: async (id) => {
+    const sql = `SELECT * FROM users where id = ?`;
+    const result = await db.allAsync(sql, [id]);
+    // Se não houver nenhum usuário no banco de dados (array vazio), lança um erro
+    if (result.length === 0) {
+      throw new Error("Usuário não encontrado.");
+    }
+
+    return result;
+  },
+
   createAppointment: async (appointmentData) => {
     const sql =
       "INSERT INTO create_service (user_id, specialty, locality, qtd_attendance, service_date) VALUES (?, ?, ?, ?, ?)";
@@ -95,6 +107,15 @@ const AdminModel = {
       return results;
     } catch (error) {
       throw new Error("Erro ao consultar o banco de dados: " + error.message);
+    }
+  },
+  deleteAdminById: async (id) => {
+    const sql = "DELETE FROM users WHERE id = ?";
+    try {
+      const result = await db.runAsync(sql, [id]);
+      return result;
+    } catch (err) {
+      throw new Error("Erro ao deletar agendamento: " + err.message);
     }
   },
   // AdminModel.js

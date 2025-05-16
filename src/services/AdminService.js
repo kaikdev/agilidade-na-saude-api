@@ -44,6 +44,13 @@ const AdminService = {
       throw new Error(`Erro ao criar admin: ${error.message}`);
     }
   },
+  getAdminById: async (id) => {
+    const user = await AdminModel.getAdminById(id);
+    if (!user) {
+      throw new Error("Usuário não encontrado.");
+    }
+    return user;
+  },
 
   getAppointmentsById: async (userId) => {
     return await AdminModel.getAppointmentsById(userId);
@@ -92,7 +99,22 @@ const AdminService = {
       );
     }
   },
+  deleteAdmin: async (id) => {
+    const admin = await AdminModel.getAdminById(id);
+    if (!admin || admin.length === 0) {
+      throw new Error("Agendamento não encontrado.");
+    }
 
+    try {
+      await AdminModel.deleteAdminById(id);
+    } catch (error) {
+      throw new Error(
+        "Erro ao excluir serviço de agendamentos: " + error.message
+      );
+    }
+
+    return "Agendamento excluído com sucesso.";
+  },
   deleteAppointment: async (id) => {
     const appointment = await AdminModel.getAppointmentsById(id);
     if (!appointment || appointment.length === 0) {
