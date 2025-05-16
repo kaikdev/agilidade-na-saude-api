@@ -4,8 +4,10 @@ const UserModel = require("../models/UserModel");
 const UserRepository = require("../repository/UserRepository");
 const PasswordController = require("../controllers/PasswordController");
 const bcrypt = require("bcryptjs");
+const AdminModel = require("../models/AdminModel");
 
 const AdminController = {
+
   // Criar novo administrador
   createAdmin: async (req, res) => {
     const requiredFields = [
@@ -49,6 +51,8 @@ const AdminController = {
       });
     }
   },
+
+  //pega as informação do usuario adm
   getAdmById: async (req, res) => {
     const { id } = req.params;
 
@@ -101,6 +105,26 @@ const AdminController = {
     console.log("Nova Senha", hashedPassword);
   },
 
+//Pega todas as consulta de um usuario adm especifico
+  getAllAppointments: async (req, res) => {
+    const id = req.user.id;
+    try {
+      const services = await AdminService.listAllAppointments(id);
+      const servicesWithLink =  services.map((appointment) => ({
+        ...appointment,
+        link: {
+          getForId: `https://localhost:3000/api/admin/appointments/${appointment.id}`
+        },
+
+      }));
+      return res.json(servicesWithLink,);
+    } catch (err) {
+      res.status(500).json({ error: "Erro ao buscar as suas consultas." });
+    }
+    return;
+  },
+
+  //pega a consulta especifica de um usuario adm 
   getAppointmentsById: async (req, res) => {
     const { id } = req.params;
     try {
@@ -120,6 +144,7 @@ const AdminController = {
       });
     } catch (error) {}
   },
+
   createAppointments: async (req, res) => {
     const requiredFields = [
       "user_id",
@@ -160,10 +185,11 @@ const AdminController = {
     } catch (error) {
       logEvent("Erro ao criar agendamento:", error);
       return res.status(500).json({
-        error: error.message, // Exibe a mensagem real do erro
+        error: error.message, 
       });
     }
   },
+
   updateAppointments: async (req, res) => {
     const { id } = req.params;
     const body = req.body;
@@ -181,10 +207,11 @@ const AdminController = {
     } catch (error) {
       logEvent("Erro ao atualizar agendamento:", error);
       return res.status(500).json({
-        error: error.message, // Exibe a mensagem real do erro
+        error: error.message, 
       });
     }
   },
+
   searchAppointments: async (req, res) => {
     const { query } = req.query; // Pega o valor da query string
     const userId = req.user?.id;
@@ -214,12 +241,11 @@ const AdminController = {
         });
       }
 
-      // Caso não encontre nenhum agendamento
       return res.status(404).json({
         message: "Nenhum agendamento encontrado.",
       });
+
     } catch (error) {
-      // Retorna erro caso ocorra
       console.error("Erro ao buscar agendamentos:", error);
       return res.status(500).json({
         message: "Erro ao buscar os agendamentos.",
@@ -254,6 +280,7 @@ const AdminController = {
       res.status(400).json({ error: err.message });
     }
   },
+  
 };
 
 module.exports = AdminController;

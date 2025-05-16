@@ -12,9 +12,10 @@ router.get("/admin/:id",  Auth.verifyToken, authorize(["admin"]), AdminControlle
 router.post("/admin/update/:id",  Auth.verifyToken, authorize(["admin"]), AdminController.updateAdmin);//ok
 router.delete("/admin/delete/:id", Auth.verifyToken, authorize(["admin"]), AdminController.delete);//ok
 
+router.get("/admin/appointments/listAll", Auth.verifyToken, authorize(["admin"]), AdminController.getAllAppointments); //ok
 router.get("/admin/appointments/:id", Auth.verifyToken, authorize(["admin"]), AdminController.getAppointmentsById); //ok
 router.post("/admin/appointments", Auth.verifyToken, authorize(["admin"]), AdminController.createAppointments); //ok
-router.get('/appointments/search', Auth.verifyToken, authorize(["admin"]), AdminController.searchAppointments);//ok
+router.get('/admin/appointments/search', Auth.verifyToken, authorize(["admin"]), AdminController.searchAppointments);//ok
 router.put("/admin/appointments/update/:id", Auth.verifyToken, authorize(["admin"]), AdminController.updateAppointments); 
 router.delete("/admin/appointments/delete/:id", Auth.verifyToken, authorize(["admin"]), AdminController.deleteAppointments);//ok
 

@@ -1,6 +1,7 @@
 const db = require("../config/promisifiedDb");
 
 const AdminModel = {
+  
   createAdminData: async (userId, crm, specialty, presentation) => {
     const sql = `INSERT INTO admin_data (user_id, crm, specialty, presentation) VALUES (?, ?, ?, ?)`;
     try {
@@ -9,6 +10,7 @@ const AdminModel = {
       throw new Error(`Erro ao criar dados do admin: ${err.message}`);
     }
   },
+
   getAppointmentsByIdAndDate: async (id, date) => {
     const sql =
       "SELECT * FROM create_service WHERE user_id = ? AND service_date = ?";
@@ -47,6 +49,13 @@ const AdminModel = {
       throw new Error("Erro ao criar agendamento: " + err.message);
     }
   },
+  
+  findAllAppointments: async (id) => {
+    const sql = `SELECT * FROM create_service WHERE user_id = ?`;
+    const users = await db.allAsync(sql, [id]);
+    return users;
+  },
+
   getAppointmentsById: async (id) => {
     const sql = "SELECT * FROM create_service WHERE id = ?";
     try {
@@ -56,6 +65,7 @@ const AdminModel = {
       throw new Error("Erro ao consultar o banco de dados: " + err.message);
     }
   },
+
   // No seu AdminModel
   updateAppointment: async (updateData, id) => {
     const query = `
@@ -92,6 +102,7 @@ const AdminModel = {
       throw new Error("Erro ao atualizar no banco de dados: " + err.message);
     }
   },
+
   searchAppointments: async (query) => {
     const sql = `
       SELECT * 
@@ -109,6 +120,7 @@ const AdminModel = {
       throw new Error("Erro ao consultar o banco de dados: " + error.message);
     }
   },
+
   deleteAdminById: async (id) => {
     const sql = "DELETE FROM users WHERE id = ?";
     try {
@@ -118,6 +130,7 @@ const AdminModel = {
       throw new Error("Erro ao deletar agendamento: " + err.message);
     }
   },
+
   // AdminModel.js
   deleteAppointmentById: async (id) => {
     const sql = "DELETE FROM create_service WHERE id = ?";
@@ -128,5 +141,6 @@ const AdminModel = {
       throw new Error("Erro ao deletar agendamento: " + err.message);
     }
   },
+
 };
 module.exports = AdminModel;

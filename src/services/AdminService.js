@@ -44,12 +44,18 @@ const AdminService = {
       throw new Error(`Erro ao criar admin: ${error.message}`);
     }
   },
+
   getAdminById: async (id) => {
     const user = await AdminModel.getAdminById(id);
     if (!user) {
       throw new Error("Usuário não encontrado.");
     }
     return user;
+  },
+
+  listAllAppointments: async (id) => {
+    const users = await AdminModel.findAllAppointments(id);
+    return users;
   },
 
   getAppointmentsById: async (userId) => {
@@ -75,6 +81,7 @@ const AdminService = {
       throw new Error(`Erro ao criar serviço: ${error.message}`);
     }
   },
+
   updateAppointment: async (body, id, userId) => {
     const date = UserRepository.validateAndFormatInputDate(body.service_date);
     body.service_date = date.myDate;
@@ -99,6 +106,7 @@ const AdminService = {
       );
     }
   },
+
   deleteAdmin: async (id) => {
     const admin = await AdminModel.getAdminById(id);
     if (!admin || admin.length === 0) {
@@ -115,6 +123,7 @@ const AdminService = {
 
     return "Agendamento excluído com sucesso.";
   },
+
   deleteAppointment: async (id) => {
     const appointment = await AdminModel.getAppointmentsById(id);
     if (!appointment || appointment.length === 0) {
@@ -131,6 +140,7 @@ const AdminService = {
 
     return "Agendamento excluído com sucesso.";
   },
+
 };
 
 module.exports = AdminService;
