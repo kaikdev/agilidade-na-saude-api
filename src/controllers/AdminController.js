@@ -2,9 +2,7 @@ const logEvent = require("../services/LogService");
 const AdminService = require("../services/AdminService");
 const UserModel = require("../models/UserModel");
 const UserRepository = require("../repository/UserRepository");
-const PasswordController = require("../controllers/PasswordController");
 const bcrypt = require("bcryptjs");
-const AdminModel = require("../models/AdminModel");
 
 const AdminController = {
 
@@ -281,6 +279,21 @@ const AdminController = {
     }
   },
   
+  getScheduledAppointments: async (req, res) => {
+    const userId = req.user?.id;
+    try {
+      const scheduledAppointments = await AdminService.getScheduledAppointments(userId);
+      return res.status(200).json({
+        message: "Agendamentos encontrados!",
+        appointments: scheduledAppointments,
+      });
+    } catch (error) {
+      console.error("Erro ao buscar agendamentos:", error);
+      return res.status(500).json({
+        message: "Erro ao buscar os agendamentos.",
+      });
+    }
+  },
 };
 
 module.exports = AdminController;

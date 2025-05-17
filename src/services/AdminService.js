@@ -140,7 +140,23 @@ const AdminService = {
 
     return "Agendamento excluído com sucesso.";
   },
+  getScheduledAppointments: async (userId) => {
 
+    const service = await AdminModel.findAllAppointments(userId);
+    const allServicesId = service.map((service) => service.id);
+    try {
+      const scheduledAppointments = await AdminModel.getScheduledAppointments(allServicesId);
+      if (!scheduledAppointments || scheduledAppointments.length === 0) {
+        throw new Error("Nenhum agendamento encontrado.");
+      }
+      return scheduledAppointments;
+    } catch (error) {
+       console.error(error.message);
+        // pode retornar um erro ou null dependendo do seu tratamento
+        return null;
+    }
+
+    },
 };
 
 module.exports = AdminService;

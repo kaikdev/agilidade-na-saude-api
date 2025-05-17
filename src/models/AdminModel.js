@@ -1,7 +1,6 @@
 const db = require("../config/promisifiedDb");
 
 const AdminModel = {
-  
   createAdminData: async (userId, crm, specialty, presentation) => {
     const sql = `INSERT INTO admin_data (user_id, crm, specialty, presentation) VALUES (?, ?, ?, ?)`;
     try {
@@ -49,7 +48,7 @@ const AdminModel = {
       throw new Error("Erro ao criar agendamento: " + err.message);
     }
   },
-  
+
   findAllAppointments: async (id) => {
     const sql = `SELECT * FROM create_service WHERE user_id = ?`;
     const users = await db.allAsync(sql, [id]);
@@ -142,5 +141,21 @@ const AdminModel = {
     }
   },
 
+  getScheduledAppointments: async (serviceIds) => {
+
+    const placeholders = serviceIds.map(() => "?").join(", ");
+    const sql = `
+    SELECT * 
+    FROM scheduled_consultations 
+    WHERE service_id IN (${placeholders}) 
+  `;
+
+    try {
+      const result = await db.allAsync(sql, serviceIds);
+      return result;
+    } catch (err) {
+      throw new Error("Erro ao consultar o banco de dados: " + err.message);
+    }
+  },
 };
 module.exports = AdminModel;

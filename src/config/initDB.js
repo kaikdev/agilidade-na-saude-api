@@ -48,6 +48,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
         password INTEGER NOT NULL,
         priority TEXT NOT NULL,
         level INTEGER NOT NULL,
+        finished INT DEFAULT 0,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
         FOREIGN KEY (service_id) REFERENCES create_service(id) ON DELETE CASCADE
