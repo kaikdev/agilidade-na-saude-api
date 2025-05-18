@@ -141,22 +141,55 @@ const AdminService = {
     return "Agendamento excluído com sucesso.";
   },
   getScheduledAppointments: async (userId) => {
-
     const service = await AdminModel.findAllAppointments(userId);
     const allServicesId = service.map((service) => service.id);
+
     try {
-      const scheduledAppointments = await AdminModel.getScheduledAppointments(allServicesId);
+      const scheduledAppointments = await AdminModel.getScheduledAppointments(
+        allServicesId
+      );
       if (!scheduledAppointments || scheduledAppointments.length === 0) {
         throw new Error("Nenhum agendamento encontrado.");
       }
       return scheduledAppointments;
     } catch (error) {
-       console.error(error.message);
-        // pode retornar um erro ou null dependendo do seu tratamento
-        return null;
+      throw new Error("Erro ao buscar agendamentos: " + error.message);
     }
+  },
+  getScheduledAppointmentsById: async (id) => {
+    try {
+      const scheduledAppointments =
+        await AdminModel.getScheduledAppointmentsByUserId(id);
+      if (!scheduledAppointments || scheduledAppointments.length === 0) {
+        throw new Error("Nenhum agendamento encontrado.");
+      }
+      return scheduledAppointments;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
 
-    },
+  finalizeScheduledAppointments: async (id) => {
+    try {
+      const result = await AdminModel.finalizeScheduledAppointments(id);
+
+      if (result.changes === 0) {
+        throw new Error("Nenhum agendamento encontrado com esse ID.");
+      }
+      return result;
+    } catch (err) {
+      throw new Error("Erro ao finalizar o agendamento: " + err.message);
+    }
+  },
+
+  fetchTodayPasswords: async () => {
+    try {
+      const passwords = await AdminModel.getTodayPasswords();
+      return passwords;
+    } catch (err) {
+      throw new Error("Erro no serviço ao buscar senhas:" + err.message);
+    }
+  },
 };
 
 module.exports = AdminService;

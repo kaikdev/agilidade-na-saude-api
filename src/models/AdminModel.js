@@ -145,9 +145,25 @@ const AdminModel = {
 
     const placeholders = serviceIds.map(() => "?").join(", ");
     const sql = `
-    SELECT * 
-    FROM scheduled_consultations 
-    WHERE service_id IN (${placeholders}) 
+    SELECT 
+      sc.id AS scheduled_id,
+      sc.password,
+      sc.priority,
+      sc.finished,
+      
+      u.id AS user_id,
+      u.name AS user_name,
+      u.email,
+
+      cs.id AS service_id,
+      cs.specialty,
+      cs.locality,
+      cs.service_date
+
+    FROM scheduled_consultations sc
+    JOIN users u ON sc.user_id = u.id
+    JOIN create_service cs ON sc.service_id = cs.id
+    WHERE sc.service_id IN (${placeholders})
   `;
 
     try {
@@ -157,5 +173,76 @@ const AdminModel = {
       throw new Error("Erro ao consultar o banco de dados: " + err.message);
     }
   },
+
+getScheduledAppointmentsByUserId: async (consultationId) => {
+  const sql = `
+    SELECT 
+      sc.id AS consultation_id,
+      sc.password,
+      sc.priority,
+      sc.finished,
+      
+      u.id AS user_id,
+      u.name AS user_name,
+      u.email,
+      u.birth_date,
+
+      cs.id AS service_id,
+      cs.specialty,
+      cs.locality,
+      cs.service_date
+
+    FROM scheduled_consultations sc
+    JOIN users u ON sc.user_id = u.id
+    JOIN create_service cs ON sc.service_id = cs.id
+    WHERE sc.id = ?
+  `;
+
+  try {
+    const result = await db.getAsync(sql, [consultationId]);
+    if (!result) {
+      throw new Error("Agendamento não encontrado.");
+    }
+    return result;
+  } catch (err) {
+    throw new Error("Erro ao consultar o banco de dados: " + err.message);
+  }
+},
+
+finalizeScheduledAppointments: async (id) => {
+  const sql = `UPDATE scheduled_consultations SET finished = 1 WHERE id = ?`;
+
+    try {
+      const result = await db.runAsync(sql, [id]);
+
+      if (result.changes === 0) {
+        throw new Error("Nenhum agendamento encontrado com esse ID.");
+      }
+
+      return { id, finished: 1 };
+    } catch (err) {
+      throw new Error("Erro ao atualizar o status do agendamento: " + err.message);
+    }
+  },
+
+  getTodayPasswords: async () => {
+    try {
+      const sql = `
+        SELECT
+          sc.password
+        FROM scheduled_consultations sc
+        JOIN create_service cs ON sc.service_id = cs.id
+        WHERE DATE(cs.service_date) = DATE('now', 'localtime')
+          AND sc.finished = 0
+        ORDER BY sc.level ASC, sc.created_at ASC;
+      `;
+      const result = await db.allAsync(sql);
+      return result;
+
+    } catch (error) {
+      throw new Error("Erro ao buscar fila no modelo: " + err.message);
+    }
+  }
+
 };
 module.exports = AdminModel;

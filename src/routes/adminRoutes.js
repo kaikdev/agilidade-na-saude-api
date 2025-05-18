@@ -20,4 +20,7 @@ router.put("/admin/appointments/update/:id", Auth.verifyToken, authorize(["admin
 router.delete("/admin/appointments/delete/:id", Auth.verifyToken, authorize(["admin"]), AdminController.deleteAppointments);//ok
 
 router.get("/admin/scheduled/Appointments", Auth.verifyToken, authorize(["admin"]), AdminController.getScheduledAppointments); //ok
+router.get("/admin/scheduled/appointments/:id", Auth.verifyToken, authorize(["admin"]), AdminController.getScheduledAppointmentsById); //ok
+router.put("/admin/scheduled/appointments/finalize/:id", Auth.verifyToken, authorize(["admin"]), AdminController.finalizeScheduledAppointments); //ok
+
 module.exports = router;

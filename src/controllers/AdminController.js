@@ -5,7 +5,6 @@ const UserRepository = require("../repository/UserRepository");
 const bcrypt = require("bcryptjs");
 
 const AdminController = {
-
   // Criar novo administrador
   createAdmin: async (req, res) => {
     const requiredFields = [
@@ -69,7 +68,7 @@ const AdminController = {
 
       return res.status(201).json({
         success: true,
-        data:AdminWithLinks
+        data: AdminWithLinks,
       });
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -103,26 +102,25 @@ const AdminController = {
     console.log("Nova Senha", hashedPassword);
   },
 
-//Pega todas as consulta de um usuario adm especifico
+  //Pega todas as consulta de um usuario adm especifico
   getAllAppointments: async (req, res) => {
     const id = req.user.id;
     try {
       const services = await AdminService.listAllAppointments(id);
-      const servicesWithLink =  services.map((appointment) => ({
+      const servicesWithLink = services.map((appointment) => ({
         ...appointment,
         link: {
-          getForId: `https://localhost:3000/api/admin/appointments/${appointment.id}`
+          getForId: `https://localhost:3000/api/admin/appointments/${appointment.id}`,
         },
-
       }));
-      return res.json(servicesWithLink,);
+      return res.json(servicesWithLink);
     } catch (err) {
       res.status(500).json({ error: "Erro ao buscar as suas consultas." });
     }
     return;
   },
 
-  //pega a consulta especifica de um usuario adm 
+  //pega a consulta especifica de um usuario adm
   getAppointmentsById: async (req, res) => {
     const { id } = req.params;
     try {
@@ -183,7 +181,7 @@ const AdminController = {
     } catch (error) {
       logEvent("Erro ao criar agendamento:", error);
       return res.status(500).json({
-        error: error.message, 
+        error: error.message,
       });
     }
   },
@@ -205,7 +203,7 @@ const AdminController = {
     } catch (error) {
       logEvent("Erro ao atualizar agendamento:", error);
       return res.status(500).json({
-        error: error.message, 
+        error: error.message,
       });
     }
   },
@@ -242,7 +240,6 @@ const AdminController = {
       return res.status(404).json({
         message: "Nenhum agendamento encontrado.",
       });
-
     } catch (error) {
       console.error("Erro ao buscar agendamentos:", error);
       return res.status(500).json({
@@ -278,14 +275,23 @@ const AdminController = {
       res.status(400).json({ error: err.message });
     }
   },
-  
+
   getScheduledAppointments: async (req, res) => {
     const userId = req.user?.id;
     try {
-      const scheduledAppointments = await AdminService.getScheduledAppointments(userId);
+      const scheduledAppointments = await AdminService.getScheduledAppointments(
+        userId
+      );
+
+      const output = scheduledAppointments.map((appointment) => ({
+        ...appointment,
+        links: {
+          getById: `http://localhost:3000/api/admin/scheduled/appointments/${appointment.user_id}`,
+        },
+      }));
       return res.status(200).json({
         message: "Agendamentos encontrados!",
-        appointments: scheduledAppointments,
+        appointments: output,
       });
     } catch (error) {
       console.error("Erro ao buscar agendamentos:", error);
@@ -294,6 +300,58 @@ const AdminController = {
       });
     }
   },
+
+  getScheduledAppointmentsById: async (req, res) => {
+    const { id } = req.params;
+    try {
+      const scheduledAppointments =
+        await AdminService.getScheduledAppointmentsById(id);
+
+      const output = {
+        ...scheduledAppointments,
+        links: {
+          finalizeQueries: `http://localhost:3000/api/admin/scheduled/appointments/finalizeQueries/${scheduledAppointments.consultation_id}`,
+        },
+      };
+
+      return res.status(200).json({
+        message: "Agendamentos encontrados!",
+        appointments: output,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro ao buscar os agendamentos." + error.message,
+      });
+    }
+  },
+  finalizeScheduledAppointments: async (req, res) => {
+    const { id } = req.params;
+    try {
+      const scheduledAppointments =
+        await AdminService.finalizeScheduledAppointments(id);
+
+      return res.status(200).json({
+        message: "Agendamentos encontrados!",
+        appointments: scheduledAppointments,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro ao buscar os agendamentos." + error.message,
+      });
+    }
+  },
+
+ getTodayPasswords: async (req, res) => {
+  try {
+    const data = await AdminService.fetchTodayPasswords();
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar senhas da fila de hoje."  + error.message });
+  }
+},
+
+
+ 
 };
 
 module.exports = AdminController;

@@ -23,6 +23,9 @@ app.use("/api", userRoutes);
 const adminRoutes = require("./routes/adminRoutes");
 app.use("/api", adminRoutes);
 
+const queriesRoutes = require("./routes/queriesRoutes");
+app.use("/api", queriesRoutes);
+
 // Rotas de autenticação
 const authRoutes = require("./routes/authRoutes");
 app.use("/api", authRoutes);
