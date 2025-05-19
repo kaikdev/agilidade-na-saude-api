@@ -457,3 +457,74 @@
 [2025-05-19T18:17:02.628Z] Login bem-sucedido - Usuário: silvam.silva@example.com
 [2025-05-19T18:27:20.842Z] Login bem-sucedido - Usuário: silvam.silva@example.com
 [2025-05-19T19:28:36.619Z] Login bem-sucedido - Usuário: silvam.silva@example.com
+[2025-05-19T19:37:16.374Z] Erro ao criar agendamento:
+[2025-05-19T19:37:23.961Z] Erro ao criar agendamento:
+[2025-05-19T19:41:15.649Z] Erro ao atualizar agendamento:
+[2025-05-19T19:41:36.233Z] Agendamento atualizado com sucesso!
+[2025-05-19T19:42:03.021Z] Agendamento atualizado com sucesso!
+[2025-05-19T19:54:45.572Z] Agendamento excluído - Usuário ID: 14, Agendamento ID: 35
+[2025-05-19T19:56:13.274Z] Agendamento excluído - Usuário ID: 14, Agendamento ID: 37
+[2025-05-19T19:56:43.502Z] Erro ao atualizar agendamento:
+[2025-05-19T19:57:06.591Z] Agendamento atualizado com sucesso!
+[2025-05-19T19:58:03.793Z] Agendamento atualizado com sucesso!
+[2025-05-19T19:59:57.071Z] Agendamento atualizado com sucesso!
+[2025-05-19T20:04:19.537Z] Agendamento atualizado com sucesso!
+[2025-05-19T20:04:33.021Z] Agendamento atualizado com sucesso!
+[2025-05-19T20:04:44.080Z] Agendamento atualizado com sucesso!
+[2025-05-19T20:04:52.994Z] Erro ao atualizar agendamento:
+[2025-05-19T20:05:07.764Z] Agendamento atualizado com sucesso!
+[2025-05-19T20:05:16.066Z] Agendamento atualizado com sucesso!
+[2025-05-19T20:05:30.892Z] Agendamento atualizado com sucesso!
+[2025-05-19T20:06:56.071Z] Agendamento atualizado com sucesso!
+[2025-05-19T20:13:47.914Z] Erro ao atualizar agendamento:
+[2025-05-19T20:13:50.776Z] Erro ao atualizar agendamento:
+[2025-05-19T20:13:51.529Z] Erro ao atualizar agendamento:
+[2025-05-19T20:14:09.073Z] Erro ao atualizar agendamento:
+[2025-05-19T20:14:16.401Z] Erro ao atualizar agendamento:
+[2025-05-19T20:15:34.974Z] Erro ao atualizar agendamento:
+[2025-05-19T20:15:55.189Z] Erro ao atualizar agendamento:
+[2025-05-19T20:15:55.706Z] Erro ao atualizar agendamento:
+[2025-05-19T20:15:55.888Z] Erro ao atualizar agendamento:
+[2025-05-19T20:15:56.071Z] Erro ao atualizar agendamento:
+[2025-05-19T20:15:56.205Z] Erro ao atualizar agendamento:
+[2025-05-19T20:15:56.486Z] Erro ao atualizar agendamento:
+[2025-05-19T20:15:57.225Z] Erro ao atualizar agendamento:
+[2025-05-19T20:22:26.523Z] Erro ao atualizar agendamento:
+[2025-05-19T20:25:16.327Z] Erro ao atualizar agendamento:
+[2025-05-19T20:25:19.126Z] Erro ao atualizar agendamento:
+[2025-05-19T20:25:22.945Z] Agendamento atualizado com sucesso!
+[2025-05-19T20:25:36.840Z] Erro ao atualizar agendamento:
+[2025-05-19T20:30:25.501Z] Login bem-sucedido - Usuário: silvam.silva@example.com
+[2025-05-19T20:30:35.073Z] Login bem-sucedido - Usuário: silvam.silva@example.com
+[2025-05-19T20:30:45.696Z] Erro ao atualizar agendamento:
+[2025-05-19T20:35:53.250Z] Erro ao atualizar agendamento:
+[2025-05-19T20:36:34.990Z] Erro ao atualizar agendamento:
+[2025-05-19T20:36:36.545Z] Erro ao atualizar agendamento:
+[2025-05-19T20:36:37.042Z] Erro ao atualizar agendamento:
+[2025-05-19T20:36:59.956Z] Erro ao atualizar agendamento:
+[2025-05-19T20:38:07.730Z] Erro ao atualizar agendamento:
+[2025-05-19T20:38:09.185Z] Erro ao atualizar agendamento:
+[2025-05-19T20:38:58.639Z] Erro ao atualizar agendamento:
+[2025-05-19T20:41:16.694Z] Erro ao atualizar agendamento:
+[2025-05-19T20:41:16.946Z] Erro ao atualizar agendamento:
+[2025-05-19T20:41:17.338Z] Erro ao atualizar agendamento:
+[2025-05-19T20:41:17.810Z] Erro ao atualizar agendamento:
+[2025-05-19T20:41:18.047Z] Erro ao atualizar agendamento:
+[2025-05-19T20:41:18.249Z] Erro ao atualizar agendamento:
+[2025-05-19T20:41:18.450Z] Erro ao atualizar agendamento:
+[2025-05-19T20:41:18.635Z] Erro ao atualizar agendamento:
+[2025-05-19T20:41:18.820Z] Erro ao atualizar agendamento:
+[2025-05-19T20:41:18.986Z] Erro ao atualizar agendamento:
+[2025-05-19T20:41:19.149Z] Erro ao atualizar agendamento:
+[2025-05-19T20:44:33.698Z] Erro ao atualizar agendamento:
+[2025-05-19T20:44:42.785Z] Erro ao atualizar agendamento:
+[2025-05-19T20:46:07.497Z] Erro ao atualizar agendamento:
+[2025-05-19T20:47:19.350Z] Erro ao atualizar agendamento:
+[2025-05-19T20:50:23.869Z] Erro ao atualizar agendamento:
+[2025-05-19T20:52:16.102Z] Erro ao atualizar agendamento:
+[2025-05-19T20:54:07.808Z] Agendamento atualizado com sucesso!
+[2025-05-19T20:55:16.687Z] Agendamento atualizado com sucesso!
+[2025-05-19T20:57:06.372Z] Erro ao atualizar agendamento:
+[2025-05-19T20:57:23.224Z] Erro ao atualizar agendamento:
+[2025-05-19T20:57:32.429Z] Agendamento atualizado com sucesso!
+[2025-05-19T20:57:44.295Z] Erro ao atualizar agendamento:

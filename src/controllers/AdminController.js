@@ -54,7 +54,6 @@ const AdminController = {
   const id = parseInt(req.params.id);
   const userId = req.user?.id;
     
-
     if(id !== userId) {
 
       return res.status(403).json({
@@ -136,14 +135,18 @@ const AdminController = {
 
     try {
       const getAppointments = await AdminService.getAppointmentsById(id, userId);
+      
+      if(getAppointments.length === 0){
+        throw new Error("Você não tem permissão para acessar este agendamento, agendamento não corresponde ao seu usúario");
+      }
 
-      const appointmentsWithLinks = getAppointments.map(({created_at ,...appointment}) => ({
-        ...appointment,
+      const appointmentsWithLinks = {
+        ...getAppointments,
         links: {
-          update: `http://localhost:3000/api/admin/appointments/update/${appointment.id}`,
-          delete: `http://localhost:3000/api/admin/appointments/delete/${appointment.id}`,
+          update: `http://localhost:3000/api/admin/appointments/update/${getAppointments.id}`,
+          delete: `http://localhost:3000/api/admin/appointments/delete/${getAppointments.id}`,
         },
-      }));
+      };
 
       return res.status(200).json({
         message: "Agendamentos encontrados!",
@@ -282,11 +285,11 @@ const AdminController = {
     const { id } = req.params;
     const userId = req.user?.id;
     try {
-      const message = await AdminService.deleteAppointment(id);
+      const message = await AdminService.deleteAppointment(id,userId);
       logEvent(
         `Agendamento excluído - Usuário ID: ${userId}, Agendamento ID: ${id}`
       );
-      res.json({ message });
+      res.json({ message: "Agendamento excluído com sucesso!" });
     } catch (err) {
       res.status(400).json({ error: err.message });
     }

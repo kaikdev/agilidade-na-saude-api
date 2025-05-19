@@ -59,6 +59,7 @@ const AdminService = {
   },
 
   getAppointmentsById: async (id, userId) => {
+    
     return await AdminModel.getAppointmentsById(id, userId);
   },
 
@@ -86,14 +87,23 @@ const AdminService = {
     const date = UserRepository.validateAndFormatInputDate(body.service_date);
     body.service_date = date.myDate;
 
+  // Verifica se o agendamento existe, isso garante que um usario nao edite outro
+    const appointment = await AdminModel.getAppointmentsById( id, userId );
+    console.log(appointment);
+    if (!appointment) {
+      throw new Error("Você não tem permissão para editar este agendamento, agendamento não corresponde ao seu usúario");
+    }
+
     const existingAppointments = await AdminModel.getAppointmentsByIdAndDate(
       id,
+      userId,
       body.service_date
     );
 
     if (existingAppointments.length > 0) {
       throw new Error("Já existe um agendamento para esta data.");
-    }
+    };
+   
     await AdminModel.updateAppointment(body, id);
   },
 
@@ -124,8 +134,9 @@ const AdminService = {
     return "Agendamento excluído com sucesso.";
   },
 
-  deleteAppointment: async (id) => {
-    const appointment = await AdminModel.getAppointmentsById(id);
+  deleteAppointment: async (id, userId) => {
+    const appointment = await AdminModel.getAppointmentsById(id, userId);
+
     if (!appointment || appointment.length === 0) {
       throw new Error("Agendamento não encontrado.");
     }
@@ -138,7 +149,7 @@ const AdminService = {
       );
     }
 
-    return "Agendamento excluído com sucesso.";
+    return ;
   },
   getScheduledAppointments: async (userId) => {
     const service = await AdminModel.findAllAppointments(userId);

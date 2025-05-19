@@ -10,11 +10,16 @@ const AdminModel = {
     }
   },
 
-  getAppointmentsByIdAndDate: async (id, date) => {
-    const sql =
-      "SELECT * FROM create_service WHERE user_id = ? AND service_date = ?";
+  getAppointmentsByIdAndDate: async (id, userId, date) => {
+
+    const sql = `
+                  SELECT service_date 
+                  FROM create_service 
+                  WHERE id = ? AND user_id = ? AND service_date = ?
+                `;
     try {
-      const result = await db.allAsync(sql, [id, date]);
+      const result = await db.allAsync(sql, [id, userId, date]);
+      console.log("Resultado", result);
       return result;
     } catch (err) {
       throw new Error("Erro ao consultar o banco de dados: " + err.message);
@@ -61,15 +66,11 @@ const AdminModel = {
     return users;
   },
 
-  getAppointmentsById: async (id,userId) => {
+  getAppointmentsById: async ( id, userId ) => {
     const sql = `SELECT * FROM create_service WHERE id = ? AND user_id = ?`;
     try {
-      const result = await db.allAsync(sql, [id, userId]);
+      const result = await db.getAsync(sql, [id, userId]);
       
-       if (result.length === 0) { 
-        throw new Error("Nenhum Agendamento encontrado."); 
-       }
-
       return result;
     } catch (err) {
       throw new Error("Erro ao consultar o banco de dados: " + err.message);
