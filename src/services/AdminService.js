@@ -58,8 +58,8 @@ const AdminService = {
     return users;
   },
 
-  getAppointmentsById: async (userId) => {
-    return await AdminModel.getAppointmentsById(userId);
+  getAppointmentsById: async (id, userId) => {
+    return await AdminModel.getAppointmentsById(id, userId);
   },
 
   createAppointment: async (adminData) => {

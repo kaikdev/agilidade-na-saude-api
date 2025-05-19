@@ -116,7 +116,7 @@ const AdminController = {
     const id = req.user.id;
     try {
       const services = await AdminService.listAllAppointments(id);
-      const servicesWithLink = services.map((appointment) => ({
+      const servicesWithLink = services.map(({created_at, ...appointment}) => ({
         ...appointment,
         link: {
           getForId: `https://localhost:3000/api/admin/appointments/${appointment.id}`,
@@ -132,10 +132,15 @@ const AdminController = {
   //pega a consulta especifica de um usuario adm
   getAppointmentsById: async (req, res) => {
     const { id } = req.params;
-    try {
-      const getAppointments = await AdminService.getAppointmentsById(id);
+    const userId = req.user.id;
 
-      const appointmentsWithLinks = getAppointments.map((appointment) => ({
+    try {
+      const getAppointments = await AdminService.getAppointmentsById(id, userId);
+
+       if (!getAppointments) {
+        return res.status(403).json({ error: "Você não tem permissão para ver este agendamento." });
+      }
+      const appointmentsWithLinks = getAppointments.map(({created_at ,...appointment}) => ({
         ...appointment,
         links: {
           update: `http://localhost:3000/api/admin/appointments/update/${appointment.id}`,
@@ -147,7 +152,12 @@ const AdminController = {
         message: "Agendamentos encontrados!",
         appointments: appointmentsWithLinks,
       });
-    } catch (error) {}
+    } catch (error) {
+      return res.status(500).json({
+        message: "Nenhum Agendamento encontrado.",
+      });
+
+    }
   },
 
   createAppointments: async (req, res) => {

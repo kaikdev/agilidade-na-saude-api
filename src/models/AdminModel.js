@@ -29,6 +29,7 @@ const AdminModel = {
     WHERE cs.user_id = ?
   `;
     const result = await db.allAsync(sql, [id]);
+
     // Se não houver nenhum usuário no banco de dados (array vazio), lança um erro
     if (result.length === 0) {
       throw new Error("Usuário não encontrado.");
@@ -60,10 +61,14 @@ const AdminModel = {
     return users;
   },
 
-  getAppointmentsById: async (id) => {
-    const sql = "SELECT * FROM create_service WHERE id = ?";
+  getAppointmentsById: async (id,userId) => {
+    const sql = `SELECT * FROM create_service WHERE id = ? AND user_id = ?`;
     try {
-      const result = await db.allAsync(sql, [id]);
+      const result = await db.allAsync(sql, [id, userId]);
+       if (result.length === 0) { 
+        throw new Error("Usuário não encontrado."); 
+       }
+
       return result;
     } catch (err) {
       throw new Error("Erro ao consultar o banco de dados: " + err.message);
