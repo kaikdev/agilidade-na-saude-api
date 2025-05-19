@@ -137,9 +137,6 @@ const AdminController = {
     try {
       const getAppointments = await AdminService.getAppointmentsById(id, userId);
 
-       if (!getAppointments) {
-        return res.status(403).json({ error: "Você não tem permissão para ver este agendamento." });
-      }
       const appointmentsWithLinks = getAppointments.map(({created_at ,...appointment}) => ({
         ...appointment,
         links: {
@@ -154,7 +151,7 @@ const AdminController = {
       });
     } catch (error) {
       return res.status(500).json({
-        message: "Nenhum Agendamento encontrado.",
+        message: error.message,
       });
 
     }

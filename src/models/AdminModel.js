@@ -65,8 +65,9 @@ const AdminModel = {
     const sql = `SELECT * FROM create_service WHERE id = ? AND user_id = ?`;
     try {
       const result = await db.allAsync(sql, [id, userId]);
+      
        if (result.length === 0) { 
-        throw new Error("Usuário não encontrado."); 
+        throw new Error("Nenhum Agendamento encontrado."); 
        }
 
       return result;
