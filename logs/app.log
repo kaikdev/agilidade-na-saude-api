@@ -430,3 +430,29 @@
 [2025-05-18T16:11:54.249Z] Login bem-sucedido - Usuário: pedro.silva@example.com
 [2025-05-18T16:14:50.892Z] Login bem-sucedido - Usuário: Fernado.almeida@gmail.com
 [2025-05-18T17:15:52.376Z] Login bem-sucedido - Usuário: Fernado.almeida@gmail.com
+[2025-05-19T17:46:07.227Z] Conta criada - Usuário ID: 8
+[2025-05-19T17:46:16.177Z] Conta criada - Usuário ID: 9
+[2025-05-19T17:46:31.785Z] Conta criada - Usuário ID: 10
+[2025-05-19T17:47:25.273Z] Conta criada - Administrador ID: 11
+[2025-05-19T17:47:34.833Z] Conta criada - Administrador ID: 12
+[2025-05-19T17:48:18.303Z] Conta criada - Administrador ID: 13
+[2025-05-19T17:49:49.016Z] Conta criada - Administrador ID: 14
+[2025-05-19T17:50:14.885Z] Conta criada - Administrador ID: 15
+[2025-05-19T17:51:15.673Z] Conta criada - Usuário ID: 16
+[2025-05-19T17:51:25.758Z] Conta criada - Usuário ID: 17
+[2025-05-19T17:51:58.776Z] Conta criada - Usuário ID: 18
+[2025-05-19T18:04:49.471Z] Falha no login - e-mail e senha não informados.
+[2025-05-19T18:04:52.796Z] Falha no login - e-mail e senha não informados.
+[2025-05-19T18:04:53.427Z] Falha no login - e-mail e senha não informados.
+[2025-05-19T18:04:53.629Z] Falha no login - e-mail e senha não informados.
+[2025-05-19T18:05:07.952Z] Falha no login - e-mail e senha não informados.
+[2025-05-19T18:05:22.804Z] Login bem-sucedido - Usuário: fernando.silva@example.com
+[2025-05-19T18:12:26.915Z] Erro ao criar agendamento:
+[2025-05-19T18:12:49.137Z] Erro ao criar agendamento:
+[2025-05-19T18:13:19.718Z] Erro ao criar agendamento:
+[2025-05-19T18:13:24.011Z] Erro ao criar agendamento:
+[2025-05-19T18:14:39.905Z] Login bem-sucedido - Usuário: pedro.silva@example.com
+[2025-05-19T18:15:44.271Z] Erro ao criar agendamento:
+[2025-05-19T18:16:39.988Z] Erro ao criar agendamento:
+[2025-05-19T18:17:02.628Z] Login bem-sucedido - Usuário: silvam.silva@example.com
+[2025-05-19T18:27:20.842Z] Login bem-sucedido - Usuário: silvam.silva@example.com

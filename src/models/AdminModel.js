@@ -22,7 +22,12 @@ const AdminModel = {
   },
 
   getAdminById: async (id) => {
-    const sql = `SELECT * FROM users where id = ?`;
+  const sql = `
+    SELECT * 
+    FROM users AS u
+    INNER JOIN admin_data AS cs ON u.id = cs.user_id
+    WHERE cs.user_id = ?
+  `;
     const result = await db.allAsync(sql, [id]);
     // Se não houver nenhum usuário no banco de dados (array vazio), lança um erro
     if (result.length === 0) {

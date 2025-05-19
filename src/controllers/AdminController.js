@@ -51,18 +51,27 @@ const AdminController = {
 
   //pega as informação do usuario adm
   getAdmById: async (req, res) => {
-    const { id } = req.params;
+  const id = parseInt(req.params.id);
+  const userId = req.user?.id;
+    
+
+    if(id !== userId) {
+
+      return res.status(403).json({
+        error: "Você não tem permissão para acessar essas informações.",
+      });
+    }
 
     try {
       const userAdmin = await AdminService.getAdminById(id);
       if (!userAdmin) {
         return res.status(404).json({ error: "Usuário não encontrado." });
       }
-      const AdminWithLinks = userAdmin.map((userAdmin) => ({
-        ...userAdmin,
+    const AdminWithLinks = userAdmin.map(({ password,created_at,birth_date, ...admin }) => ({
+        ...admin,
         links: {
-          update: `http://localhost:3000/api/admin/update/${userAdmin.id}`,
-          delete: `http://localhost:3000/api/admin/delete/delete/${userAdmin.id}`,
+          update: `http://localhost:3000/api/admin/update/${admin.id}`,
+          delete: `http://localhost:3000/api/admin/delete/delete/${admin.id}`,
         },
       }));
 
