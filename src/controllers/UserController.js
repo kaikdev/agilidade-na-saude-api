@@ -60,6 +60,10 @@ const UserController = {
   updateUser: async (req, res) => {
     const { id } = req.params;
     const { name, email } = req.body;
+    
+    if(id !== userId){ 
+      return res.status(403).json({ error: "Acesso negado." });
+    }
 
     if (!name || !email) {
       return res.status(400).json({ error: "Nome e e-mail são obrigatórios." });
@@ -76,6 +80,10 @@ const UserController = {
   // Excluir usuário
   deleteUser: async (req, res) => {
     const { id } = req.params;
+
+    if(id !== userId){ 
+      return res.status(403).json({ error: "Acesso negado." });
+    }
 
     try {
       const message = await UserService.deleteUser(id);
