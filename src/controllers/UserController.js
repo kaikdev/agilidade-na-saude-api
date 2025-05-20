@@ -30,10 +30,23 @@ const UserController = {
 
   // Obter detalhes do usuário pelo ID
   getUserById: async (req, res) => {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
+    const userId = req.user?.id;
 
+    if(id !== userId){ 
+      return res.status(403).json({ error: "Acesso negado." });
+    }
     try {
-      const user = await UserService.getUserById(id);
+      const user = await UserService.getUserById(id, userId);
+
+      const output = {
+        ...user,
+        link: {
+          update: `http://localhost:3000/api/users/update/${user.id}`,
+          delete: `http://localhost:3000/api/users/delete/${user.id}`,
+        }
+      }
+
       if (!user) {
         return res.status(404).json({ error: "Usuário não encontrado." });
       }

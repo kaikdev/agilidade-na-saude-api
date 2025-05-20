@@ -11,7 +11,6 @@ const AdminModel = {
   },
 
   getAppointmentsByIdAndDate: async (id, userId, date) => {
-
     const sql = `
                   SELECT service_date 
                   FROM create_service 
@@ -19,7 +18,6 @@ const AdminModel = {
                 `;
     try {
       const result = await db.allAsync(sql, [id, userId, date]);
-      console.log("Resultado", result);
       return result;
     } catch (err) {
       throw new Error("Erro ao consultar o banco de dados: " + err.message);
@@ -27,7 +25,7 @@ const AdminModel = {
   },
 
   getAdminById: async (id) => {
-  const sql = `
+    const sql = `
     SELECT * 
     FROM users AS u
     INNER JOIN admin_data AS cs ON u.id = cs.user_id
@@ -66,11 +64,11 @@ const AdminModel = {
     return users;
   },
 
-  getAppointmentsById: async ( id, userId ) => {
+  getAppointmentsById: async (id, userId) => {
     const sql = `SELECT * FROM create_service WHERE id = ? AND user_id = ?`;
     try {
       const result = await db.getAsync(sql, [id, userId]);
-      
+
       return result;
     } catch (err) {
       throw new Error("Erro ao consultar o banco de dados: " + err.message);
@@ -79,28 +77,30 @@ const AdminModel = {
 
   // No seu AdminModel
   updateAppointment: async (updateData, id) => {
-    const query = `
+    try {
+
+      // Var partes dinâmicas da query
+      const fields = [];
+      const values = [];
+
+      for (const key in updateData) {
+        fields.push(`${key} = ?`);
+        values.push(updateData[key]);
+      }
+
+      if (fields.length === 0) {
+        throw new Error("Nenhum campo foi enviado para atualizar.");
+      }
+
+      const query = `
       UPDATE create_service
-      SET 
-          specialty = ?,
-          locality = ?,
-          qtd_attendance = ?,
-          service_date = ?
-      WHERE 
-          id = ?
+      SET ${fields.join(", ")}
+      WHERE id = ?
     `;
 
-    try {
-      const params = [
-        updateData.specialty,
-        updateData.locality,
-        updateData.qtd_attendance,
-        updateData.service_date,
-        id,
-      ];
+      values.push(id); // id vai por último nos parâmetros
 
-      // Correção: usar runAsync (com 'r' minúsculo) em vez de runAsync
-      const result = await db.runAsync(query, params);
+      const result = await db.runAsync(query, values);
 
       if (result.changes === 0) {
         throw new Error(
@@ -113,7 +113,7 @@ const AdminModel = {
       throw new Error("Erro ao atualizar no banco de dados: " + err.message);
     }
   },
-
+  
   searchAppointments: async (query) => {
     const sql = `
       SELECT * 
@@ -143,10 +143,10 @@ const AdminModel = {
   },
 
   // AdminModel.js
-  deleteAppointmentById: async (id) => {
-    const sql = "DELETE FROM create_service WHERE id = ?";
+  deleteAppointmentById: async ( id,userId ) => {
+    const sql = "DELETE FROM create_service WHERE id = ? AND user_id = ?";
     try {
-      const result = await db.runAsync(sql, [id]);
+      const result = await db.runAsync(sql, [id,userId]);
       return result;
     } catch (err) {
       throw new Error("Erro ao deletar agendamento: " + err.message);
@@ -154,7 +154,6 @@ const AdminModel = {
   },
 
   getScheduledAppointments: async (serviceIds) => {
-
     const placeholders = serviceIds.map(() => "?").join(", ");
     const sql = `
     SELECT 
@@ -186,8 +185,8 @@ const AdminModel = {
     }
   },
 
-getScheduledAppointmentsByUserId: async (consultationId) => {
-  const sql = `
+  getScheduledAppointmentsByUserId: async (consultationId) => {
+    const sql = `
     SELECT 
       sc.id AS consultation_id,
       sc.password,
@@ -210,19 +209,19 @@ getScheduledAppointmentsByUserId: async (consultationId) => {
     WHERE sc.id = ?
   `;
 
-  try {
-    const result = await db.getAsync(sql, [consultationId]);
-    if (!result) {
-      throw new Error("Agendamento não encontrado.");
+    try {
+      const result = await db.getAsync(sql, [consultationId]);
+      if (!result) {
+        throw new Error("Agendamento não encontrado.");
+      }
+      return result;
+    } catch (err) {
+      throw new Error("Erro ao consultar o banco de dados: " + err.message);
     }
-    return result;
-  } catch (err) {
-    throw new Error("Erro ao consultar o banco de dados: " + err.message);
-  }
-},
+  },
 
-finalizeScheduledAppointments: async (id) => {
-  const sql = `UPDATE scheduled_consultations SET finished = 1 WHERE id = ?`;
+  finalizeScheduledAppointments: async (id) => {
+    const sql = `UPDATE scheduled_consultations SET finished = 1 WHERE id = ?`;
 
     try {
       const result = await db.runAsync(sql, [id]);
@@ -233,7 +232,9 @@ finalizeScheduledAppointments: async (id) => {
 
       return { id, finished: 1 };
     } catch (err) {
-      throw new Error("Erro ao atualizar o status do agendamento: " + err.message);
+      throw new Error(
+        "Erro ao atualizar o status do agendamento: " + err.message
+      );
     }
   },
 
@@ -250,11 +251,9 @@ finalizeScheduledAppointments: async (id) => {
       `;
       const result = await db.allAsync(sql);
       return result;
-
     } catch (error) {
       throw new Error("Erro ao buscar fila no modelo: " + err.message);
     }
-  }
-
+  },
 };
 module.exports = AdminModel;

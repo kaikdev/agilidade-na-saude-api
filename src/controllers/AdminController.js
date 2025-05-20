@@ -118,7 +118,9 @@ const AdminController = {
       const servicesWithLink = services.map(({created_at, ...appointment}) => ({
         ...appointment,
         link: {
-          getForId: `https://localhost:3000/api/admin/appointments/${appointment.id}`,
+          getForId: `http://localhost:3000/api/admin/appointments/${appointment.id}`,
+          update: `http://localhost:3000/api/admin/appointments/update/${appointment.id}`,
+          delete: `http://localhost:3000/api/admin/appointments/delete/${appointment.id}`,
         },
       }));
       return res.json(servicesWithLink);

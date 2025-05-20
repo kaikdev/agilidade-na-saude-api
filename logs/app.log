@@ -528,3 +528,43 @@
 [2025-05-19T20:57:23.224Z] Erro ao atualizar agendamento:
 [2025-05-19T20:57:32.429Z] Agendamento atualizado com sucesso!
 [2025-05-19T20:57:44.295Z] Erro ao atualizar agendamento:
+[2025-05-19T23:04:43.330Z] Conta criada - Administrador ID: 19
+[2025-05-19T23:05:55.651Z] Conta criada - Administrador ID: 1
+[2025-05-19T23:06:16.824Z] Conta criada - Administrador ID: 2
+[2025-05-19T23:06:30.998Z] Conta criada - Administrador ID: 3
+[2025-05-19T23:06:47.228Z] Conta criada - Usuário ID: 4
+[2025-05-19T23:07:06.519Z] Conta criada - Usuário ID: 5
+[2025-05-19T23:07:18.099Z] Conta criada - Usuário ID: 6
+[2025-05-19T23:07:56.592Z] Login bem-sucedido - Usuário: Fernado.almeida@gmail.com
+[2025-05-19T23:12:27.665Z] Erro ao criar agendamento:
+[2025-05-19T23:12:37.328Z] Erro ao criar agendamento:
+[2025-05-19T23:13:52.972Z] Login bem-sucedido - Usuário: Fernanda.almeida@gmail.com
+[2025-05-19T23:15:18.065Z] Erro ao criar agendamento:
+[2025-05-19T23:16:12.063Z] Login bem-sucedido - Usuário: victor.almeida@gmail.com
+[2025-05-19T23:21:28.586Z] Erro ao atualizar agendamento:
+[2025-05-19T23:21:54.529Z] Erro ao atualizar agendamento:
+[2025-05-19T23:22:13.491Z] Login bem-sucedido - Usuário: victor.almeida@gmail.com
+[2025-05-19T23:27:41.828Z] Erro ao atualizar agendamento:
+[2025-05-19T23:27:57.840Z] Agendamento atualizado com sucesso!
+[2025-05-19T23:28:09.453Z] Erro ao atualizar agendamento:
+[2025-05-19T23:28:14.360Z] Erro ao atualizar agendamento:
+[2025-05-19T23:28:19.635Z] Erro ao atualizar agendamento:
+[2025-05-19T23:28:26.600Z] Agendamento atualizado com sucesso!
+[2025-05-19T23:28:28.609Z] Erro ao atualizar agendamento:
+[2025-05-19T23:28:35.029Z] Erro ao atualizar agendamento:
+[2025-05-19T23:28:41.199Z] Erro ao atualizar agendamento:
+[2025-05-19T23:28:41.726Z] Erro ao atualizar agendamento:
+[2025-05-19T23:31:30.134Z] Erro ao atualizar agendamento:
+[2025-05-19T23:32:43.002Z] Erro ao atualizar agendamento:
+[2025-05-19T23:51:50.618Z] Agendamento atualizado com sucesso!
+[2025-05-19T23:53:55.318Z] Agendamento atualizado com sucesso!
+[2025-05-19T23:54:02.613Z] Agendamento atualizado com sucesso!
+[2025-05-19T23:54:10.341Z] Agendamento atualizado com sucesso!
+[2025-05-19T23:54:22.752Z] Erro ao atualizar agendamento:
+[2025-05-19T23:54:23.745Z] Erro ao atualizar agendamento:
+[2025-05-19T23:55:21.261Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 9
+[2025-05-19T23:57:05.369Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 10
+[2025-05-19T23:57:13.547Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 8
+[2025-05-20T00:03:39.653Z] Falha no login - e-mail e senha não informados.
+[2025-05-20T00:03:54.165Z] Login bem-sucedido - Usuário: marta.silva@example.com
+[2025-05-20T00:26:47.743Z] Login bem-sucedido - Usuário: marta.silva@example.com

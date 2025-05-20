@@ -59,7 +59,6 @@ const AdminService = {
   },
 
   getAppointmentsById: async (id, userId) => {
-    
     return await AdminModel.getAppointmentsById(id, userId);
   },
 
@@ -84,27 +83,28 @@ const AdminService = {
   },
 
   updateAppointment: async (body, id, userId) => {
-    const date = UserRepository.validateAndFormatInputDate(body.service_date);
-    body.service_date = date.myDate;
-
-  // Verifica se o agendamento existe, isso garante que um usario nao edite outro
-    const appointment = await AdminModel.getAppointmentsById( id, userId );
-    console.log(appointment);
+    const appointment = await AdminModel.getAppointmentsById(id, userId);
     if (!appointment) {
-      throw new Error("Você não tem permissão para editar este agendamento, agendamento não corresponde ao seu usúario");
+      throw new Error("Você não tem permissão para editar este agendamento.");
     }
 
-    const existingAppointments = await AdminModel.getAppointmentsByIdAndDate(
-      id,
-      userId,
-      body.service_date
-    );
+    if (body.service_date) {
+      const formatted = UserRepository.validateAndFormatInputDate(
+        body.service_date
+      );
+      body.service_date = formatted.myDate;
 
-    if (existingAppointments.length > 0) {
-      throw new Error("Já existe um agendamento para esta data.");
-    };
-   
-    await AdminModel.updateAppointment(body, id);
+      const existing = await AdminModel.getAppointmentsByIdAndDate(
+        id,
+        userId,
+        body.service_date
+      );
+      if (existing.length > 0) {
+        throw new Error("Já existe um agendamento para esta data.");
+      }
+    }
+
+    return await AdminModel.updateAppointment(body, id);
   },
 
   searchAppointments: async (query) => {
@@ -142,14 +142,14 @@ const AdminService = {
     }
 
     try {
-      await AdminModel.deleteAppointmentById(id);
+      await AdminModel.deleteAppointmentById(id, userId);
     } catch (error) {
       throw new Error(
         "Erro ao excluir serviço de agendamentos: " + error.message
       );
     }
 
-    return ;
+    return;
   },
   getScheduledAppointments: async (userId) => {
     const service = await AdminModel.findAllAppointments(userId);
