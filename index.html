@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fila de Atendimento</title>
+  <!-- Importe o Socket.IO ANTES do seu script -->
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      text-align: center;
+    }
+    h1 {
+      color: #0077cc;
+    }
+    #fila {
+      font-size: 2rem;
+      margin-top: 2rem;
+    }
+    .senha {
+      background: #fff;
+      padding: 15px;
+      margin: 10px auto;
+      border-radius: 8px;
+      width: 300px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .error-box {
+      background-color: #ffeeee;
+      color: #cc0000;
+      padding: 15px;
+      margin: 20px auto;
+      border-radius: 8px;
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Fila de Atendimento</h1>
+  <div id="fila">Carregando...</div>
+
+  <script>
+  // Verifica se o Socket.IO foi carregado corretamente
+  if (typeof io === 'undefined') {
+    showError("Biblioteca Socket.IO não carregada. Recarregue a página.");
+    throw new Error("Socket.IO não disponível");
+  }
+
+  // Função para exibir erros
+  function showError(message) {
+    const filaDiv = document.getElementById('fila');
+    if (filaDiv) {
+      filaDiv.innerHTML = `
+        <div class="error-box">
+          <p>⚠️ Erro</p>
+          <small>${message}</small>
+          <button onclick="window.location.reload()">Recarregar</button>
+        </div>
+      `;
+    } else {
+      document.write(`<div class="error-box">${message}</div>`);
+    }
+  }
+
+  try {
+    // 1. Conecta ao servidor Socket.IO
+    const socket = io("http://localhost:3000", {
+      transports: ["websocket", "polling"],
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000
+    });
+
+    // 2. Verifica conexão
+    socket.on("connect", () => {
+      console.log("✅ Conectado ao servidor WebSocket");
+      carregarFila();
+    });
+
+    // 3. Trata erros de conexão
+    socket.on("connect_error", (err) => {
+      console.error("❌ Erro de conexão:", err);
+      showError(`Erro de conexão: ${err.message}`);
+    });
+
+    // 4. Função para carregar a fila
+    async function carregarFila() {
+      try {
+        const filaDiv = document.getElementById('fila');
+        if (!filaDiv) {
+          throw new Error("Elemento 'fila' não encontrado");
+        }
+
+        const response = await fetch("http://localhost:3000/api/Querie");
+        if (!response.ok) {
+          throw new Error(`Erro HTTP: ${response.status}`);
+        }
+
+        const dados = await response.json();
+        renderizarFila(dados);
+      } catch (err) {
+        console.error("Erro ao carregar fila:", err);
+        showError(`Falha ao carregar: ${err.message}`);
+      }
+    }
+
+    // 5. Função para renderizar a fila
+    function renderizarFila(dados) {
+      const filaDiv = document.getElementById('fila');
+      if (!filaDiv) return;
+
+      if (dados.length === 0) {
+        filaDiv.innerHTML = `
+          <div class="senha">
+            <p>Fila vazia</p>
+            <small>Nenhuma senha para exibir</small>
+          </div>
+        `;
+        return;
+      }
+
+      filaDiv.innerHTML = dados.map(item => `
+        <div class="senha">
+          <strong>Senha:</strong> ${item.password}
+          ${item.tipo ? `<br><small>Tipo: ${item.tipo}</small>` : ''}
+        </div>
+      `).join('');
+    }
+
+    // Carrega a fila quando a página carrega
+    window.addEventListener('DOMContentLoaded', carregarFila);
+
+  } catch (err) {
+    console.error("Erro fatal:", err);
+    showError(`Erro crítico: ${err.message}`);
+  }
+  </script>
+</body>
+</html>

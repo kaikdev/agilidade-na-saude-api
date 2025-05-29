@@ -345,34 +345,30 @@ const AdminController = {
       });
     }
   },
-  finalizeScheduledAppointments: async (req, res) => {
-    const { id } = req.params;
-    try {
-      const scheduledAppointments =
-        await AdminService.finalizeScheduledAppointments(id);
-
-      return res.status(200).json({
-        message: "Agendamentos encontrados!",
-        appointments: scheduledAppointments,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Erro ao buscar os agendamentos." + error.message,
-      });
-    }
-  },
-
- getTodayPasswords: async (req, res) => {
+ // AdminController.js
+finalizeScheduledAppointments: async (req, res) => {
+  const { id } = req.params;
   try {
-    const data = await AdminService.fetchTodayPasswords();
-    res.status(200).json(data);
+    const scheduledAppointments = await AdminService.finalizeScheduledAppointments(id);
+
+    // Emita para TODOS os clientes conectados
+    const io = req.app.get("io");
+    io.emit("finalizeScheduledAppointments", { 
+      message: "Consulta finalizada com sucesso!",
+      appointmentId: id,
+      updatedData: scheduledAppointments // (Opcional) Envie dados atualizados
+    });
+
+    return res.status(200).json({
+      message: "Agendamentos encontrados!",
+      appointments: scheduledAppointments,
+    });
   } catch (error) {
-    res.status(500).json({ error: "Erro ao buscar senhas da fila de hoje."  + error.message });
+    return res.status(500).json({
+      message: "Erro ao buscar os agendamentos." + error.message,
+    });
   }
 },
-
-
- 
 };
 
 module.exports = AdminController;

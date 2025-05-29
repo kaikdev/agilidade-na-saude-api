@@ -192,15 +192,6 @@ const AdminService = {
       throw new Error("Erro ao finalizar o agendamento: " + err.message);
     }
   },
-
-  fetchTodayPasswords: async () => {
-    try {
-      const passwords = await AdminModel.getTodayPasswords();
-      return passwords;
-    } catch (err) {
-      throw new Error("Erro no serviço ao buscar senhas:" + err.message);
-    }
-  },
 };
 
 module.exports = AdminService;

@@ -1,40 +1,32 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const app = express();
-const PORT = process.env.PORT || 3000;
 const db = require("./config/initDB");
-
+const app = express();
 
 // Configurações básicas do servidor
 app.use(cors());
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 
+const userRoutes = require("./routes/userRoutes");// Rotas de usuário
+const adminRoutes = require("./routes/adminRoutes");// Rotas de Admin
+const queriesRoutes = require("./routes/queriesRoutes");//Rota da fila
+const authRoutes = require("./routes/authRoutes");// Rotas de autenticação
+const passwordRoutes = require("./routes/passwordRoutes");// Rotas de alteração de senha
+
+app.use("/api", userRoutes);
+app.use("/api", adminRoutes);
+app.use("/api", queriesRoutes);
+app.use("/api", authRoutes);
+app.use("/api", passwordRoutes);
+
 // Rota inicial de teste
 app.get("/", (req, res) => {
   res.json({ message: "API está funcionando!" });
 });
-  
-// Rotas de usuário
-const userRoutes = require("./routes/userRoutes");
-app.use("/api", userRoutes);
 
-const adminRoutes = require("./routes/adminRoutes");
-app.use("/api", adminRoutes);
-
-const queriesRoutes = require("./routes/queriesRoutes");
-app.use("/api", queriesRoutes);
-
-// Rotas de autenticação
-const authRoutes = require("./routes/authRoutes");
-app.use("/api", authRoutes);
-
-// Rotas de alteração de senha
-const passwordRoutes = require("./routes/passwordRoutes");
-app.use("/api", passwordRoutes);
-
-
+const PORT = process.env.PORT || 3000;
 // Só inicie o servidor se não estiver em ambiente de teste
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
