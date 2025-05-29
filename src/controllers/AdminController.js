@@ -69,8 +69,8 @@ const AdminController = {
     const AdminWithLinks = userAdmin.map(({ password,created_at,birth_date, ...admin }) => ({
         ...admin,
         links: {
-          update: `http://localhost:3000/api/admin/update/${admin.id}`,
-          delete: `http://localhost:3000/api/admin/delete/delete/${admin.id}`,
+          update: `http://localhost:3001/api/admin/update/${admin.id}`,
+          delete: `http://localhost:3001/api/admin/delete/delete/${admin.id}`,
         },
       }));
 
@@ -118,9 +118,9 @@ const AdminController = {
       const servicesWithLink = services.map(({created_at, ...appointment}) => ({
         ...appointment,
         link: {
-          getForId: `http://localhost:3000/api/admin/appointments/${appointment.id}`,
-          update: `http://localhost:3000/api/admin/appointments/update/${appointment.id}`,
-          delete: `http://localhost:3000/api/admin/appointments/delete/${appointment.id}`,
+          getForId: `http://localhost:3001/api/admin/appointments/${appointment.id}`,
+          update: `http://localhost:3001/api/admin/appointments/update/${appointment.id}`,
+          delete: `http://localhost:3001/api/admin/appointments/delete/${appointment.id}`,
         },
       }));
       return res.json(servicesWithLink);
@@ -145,8 +145,8 @@ const AdminController = {
       const appointmentsWithLinks = {
         ...getAppointments,
         links: {
-          update: `http://localhost:3000/api/admin/appointments/update/${getAppointments.id}`,
-          delete: `http://localhost:3000/api/admin/appointments/delete/${getAppointments.id}`,
+          update: `http://localhost:3001/api/admin/appointments/update/${getAppointments.id}`,
+          delete: `http://localhost:3001/api/admin/appointments/delete/${getAppointments.id}`,
         },
       };
 
@@ -196,7 +196,7 @@ const AdminController = {
     try {
       const created = await AdminService.createAppointment(adminData);
       return res.status(201).json({
-        menssage: "Agendamento criado com sucesso!",
+        message: "Agendamento criado com sucesso!",
         data: created,
       });
     } catch (error) {
@@ -247,8 +247,8 @@ const AdminController = {
         const appointmentsWithLinks = appointments.map((appointment) => ({
           ...appointment,
           links: {
-            update: `http://localhost:3000/api/admin/appointments/update/${appointment.id}`,
-            delete: `http://localhost:3000/api/admin/appointments/delete/${appointment.id}`,
+            update: `http://localhost:3001/api/admin/appointments/update/${appointment.id}`,
+            delete: `http://localhost:3001/api/admin/appointments/delete/${appointment.id}`,
           },
         }));
 
@@ -307,7 +307,7 @@ const AdminController = {
       const output = scheduledAppointments.map((appointment) => ({
         ...appointment,
         links: {
-          getById: `http://localhost:3000/api/admin/scheduled/appointments/${appointment.user_id}`,
+          getById: `http://localhost:3001/api/admin/scheduled/appointments/${appointment.user_id}`,
         },
       }));
       return res.status(200).json({
@@ -331,7 +331,7 @@ const AdminController = {
       const output = {
         ...scheduledAppointments,
         links: {
-          finalizeQueries: `http://localhost:3000/api/admin/scheduled/appointments/finalizeQueries/${scheduledAppointments.consultation_id}`,
+          finalizeQueries: `http://localhost:3001/api/admin/scheduled/appointments/finalizeQueries/${scheduledAppointments.consultation_id}`,
         },
       };
 

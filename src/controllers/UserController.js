@@ -42,8 +42,8 @@ const UserController = {
       const output = {
         ...user,
         link: {
-          update: `http://localhost:3000/api/users/update/${user.id}`,
-          delete: `http://localhost:3000/api/users/delete/${user.id}`,
+          update: `http://localhost:3001/api/users/update/${user.id}`,
+          delete: `http://localhost:3001/api/users/delete/${user.id}`,
         }
       }
 
@@ -113,7 +113,7 @@ const UserController = {
         const appointmentsWithLinks = getAppointments.map((appointment) => ({
           ...appointment,
           data: {
-            create: `http://localhost:3000/api/users/appointments/createService/${appointment.id}`, // só pode criar se ainda tiver quantidade, fazer essa logica no front
+            create: `http://localhost:3001/api/users/appointments/createService/${appointment.id}`, // só pode criar se ainda tiver quantidade, fazer essa logica no front
           },
         }));
         return res.status(200).json({

@@ -568,3 +568,49 @@
 [2025-05-20T00:03:39.653Z] Falha no login - e-mail e senha não informados.
 [2025-05-20T00:03:54.165Z] Login bem-sucedido - Usuário: marta.silva@example.com
 [2025-05-20T00:26:47.743Z] Login bem-sucedido - Usuário: marta.silva@example.com
+[2025-05-25T19:54:20.592Z] Conta criada - Usuário ID: 1
+[2025-05-25T20:02:39.700Z] Conta criada - Administrador ID: 2
+[2025-05-25T20:09:47.844Z] Login bem-sucedido - Usuário: mariana.souza@example.com
+[2025-05-25T20:10:24.938Z] Falha no login - Senha incorreta para o email: mariana.souza@example.com
+[2025-05-25T20:10:32.871Z] Erro durante o login - Usuário não encontrado.
+[2025-05-25T20:10:34.937Z] Erro durante o login - Usuário não encontrado.
+[2025-05-25T20:10:42.114Z] Erro durante o login - Usuário não encontrado.
+[2025-05-25T20:10:43.426Z] Erro durante o login - Usuário não encontrado.
+[2025-05-25T20:10:50.967Z] Falha no login - Senha incorreta para o email: mariana.souza@example.com
+[2025-05-25T20:10:56.526Z] Erro durante o login - Usuário não encontrado.
+[2025-05-25T20:11:04.994Z] Erro durante o login - Usuário não encontrado.
+[2025-05-25T20:11:10.969Z] Erro durante o login - Usuário não encontrado.
+[2025-05-25T20:11:15.450Z] Login bem-sucedido - Usuário: mariana.souza@example.com
+[2025-05-25T20:11:34.147Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-27T05:45:29.278Z] Conta criada - Usuário ID: 3
+[2025-05-27T05:48:28.489Z] Conta criada - Usuário ID: 4
+[2025-05-27T05:53:35.794Z] Conta criada - Administrador ID: 5
+[2025-05-27T18:32:13.684Z] Conta criada - Administrador ID: 6
+[2025-05-27T18:44:42.498Z] Conta criada - Usuário ID: 7
+[2025-05-27T19:06:03.330Z] Conta criada - Usuário ID: 8
+[2025-05-27T20:54:16.937Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-27T21:12:34.275Z] Falha no login - Senha incorreta para o email: kaikgfx@gmail.com
+[2025-05-27T21:12:38.722Z] Falha no login - Senha incorreta para o email: kaikgfx@gmail.com
+[2025-05-27T21:12:45.785Z] Falha no login - Senha incorreta para o email: kaikgfx@gmail.com
+[2025-05-27T21:13:00.087Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-27T21:13:18.944Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-27T21:16:10.466Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-27T21:33:02.262Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-27T21:35:19.926Z] Falha no login - Senha incorreta para o email: kaikgfx@gmail.com
+[2025-05-27T21:35:27.671Z] Login bem-sucedido - Usuário: Kaikgfx@gmail.com
+[2025-05-27T21:46:35.249Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-28T03:29:01.768Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-28T03:31:40.954Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-28T03:32:11.313Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-28T03:32:18.535Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-28T03:36:53.626Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-28T03:37:08.726Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-28T03:44:09.751Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-28T04:02:20.233Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-28T04:02:50.358Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-28T04:12:37.925Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-28T04:40:47.334Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-28T05:05:07.935Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-28T05:47:08.215Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-29T01:13:06.559Z] Login bem-sucedido - Usuário: pedro.alves@example.com
+[2025-05-29T01:49:56.152Z] Login bem-sucedido - Usuário: pedro.alves@example.com
