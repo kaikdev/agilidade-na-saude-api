@@ -10,17 +10,20 @@ const AdminModel = {
     }
   },
 
-  getAppointmentsByIdAndDate: async (id, userId, date) => {
-    const sql = `
-                  SELECT service_date 
-                  FROM create_service 
-                  WHERE id = ? AND user_id = ? AND service_date = ?
-                `;
+  findAppointmentsByAdminIdAndDate: async (adminId, serviceDate, excludeAppointmentId = null) => {
+    let sql = `SELECT * FROM create_service WHERE user_id = ? AND service_date = ?`;
+    let params = [adminId, serviceDate];
+
+    if (excludeAppointmentId !== null) {
+      sql += ` AND id != ?`;
+      params.push(excludeAppointmentId);
+    }
+
     try {
-      const result = await db.allAsync(sql, [id, userId, date]);
+      const result = await db.allAsync(sql, params); 
       return result;
     } catch (err) {
-      throw new Error("Erro ao consultar o banco de dados: " + err.message);
+      throw new Error("Erro ao consultar agendamentos por admin_id e data: " + err.message);
     }
   },
 

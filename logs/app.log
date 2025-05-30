@@ -1,0 +1,19 @@
+[2025-05-30T00:39:12.885Z] Erro durante o login - Usuário não encontrado.
+[2025-05-30T00:41:30.327Z] Conta criada - Administrador ID: 1
+[2025-05-30T00:43:04.049Z] Conta criada - Usuário ID: 2
+[2025-05-30T00:43:52.740Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T00:44:08.657Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T00:45:19.571Z] Erro ao atualizar agendamento:
+[2025-05-30T00:47:07.805Z] Erro ao atualizar agendamento:
+[2025-05-30T00:47:26.377Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T00:54:02.011Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T00:54:07.276Z] Erro ao atualizar agendamento:
+[2025-05-30T01:05:51.030Z] Agendamento atualizado com sucesso!
+[2025-05-30T01:06:25.681Z] Erro ao criar agendamento:
+[2025-05-30T01:06:42.301Z] Agendamento atualizado com sucesso!
+[2025-05-30T01:06:54.145Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T01:13:09.807Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T01:13:31.266Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T01:13:36.690Z] Agendamento excluído - Usuário ID: 1, Agendamento ID: 1
+[2025-05-30T01:13:39.548Z] Agendamento excluído - Usuário ID: 1, Agendamento ID: 2
+[2025-05-30T01:13:43.755Z] Agendamento excluído - Usuário ID: 1, Agendamento ID: 3
