@@ -7,56 +7,72 @@ require("dotenv").config();
 
 const PasswordController = {
   // Alterar senha (usuário autenticado)
-  changePassword: (req, res) => {
+changePassword: async (req, res) => {
+  try {
     const { oldPassword, newPassword } = req.body;
     const userId = req.user.id;
 
-    UserService.getUserById(userId, async (err, user) => {
-      if (err || !user) {
-        logEvent(`Usuário não encontrado: ${userId}`);
-        return res.status(404).json({ error: "Usuário não encontrado." });
-      }
+    // Obtém o usuário
+    const user = await UserService.getUserById(userId);
 
-      const isMatch = await bcrypt.compare(oldPassword, user.password);
-      if (!isMatch) {
-        logEvent(`Tentativa falha de troca de senha - Usuário ID: ${userId}`);
-        return res.status(400).json({ error: "Senha antiga incorreta." });
-      }
+    if (!user) {
+      logEvent(`Usuário não encontrado: ${userId}`);
+      return res.status(404).json({ error: "Usuário não encontrado." });
+    }
 
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
-      UserService.updatePassword(userId, hashedPassword, (err) => {
-        if (err) {
-          return res.status(500).json({ error: "Erro ao atualizar senha." });
-        }
-        logEvent(`Senha alterada com sucesso - Usuário ID: ${userId}`);
-        res.json({ message: "Senha alterada com sucesso!" });
-      });
-    });
-  },
+    // Verifica a senha antiga
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      logEvent(`Tentativa falha de troca de senha - Usuário ID: ${userId}`);
+      return res.status(400).json({ error: "Senha antiga incorreta." });
+    }
+
+    // Gera o novo hash
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Atualiza a senha
+    await UserService.updatePassword(userId, hashedPassword);
+
+    logEvent(`Senha alterada com sucesso - Usuário ID: ${userId}`);
+    res.json({ message: "Senha alterada com sucesso!" });
+
+  } catch (error) {
+    console.error("Erro ao trocar a senha:", error);
+    res.status(500).json({ error: "Erro ao atualizar senha." });
+  }
+},
 
   // Enviar e-mail de recuperação
-  forgotPassword: (req, res) => {
+  forgotPassword : async (req, res) => {
+  try {
     const { email } = req.body;
 
-    UserService.getUserByEmail(email, (err, user) => {
-      if (err || !user) {
-        logEvent(`E-mail não encontrado: ${email}`);
-        return res.status(404).json({ error: "E-mail não encontrado." });
-      }
+    console.log(`Solicitação de recuperação de senha para o e-mail: ${email}`);
 
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "15m",
-      });
+    const user = await UserService.getUserByEmail(email);
 
-      MailService.sendResetPasswordEmail(email, token, (error) => {
-        if (error){
-          logEvent(`Erro ao enviar e-mail.`);
-          return res.status(500).json({ error: "Erro ao enviar e-mail." });
-        }
-        res.json({ message: "E-mail de recuperação enviado!" });
-      });
+    if (!user) {
+      logEvent(`E-mail não encontrado: ${email}`);
+      return res.status(404).json({ error: "E-mail não encontrado." });
+    }
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "15m",
     });
-  },
+
+    const sendReset = await MailService.sendResetPasswordEmail(email, token);
+
+    if (!sendReset) {
+      logEvent(`Erro ao enviar e-mail para: ${email}`);
+      return res.status(500).json({ error: "Erro ao enviar e-mail." });
+    }
+
+    res.json({ message: "E-mail de recuperação enviado com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao processar solicitação de recuperação:", error);
+    return res.status(500).json({ error: "Erro interno no servidor." });
+  }
+},
 
   // Resetar senha com token
   resetPassword: (req, res) => {

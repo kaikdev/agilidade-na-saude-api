@@ -143,26 +143,7 @@ const UserService = {
       };
     }
   },
-  // insertPatientInQueue: async (data) => {
-  //   const { serviceId, userId, priority, level, password } = data;
-
-  //   const existingListQueue = await UserModel.checkPatientInQueue(serviceId);
-
-  //   if (!existingListQueue || existingListQueue.length === 0) {
-  //     const insertPatientInQueue = await UserModel.insertPatientInQueue(data);
-  //     return {
-  //       success: true,
-  //       insertPatientInQueue,
-  //       priority: data.priority,
-  //       message: "Agendamento realizado com sucesso!",
-  //     };
-  //   } else {
-  //     return {
-  //       success: false,
-  //       message: "Você já marcou esta consulta.",
-  //     };
-  //   }
-  // },
+  
   updateQtdAttendance: async(newQtd, serviceId) =>{
         const result = await UserModel.updateQtdAttendance(newQtd, serviceId);
         return result;

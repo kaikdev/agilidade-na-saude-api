@@ -2,25 +2,35 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const transporter = nodemailer.createTransport({
-  service: "gmail", // Ou configure outro provedor SMTP
+  host: "smtp.gmail.com",
+  port: 587,
   auth: {
     user: process.env.MAIL_USER,
     pass: process.env.MAIL_PASS,
   },
 });
 
+transporter.verify().then(console.log).catch(console.error);
+
 const MailService = {
-  sendResetPasswordEmail: (email, token, callback) => {
-    const resetLink = `http://localhost:3000/reset-password/${token}`;
+  sendResetPasswordEmail: async (email, token) => {
+    try {
+      const resetLink = `http://localhost:3000/api/reset-password/${token}`;
+      const mailOptions = {
+        from: process.env.MAIL_USER,
+        to: email,
+        subject: "Recuperação de Senha",
+        text: `Clique no link para redefinir sua senha: ${resetLink}`,
+      };
 
-    const mailOptions = {
-      from: process.env.MAIL_USER,
-      to: email,
-      subject: "Recuperação de Senha",
-      text: `Clique no link para redefinir sua senha: ${resetLink}`,
-    };
+      const info = await transporter.sendMail(mailOptions);
+      console.log("E-mail enviado:", info.response);
 
-    transporter.sendMail(mailOptions, callback);
+      return true; // Indica sucesso
+    } catch (error) {
+      console.error("Erro ao enviar e-mail:", error);
+      return false; // Indica falha
+    }
   },
 };
 
