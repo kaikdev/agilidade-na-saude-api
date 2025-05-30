@@ -75,25 +75,30 @@ changePassword: async (req, res) => {
 },
 
   // Resetar senha com token
-  resetPassword: (req, res) => {
+ resetPassword: async (req, res) => {
+  try {
     const { token, newPassword } = req.body;
 
-    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-      if (err){
-        logEvent(`Token inválido ou expirado.`);
-        return res.status(400).json({ error: "Token inválido ou expirado." });
-      }
-        
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
-      UserService.updatePassword(decoded.id, hashedPassword, (err) => {
-        if (err){
-          logEvent(`Erro ao redefinir senha.`);
-          return res.status(500).json({ error: "Erro ao redefinir senha." });
-        }
-        res.json({ message: "Senha redefinida com sucesso!" });
-      });
-    });
-  },
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (error) {
+      logEvent(`Token inválido ou expirado.`);
+      return res.status(400).json({ error: "Token inválido ou expirado." });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await UserService.updatePassword(decoded.id, hashedPassword);
+
+    logEvent(`Senha redefinida com sucesso - Usuário ID: ${decoded.id}`);
+    res.json({ message: "Senha redefinida com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao redefinir senha:", error);
+    logEvent(`Erro ao redefinir senha - Usuário ID: ${error?.decoded?.id || "desconhecido"}`);
+    res.status(500).json({ error: "Erro ao redefinir senha." });
+  }
+}
 };
 
 module.exports = PasswordController;

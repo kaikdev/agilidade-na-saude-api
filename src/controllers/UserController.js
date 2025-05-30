@@ -1,3 +1,5 @@
+
+
 const UserService = require("../services/UserService");
 const logEvent = require("../services/LogService");
 const UserRepository = require("../repository/UserRepository");
@@ -176,6 +178,22 @@ const UserController = {
       return res.status(500).json({ error: "Erro ao buscar agendamento." });
     }
   },
+  appointmentsScheduled: async (req, res) => {
+    const userId = req.user?.id;//usuario logado
+
+    try {
+      const getAllAppointments = await UserService.appointmentsScheduled(userId);//pega os agendamentos do usuario logado
+        return res.status(200).json({
+          message: "Agendamentos encontrados!",
+          appointments: getAllAppointments,
+        });
+     
+    } catch (err) {
+      console.error("Erro:", err.message);
+      return res.status(500).json({ error: "Erro ao buscar agendamentos."  });
+      
+    }
+  }
 };
 
 module.exports = UserController;

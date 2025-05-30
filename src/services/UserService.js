@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const UserModel = require("../models/UserModel");
 const UserRepository = require("../repository/UserRepository");
+const e = require("express");
 
 const UserService = {
   // Criar novo usuário com hash de senha
@@ -147,7 +148,16 @@ const UserService = {
   updateQtdAttendance: async(newQtd, serviceId) =>{
         const result = await UserModel.updateQtdAttendance(newQtd, serviceId);
         return result;
+  },
+ appointmentsScheduled: async (userId) => {
+  try {
+    const appointments = await UserModel.getAppointmentsByUserId(userId);
+    return appointments;
+  } catch (error) {
+    throw new Error("Erro ao buscar agendamentos: " + error.message);
   }
+}
+
 };
 
 module.exports = UserService;
