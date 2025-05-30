@@ -126,37 +126,37 @@ const UserModel = {
 
   getAppointmentsByUserId: async (userId) => {
     const sql = `
-    SELECT 
-      sc.id AS consultation_id,
-      sc.password,
-      sc.priority,
+      SELECT 
+          sc.id AS consultation_id,
+          sc.password,
+          sc.priority,
 
-      cs.id AS service_id,
-      cs.specialty AS service_specialty,
-      cs.locality,
-      cs.service_date,
+          cs.id AS service_id,
+          cs.specialty AS service_specialty,  -- Especialidade do serviço oferecido
+          cs.locality,
+          cs.service_date,
 
-      u.name AS provider_name,
-      ad.specialty AS provider_specialty,
-      ad.presentation
+          u.name AS provider_name,
+          ad.crm AS provider_crm,
+          ad.specialty AS provider_specialty,
+          ad.presentation AS provider_presentation
 
-    FROM scheduled_consultations sc
-    LEFT JOIN create_service cs ON sc.service_id = cs.id
-    LEFT JOIN users u ON cs.user_id = u.id
-    LEFT JOIN admin_data ad ON ad.user_id = cs.user_id
-    WHERE sc.user_id = ?
-    ORDER BY sc.created_at DESC;
-
-  `;
-    try {
-      const result = await db.allAsync(sql, [userId]);
-      if (result.length === 0) {
-        return [];
+      FROM scheduled_consultations sc
+      LEFT JOIN create_service cs ON sc.service_id = cs.id
+      LEFT JOIN users u ON cs.user_id = u.id
+      LEFT JOIN admin_data ad ON ad.user_id = cs.user_id
+      WHERE sc.user_id = ?
+      ORDER BY sc.created_at DESC;
+      `;
+      try {
+          const result = await db.allAsync(sql, [userId]);
+          if (result.length === 0) {
+              return [];
+          }
+          return result;
+      } catch (err) {
+          throw new Error("Erro ao buscar agendamentos do usuário: " + err.message);
       }
-      return result;
-    } catch (err) {
-      throw new Error("Erro ao buscar agendamentos do usuário: " + err.message);
-    }
   },
 };
 
