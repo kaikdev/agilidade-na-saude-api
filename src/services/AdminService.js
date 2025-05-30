@@ -67,14 +67,13 @@ const AdminService = {
       adminData.service_date
     );
     adminData.service_date = date.myDate;
-    console.log(adminData.service_date);
     try {
-      const existingAppointments = await AdminModel.getAppointmentsByIdAndDate(
+      const existingAppointments = await AdminModel.findAppointmentsByAdminIdAndDate(
         adminData.user_id,
         adminData.service_date
       );
-      if (existingAppointments.length > 0) {
-        throw new Error("Já existe um agendamento para esta data.");
+      if (existingAppointments && existingAppointments.length > 0) {
+        throw new Error("Já existe um agendamento para esta data com este administrador.");
       }
       await AdminModel.createAppointment(adminData);
     } catch (error) {
@@ -85,7 +84,7 @@ const AdminService = {
   updateAppointment: async (body, id, userId) => {
     const appointment = await AdminModel.getAppointmentsById(id, userId);
     if (!appointment) {
-      throw new Error("Você não tem permissão para editar este agendamento.");
+      throw new Error("Você não tem permissão para editar este agendamento ou o agendamento não existe.");
     }
 
     if (body.service_date) {
@@ -94,13 +93,14 @@ const AdminService = {
       );
       body.service_date = formatted.myDate;
 
-      const existing = await AdminModel.getAppointmentsByIdAndDate(
-        id,
+      const existing = await AdminModel.findAppointmentsByAdminIdAndDate(
         userId,
-        body.service_date
+        body.service_date,
+        id 
       );
-      if (existing.length > 0) {
-        throw new Error("Já existe um agendamento para esta data.");
+
+      if (existing && existing.length > 0) {
+        throw new Error("Já existe outro agendamento para esta data com este administrador.");
       }
     }
 
