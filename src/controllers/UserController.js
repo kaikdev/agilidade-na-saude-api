@@ -107,23 +107,30 @@ const UserController = {
   appointmentsList: async (req, res) => {
     try {
       const getAppointments = await UserService.appointmentsList();
+      const getPriorites = UserRepository.priorates();
 
-      const getPriorites = UserRepository.priorates(); //
       if (getAppointments.length > 0) {
         const appointmentsWithLinks = getAppointments.map((appointment) => ({
           ...appointment,
           data: {
-            create: `http://localhost:3000/api/users/appointments/createService/${appointment.id}`, // só pode criar se ainda tiver quantidade, fazer essa logica no front
+            create: `http://localhost:3000/api/users/appointments/createService/${appointment.id}`,
           },
         }));
         return res.status(200).json({
           message: "Consultas encontradas!",
-          appointments: appointmentsWithLinks, //exiba appointments, envie por form, exiba os serviços direto no form
-          priorites: getPriorites, //ao clicar no link acima abre uma modal perguntando a prioridade,
+          appointments: appointmentsWithLinks,
+          priorites: getPriorites,
+        });
+      } else {
+        return res.status(200).json({ // Status 200 OK é apropriado para "sucesso, mas lista vazia"
+          message: "Nenhuma consulta disponível no momento.",
+          appointments: [], // Retorne um array vazio
+          priorites: getPriorites,
         });
       }
     } catch (err) {
-      res.status(500).json({ error: "Erro ao buscar usuários." });
+      console.error("Erro ao buscar agendamentos para lista de usuário:", err); // Adicionei um log para depuração
+      return res.status(500).json({ error: "Erro ao buscar atendimentos." });
     }
   },
   
