@@ -17,6 +17,7 @@
 [2025-05-30T01:13:36.690Z] Agendamento excluído - Usuário ID: 1, Agendamento ID: 1
 [2025-05-30T01:13:39.548Z] Agendamento excluído - Usuário ID: 1, Agendamento ID: 2
 [2025-05-30T01:13:43.755Z] Agendamento excluído - Usuário ID: 1, Agendamento ID: 3
+<<<<<<< HEAD
 [2025-05-30T14:03:52.091Z] Erro durante o login - Usuário não encontrado.
 [2025-05-31T01:11:07.437Z] Conta criada - Administrador ID: 1
 [2025-05-31T01:11:29.610Z] Login bem-sucedido - Usuário: Fernanda.almeida@gmail.com
@@ -34,3 +35,41 @@
 [2025-05-31T04:03:58.510Z] Login bem-sucedido - Usuário: pedro.almeida@gmail.com
 [2025-05-31T04:06:01.274Z] Login bem-sucedido - Usuário: jonas.silva@example.com
 [2025-05-31T04:37:01.829Z] Login bem-sucedido - Usuário: jonas.silva@example.com
+=======
+[2025-05-30T01:21:56.744Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T01:37:43.055Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T02:13:13.201Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T02:15:57.529Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T02:55:15.939Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T03:16:03.263Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T03:28:48.692Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T04:26:47.207Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T04:27:32.623Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T04:28:12.186Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T04:38:32.255Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T04:40:24.175Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T05:29:38.706Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T05:49:00.107Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T05:52:14.030Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T06:00:30.403Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T06:19:23.720Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T06:44:32.900Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T06:44:47.395Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T06:45:14.160Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T06:45:31.061Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T06:48:42.280Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T06:49:25.261Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T06:52:29.593Z] Conta criada - Administrador ID: 3
+[2025-05-30T06:52:37.902Z] Login bem-sucedido - Usuário: kaik.exe@gmail.com
+[2025-05-30T06:55:29.609Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T06:58:59.691Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T06:59:16.360Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T06:59:29.422Z] Login bem-sucedido - Usuário: kaik.exe@gmail.com
+[2025-05-30T07:01:18.364Z] Login bem-sucedido - Usuário: kaik.exe@gmail.com
+[2025-05-30T07:02:18.589Z] Login bem-sucedido - Usuário: kaik.exe@gmail.com
+[2025-05-30T07:02:45.394Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T07:04:55.985Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-30T07:05:01.131Z] Agendamento excluído - Usuário ID: 1, Agendamento ID: 7
+[2025-05-30T07:05:11.174Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+[2025-05-30T07:19:50.013Z] Login bem-sucedido - Usuário: gabrielvasques@gmail.com
+>>>>>>> 094ecf43dfda95b17e60a39c8b62d803437e4022
