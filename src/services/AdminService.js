@@ -180,14 +180,30 @@ const AdminService = {
     }
   },
 
-  finalizeScheduledAppointments: async (id) => {
+  finalizeScheduledAppointments: async ( id, userId, role ) => {
     try {
       const result = await AdminModel.finalizeScheduledAppointments(id);
 
-      if (result.changes === 0) {
-        throw new Error("Nenhum agendamento encontrado com esse ID.");
+      if (result.changes === 0) throw new Error("Nenhum agendamento encontrado com esse ID.");
+  
+      const getAppointmentsByUserId = await UserModel.getAppointmentsByUserId(id, userId, role);
+
+      if( !getAppointmentsByUserId ){
+        throw new Error("Nenhum agendamento encontrado para o usuário.");
       }
-      return result;
+      const createdResumePatient = await AdminModel.createdResumePatient(getAppointmentsByUserId);
+
+      if (!createdResumePatient) {
+        throw new Error("Erro ao criar o resumo do agendamento.");
+      }
+
+      const deletedQueryAppointment = await AdminModel.deleteQueryAppointmentById(id);
+      
+      if (!deletedQueryAppointment) {
+        throw new Error("Erro ao finalizar o agendamento.");
+      }
+     
+      return getAppointmentsByUserId;
     } catch (err) {
       throw new Error("Erro ao finalizar o agendamento: " + err.message);
     }

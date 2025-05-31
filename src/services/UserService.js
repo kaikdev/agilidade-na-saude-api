@@ -149,9 +149,10 @@ const UserService = {
         const result = await UserModel.updateQtdAttendance(newQtd, serviceId);
         return result;
   },
- appointmentsScheduled: async (userId) => {
+ appointmentsScheduled: async (userId, role) => {
   try {
-    const appointments = await UserModel.getAppointmentsByUserId(userId);
+    console.log("Buscando agendamentos para o usuário:", userId, "com a função:", role);
+    const appointments = await UserModel.getAppointmentsByUserId(null, userId, role );
     return appointments;
   } catch (error) {
     throw new Error("Erro ao buscar agendamentos: " + error.message);

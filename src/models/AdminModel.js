@@ -10,7 +10,11 @@ const AdminModel = {
     }
   },
 
-  findAppointmentsByAdminIdAndDate: async (adminId, serviceDate, excludeAppointmentId = null) => {
+  findAppointmentsByAdminIdAndDate: async (
+    adminId,
+    serviceDate,
+    excludeAppointmentId = null
+  ) => {
     let sql = `SELECT * FROM create_service WHERE user_id = ? AND service_date = ?`;
     let params = [adminId, serviceDate];
 
@@ -20,10 +24,12 @@ const AdminModel = {
     }
 
     try {
-      const result = await db.allAsync(sql, params); 
+      const result = await db.allAsync(sql, params);
       return result;
     } catch (err) {
-      throw new Error("Erro ao consultar agendamentos por admin_id e data: " + err.message);
+      throw new Error(
+        "Erro ao consultar agendamentos por admin_id e data: " + err.message
+      );
     }
   },
 
@@ -81,7 +87,6 @@ const AdminModel = {
   // No seu AdminModel
   updateAppointment: async (updateData, id) => {
     try {
-
       // Var partes dinâmicas da query
       const fields = [];
       const values = [];
@@ -116,7 +121,7 @@ const AdminModel = {
       throw new Error("Erro ao atualizar no banco de dados: " + err.message);
     }
   },
-  
+
   searchAppointments: async (query) => {
     const sql = `
       SELECT * 
@@ -146,10 +151,10 @@ const AdminModel = {
   },
 
   // AdminModel.js
-  deleteAppointmentById: async ( id,userId ) => {
+  deleteAppointmentById: async (id, userId) => {
     const sql = "DELETE FROM create_service WHERE id = ? AND user_id = ?";
     try {
-      const result = await db.runAsync(sql, [id,userId]);
+      const result = await db.runAsync(sql, [id, userId]);
       return result;
     } catch (err) {
       throw new Error("Erro ao deletar agendamento: " + err.message);
@@ -258,5 +263,25 @@ const AdminModel = {
       throw new Error("Erro ao buscar fila no modelo: " + err.message);
     }
   },
+  
+  createdResumePatient: async (getAppointmentsByUserId) => {
+    const sql = `INSERT INTO historical_consultation (data) VALUES (?)`;
+    try {
+      const snapshotJson = JSON.stringify(getAppointmentsByUserId);
+      const result = await db.runAsync(sql, [snapshotJson]);
+      return result;
+    } catch (err) {
+      throw new Error(`Erro ao criar histórico da consulta: ${err.message}`);
+    }
+  },
+  deleteQueryAppointmentById: async (id) => {
+    const sql = "DELETE FROM scheduled_consultations WHERE id = ?";
+    try {
+      const result = await db.runAsync(sql, [id]);
+      return result;
+    } catch (err) {
+      throw new Error("Erro ao deletar agendamento: " + err.message);
+    }
+  }
 };
 module.exports = AdminModel;

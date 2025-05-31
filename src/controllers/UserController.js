@@ -187,9 +187,9 @@ const UserController = {
   },
   appointmentsScheduled: async (req, res) => {
     const userId = req.user?.id;//usuario logado
-
+    const role = "user";
     try {
-      const getAllAppointments = await UserService.appointmentsScheduled(userId);//pega os agendamentos do usuario logado
+      const getAllAppointments = await UserService.appointmentsScheduled( userId, role );//pega os agendamentos do usuario logado
         return res.status(200).json({
           message: "Agendamentos encontrados!",
           appointments: getAllAppointments,

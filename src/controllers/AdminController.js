@@ -348,16 +348,11 @@ const AdminController = {
  // AdminController.js
 finalizeScheduledAppointments: async (req, res) => {
   const { id } = req.params;
+  const userId = req.user?.id;
+  const role = "admin";
+  
   try {
-    const scheduledAppointments = await AdminService.finalizeScheduledAppointments(id);
-
-    // Emita para TODOS os clientes conectados
-    const io = req.app.get("io");
-    io.emit("finalizeScheduledAppointments", { 
-      message: "Consulta finalizada com sucesso!",
-      appointmentId: id,
-      updatedData: scheduledAppointments // (Opcional) Envie dados atualizados
-    });
+    const scheduledAppointments = await AdminService.finalizeScheduledAppointments(id, userId, role);
 
     return res.status(200).json({
       message: "Agendamentos encontrados!",
@@ -365,7 +360,7 @@ finalizeScheduledAppointments: async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      message: "Erro ao buscar os agendamentos." + error.message,
+      message:error.message,
     });
   }
 },

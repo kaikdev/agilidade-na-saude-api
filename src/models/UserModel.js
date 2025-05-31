@@ -124,38 +124,64 @@ const UserModel = {
     return result;
   },
 
-  getAppointmentsByUserId: async (userId) => {
-    const sql = `
+  getAppointmentsByUserId: async (id, userId, role) => {
+
+    let sql = `
     SELECT 
+      u.name AS user_name,
+  `;
+
+    if (role === "admin") {
+      sql += `u.email, `;
+    }
+
+    sql += `
       sc.id AS consultation_id,
       sc.password,
       sc.priority,
-
       cs.id AS service_id,
       cs.specialty AS service_specialty,
       cs.locality,
-      cs.service_date,
+      cs.service_date
+  `;
 
-      u.name AS provider_name,
-      ad.specialty AS provider_specialty,
+    if (role === "user") {
+      sql += `,
+      ad.specialty AS admin_specialty,
       ad.presentation
+    `;
+    }
 
+    sql += `
     FROM scheduled_consultations sc
     LEFT JOIN create_service cs ON sc.service_id = cs.id
-    LEFT JOIN users u ON cs.user_id = u.id
-    LEFT JOIN admin_data ad ON ad.user_id = cs.user_id
-    WHERE sc.user_id = ?
-    ORDER BY sc.created_at DESC;
-
   `;
+
+    if (role === "admin") {
+      sql += `LEFT JOIN users u ON sc.user_id = u.id `;
+    } else {
+      sql += `LEFT JOIN users u ON cs.user_id = u.id `;
+    }
+
+    if (role === "user") {
+      sql += `LEFT JOIN admin_data ad ON ad.user_id = cs.user_id `;
+    }
+
+    if (role === "admin") {
+      sql += `WHERE cs.user_id = ? AND sc.id = ? `;
+    } else {
+      sql += `WHERE sc.user_id = ? `;
+    }
+
+    sql += `ORDER BY sc.created_at DESC `;
+
     try {
-      const result = await db.allAsync(sql, [userId]);
-      if (result.length === 0) {
-        return [];
-      }
-      return result;
+      const params = role === "admin" ? [userId, id] : [userId];
+      const result = await db.allAsync(sql, params);
+
+      return result.length === 0 ? [] : result;
     } catch (err) {
-      throw new Error("Erro ao buscar agendamentos do usuário: " + err.message);
+      throw new Error(err.message);
     }
   },
 };
