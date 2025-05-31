@@ -82,3 +82,19 @@
 [2025-05-31T06:26:26.872Z] Senha redefinida com sucesso - Usuário ID: 1
 [2025-05-31T06:27:45.217Z] Falha no login - Senha incorreta para o email: kaikgfx@gmail.com
 [2025-05-31T06:27:52.111Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-05-31T06:32:35.636Z] Senha redefinida com sucesso - Usuário ID: 1
+[2025-05-31T06:36:21.221Z] Token inválido ou expirado ao tentar redefinir senha. Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzQ4NjcyNDQxLCJleHAiOjE3NDg2NzMzNDF9.K_bejGI7AakIHIXrGVA585Xr2EzuKvTRgeT6y0jbDYg
+[2025-05-31T06:36:29.416Z] Token inválido ou expirado ao tentar redefinir senha. Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzQ4NjcyNDQxLCJleHAiOjE3NDg2NzMzNDF9.K_bejGI7AakIHIXrGVA585Xr2EzuKvTRgeT6y0jbDYg
+[2025-05-31T06:38:59.788Z] Senha redefinida com sucesso - Usuário ID: 1
+[2025-05-31T06:51:16.815Z] Conta criada - Administrador ID: 2
+[2025-05-31T06:51:24.247Z] Login bem-sucedido - Usuário: medico@gmail.com
+[2025-05-31T06:52:20.676Z] Conta criada - Usuário ID: 3
+[2025-05-31T06:52:25.255Z] Login bem-sucedido - Usuário: paciente@gmail.com
+[2025-05-31T06:55:32.768Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 1
+[2025-05-31T06:56:54.679Z] Erro ao criar agendamento:
+[2025-05-31T07:06:27.057Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 3
+[2025-05-31T07:06:29.713Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 2
+[2025-05-31T07:08:08.337Z] Login bem-sucedido - Usuário: paciente@gmail.com
+[2025-05-31T07:19:44.684Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 4
+[2025-05-31T07:20:38.146Z] Agendamento atualizado com sucesso!
+[2025-05-31T08:03:50.555Z] Login bem-sucedido - Usuário: paciente@gmail.com

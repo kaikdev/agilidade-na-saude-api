@@ -185,6 +185,7 @@ const UserController = {
       return res.status(500).json({ error: "Erro ao buscar agendamento." });
     }
   },
+  
   appointmentsScheduled: async (req, res) => {
     const userId = req.user?.id;//usuario logado
     const role = "user";
