@@ -13,6 +13,5 @@ router.put(
 
 // Recuperação de senha
 router.post("/forgot-password", PasswordController.forgotPassword);
-router.post("/reset-password/:id", PasswordController.resetPassword);
-
+router.post("/reset-password/:resetToken", PasswordController.resetPassword);
 module.exports = router;
