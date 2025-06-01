@@ -88,7 +88,10 @@ const UserModel = {
       return data;
     } catch (err) {
       console.error("Erro no Model - getAllAppointments:", err.message);
-      throw new Error("Erro ao buscar todos os atendimentos disponíveis no banco de dados: " + err.message);
+      throw new Error(
+        "Erro ao buscar todos os atendimentos disponíveis no banco de dados: " +
+          err.message
+      );
     }
   },
   listAllPassword: async (password) => {
@@ -145,9 +148,9 @@ const UserModel = {
   },
 
   getAppointmentsByUserId: async (id, userId, role) => {
-
     let sql = `
     SELECT 
+      u.id,
       u.name AS user_name,
   `;
 
@@ -204,6 +207,33 @@ const UserModel = {
     } catch (err) {
       throw new Error(err.message);
     }
+  },
+  getAdminBydIds:async (service_Ids) => {
+
+  }  ,
+  getResumeAppointments: async (userId) => {
+    const sql = `
+    SELECT hc.*
+    FROM historical_consultation hc,
+         json_each(hc.data)
+    WHERE json_each.value ->> '$.id' = ?;
+  `;
+
+    const rows = await db.allAsync(sql, [userId]); // Executando a consulta
+
+    if (!rows || rows.length === 0) {
+      throw new Error("Nenhum resumo de agendamentos encontrado.");
+    }
+
+    rows.forEach((row) => {
+      try {
+        row.data = JSON.parse(row.data); // convertendo o campo data para objetos JSON, caso seja necessário
+      } catch (err) {
+        throw new Error("Erro ao converter o campo data para JSON: " + err.message);
+      }
+    });
+
+    return rows;
   },
 };
 

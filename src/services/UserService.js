@@ -121,21 +121,24 @@ const UserService = {
     const { serviceId, userId, priority, level, password } = data;
 
     try {
-      const existingListQueue = await UserModel.checkPatientInQueue( serviceId, userId );
+      const existingListQueue = await UserModel.checkPatientInQueue(
+        serviceId,
+        userId
+      );
       if (existingListQueue) {
         return {
           success: false,
           message: "Você já marcou esta consulta.",
         };
-      }else{
+      } else {
         const insertPatientInQueue = await UserModel.insertPatientInQueue(data);
-      return {
-        success: true,
-        insertPatientInQueue,
-        priority: data.priority,
-        password: data.password,
-        message: "Agendamento realizado com sucesso!"
-      };
+        return {
+          success: true,
+          insertPatientInQueue,
+          priority: data.priority,
+          password: data.password,
+          message: "Agendamento realizado com sucesso!",
+        };
       }
     } catch (error) {
       return {
@@ -144,21 +147,51 @@ const UserService = {
       };
     }
   },
-  
-  updateQtdAttendance: async(newQtd, serviceId) =>{
-        const result = await UserModel.updateQtdAttendance(newQtd, serviceId);
-        return result;
-  },
- appointmentsScheduled: async (userId, role) => {
-  try {
-    console.log("Buscando agendamentos para o usuário:", userId, "com a função:", role);
-    const appointments = await UserModel.getAppointmentsByUserId(null, userId, role );
-    return appointments;
-  } catch (error) {
-    throw new Error("Erro ao buscar agendamentos: " + error.message);
-  }
-}
 
+  updateQtdAttendance: async (newQtd, serviceId) => {
+    const result = await UserModel.updateQtdAttendance(newQtd, serviceId);
+    return result;
+  },
+  appointmentsScheduled: async (userId, role) => {
+    try {
+      console.log(
+        "Buscando agendamentos para o usuário:",
+        userId,
+        "com a função:",
+        role
+      );
+      const appointments = await UserModel.getAppointmentsByUserId(
+        null,
+        userId,
+        role
+      );
+      return appointments;
+    } catch (error) {
+      throw new Error("Erro ao buscar agendamentos: " + error.message);
+    }
+  },
+
+  getResumeAppointments: async (userId) => {
+    try {
+      const resumeAppointments = await UserModel.getResumeAppointments(userId);
+
+      const serviceIds = resumeAppointments.flatMap((appointment) =>
+        appointment.data.map((item) => item.service_id)
+      );
+
+      console.log(serviceIds); // Isso vai pegar todos os 'service_id' dentro de 'data'
+
+      if (!resumeAppointments) {
+        throw new Error("Nenhum resumo de agendamentos encontrado.");
+      }
+
+      return resumeAppointments;
+    } catch (error) {
+      throw new Error(
+        "Erro ao buscar resumo de agendamentos: " + error.message
+      );
+    }
+  },
 };
 
 module.exports = UserService;

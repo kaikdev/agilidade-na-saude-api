@@ -98,3 +98,23 @@
 [2025-05-31T07:19:44.684Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 4
 [2025-05-31T07:20:38.146Z] Agendamento atualizado com sucesso!
 [2025-05-31T08:03:50.555Z] Login bem-sucedido - Usuário: paciente@gmail.com
+[2025-05-31T23:05:56.093Z] Erro durante o login - Usuário não encontrado.
+[2025-05-31T23:06:04.964Z] Erro durante o login - Usuário não encontrado.
+[2025-05-31T23:10:16.736Z] Erro durante o login - Usuário não encontrado.
+[2025-05-31T23:10:17.203Z] Erro durante o login - Usuário não encontrado.
+[2025-05-31T23:10:49.399Z] Conta criada - Usuário ID: 4
+[2025-05-31T23:11:00.303Z] Login bem-sucedido - Usuário: jonas.silva@example.com
+[2025-06-01T00:14:26.616Z] Conta criada - Administrador ID: 5
+[2025-06-01T00:14:38.203Z] Falha no login - e-mail e senha não informados.
+[2025-06-01T00:14:56.062Z] Login bem-sucedido - Usuário: pedro.almeida@gmail.com
+[2025-06-01T00:15:14.847Z] Erro ao criar agendamento:
+[2025-06-01T00:19:52.724Z] Login bem-sucedido - Usuário: jonas.silva@example.com
+[2025-06-01T00:24:30.962Z] Login bem-sucedido - Usuário: pedro.almeida@gmail.com
+[2025-06-01T00:24:49.683Z] Erro ao criar agendamento:
+[2025-06-01T00:28:06.865Z] Login bem-sucedido - Usuário: jonas.silva@example.com
+[2025-06-01T00:32:26.030Z] Login bem-sucedido - Usuário: pedro.almeida@gmail.com
+[2025-06-01T00:50:04.706Z] Login bem-sucedido - Usuário: pedro.almeida@gmail.com
+[2025-06-01T00:50:24.475Z] Login bem-sucedido - Usuário: jonas.silva@example.com
+[2025-06-01T01:02:20.830Z] Login bem-sucedido - Usuário: jonas.silva@example.com
+[2025-06-01T01:37:57.339Z] Login bem-sucedido - Usuário: jonas.silva@example.com
+[2025-06-01T02:38:51.574Z] Login bem-sucedido - Usuário: jonas.silva@example.com
