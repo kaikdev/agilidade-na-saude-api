@@ -210,7 +210,7 @@ const UserService = {
 
       const finalResumeAppointments = mergedAppointments.map((appointment) => ({
         ...appointment,
-        data: appointment.data.map(({ id_service, ...rest }) => rest),
+        data: appointment.data.map(({ id_service, id_admin, ...rest }) => rest),
       }));
 
     return finalResumeAppointments;

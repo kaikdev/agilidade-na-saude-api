@@ -222,6 +222,7 @@ const UserModel = {
       u.name AS user_name,
 
       ad.id AS id_admin_data,
+      ad.user_id AS id_user_admin,
       ad.crm,
       ad.specialty AS admin_specialty,
       ad.presentation
