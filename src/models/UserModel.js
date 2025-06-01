@@ -36,7 +36,7 @@ const UserModel = {
 
   // Buscar usuário pelo ID
   findById: async (id) => {
-    const sql = `SELECT id, name, email, birth_date FROM users WHERE id = ?`;
+    const sql = `SELECT id, name, email, cpf, birth_date FROM users WHERE id = ?`;
     const user = await db.getAsync(sql, [id]);
     return user;
   },
