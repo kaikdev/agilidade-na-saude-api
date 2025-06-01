@@ -2,12 +2,13 @@ const db = require("../config/promisifiedDb");
 
 const UserModel = {
   // Criar um novo usuário
-  create: async (name, email, password, role, birth_date) => {
-    const sql = `INSERT INTO users (name, email, password, role, birth_date) VALUES (?, ?, ?, ?, ?)`;
+  create: async (name, email, cpf, password, role, birth_date) => {
+    const sql = `INSERT INTO users (name, email, cpf, password, role, birth_date) VALUES (?, ?, ?, ?, ?, ?)`;
     try {
       const result = await db.runAsync(sql, [
         name,
         email,
+        cpf,
         password,
         role,
         birth_date,
@@ -20,7 +21,7 @@ const UserModel = {
       console.error("Erro no UserModel.create:", {
         error: err,
         query: sql,
-        params: [name, email, "***", role, birth_date],
+        params: [name, email, cpf, "***", role, birth_date],
       });
       throw err;
     }

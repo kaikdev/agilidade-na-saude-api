@@ -7,9 +7,9 @@ const UserRepository = require("../repository/UserRepository");
 const UserController = {
   // Criar novo usuário
   createUser: async (req, res) => {
-    const { name, email, password, role, birth_date } = req.body;
+    const { name, email, cpf, password, role, birth_date } = req.body;
 
-    if (!name || !email || !password || !role || !birth_date) {
+    if (!name || !email || !cpf || !password || !role || !birth_date) {
       return res
         .status(400)
         .json({ error: "Todos os campos são obrigatórios." });
@@ -19,6 +19,7 @@ const UserController = {
       const userId = await UserService.createUser(
         name,
         email,
+        cpf,
         password,
         role,
         birth_date

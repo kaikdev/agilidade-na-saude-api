@@ -5,7 +5,7 @@ const e = require("express");
 
 const UserService = {
   // Criar novo usuário com hash de senha
-  createUser: async (name, email, password, role, birth_date) => {
+  createUser: async (name, email, cpf, password, role, birth_date) => {
     // Verifica se o e-mail já está cadastrado
     const existingUser = await UserModel.findByEmail(email);
     if (existingUser) {
@@ -16,6 +16,13 @@ const UserService = {
     if (!UserRepository.validateEmail(email)) {
       throw new Error(
         "E-mail inválido. O e-mail não atende os parâmetros necessários."
+      );
+    }
+
+    // Validação do cpf
+    if (!(await UserRepository.validateCpf(cpf))) {
+      throw new Error(
+        "CPF inválido. O CPF não atende os parâmetros necessários."
       );
     }
 
@@ -36,15 +43,24 @@ const UserService = {
     // Hashing da senha
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Criação do usuário
-    const userId = await UserModel.create(
-      name,
-      email,
-      hashedPassword,
-      role,
-      birthDateValidation.formattedDate
-    );
-    return userId;
+    try {
+      // Criação do usuário
+      const userId = await UserModel.create(
+        name,
+        email,
+        cpf,
+        hashedPassword,
+        role,
+        birthDateValidation.formattedDate
+      );
+      return userId;
+    } catch (error) {
+      if (error.message.includes("UNIQUE constraint failed: users.cpf")) {
+        throw new Error("Esse CPF já está cadastrado no sistema.");
+      }
+      // Outros erros
+      throw error;
+    }
   },
 
   // Buscar usuário por e-mail
@@ -175,15 +191,12 @@ const UserService = {
     try {
       const resumeAppointments = await UserModel.getResumeAppointments(userId);
 
-      if (!resumeAppointments || resumeAppointments.length === 0) {
-        throw new Error("Nenhum resumo de agendamentos encontrado.");
-      }
-
+      if (!resumeAppointments || resumeAppointments.length === 0) throw new Error("Nenhum resumo de agendamentos encontrado.");
+      
       const cleanedAppointments = resumeAppointments.map((appointment) => ({
         ...appointment,
         data: appointment.data.map(({ user_name, email, ...rest }) => rest),
       }));
-
 
       const serviceIds = resumeAppointments.flatMap((appointment) =>
         appointment.data.map((item) => item.service_id)
@@ -194,7 +207,8 @@ const UserService = {
       if (!getServiceNames || getServiceNames.length === 0) throw new Error("Nenhum serviço encontrado para os IDs fornecidos.");
       
       const cleanedGetServiceNames = getServiceNames.map(({specialty, locality, id_admin_data, service_user_id, ...rest }) => rest);
-
+      
+      //merge
       const mergedAppointments = cleanedAppointments.map((appointment) => ({
       ...appointment,
       data: appointment.data.map((item) => {
@@ -203,7 +217,7 @@ const UserService = {
         );
         return {
             ...item,
-            ...service, // merge das informações do médico
+            ...service, // merge das informações do médico com o resumo do agendamento
           };
         }),
       }));
