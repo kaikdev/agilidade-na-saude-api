@@ -208,9 +208,46 @@ const UserModel = {
       throw new Error(err.message);
     }
   },
-  getAdminBydIds:async (service_Ids) => {
 
-  }  ,
+  getAdminBydIds: async (service_Ids) => {
+    const placeholders = service_Ids.map(() => "?").join(", ");
+    const sql = `
+    SELECT
+      cs.id AS id_service,
+      cs.user_id AS service_user_id,
+      cs.specialty,
+      cs.locality,
+
+      u.id AS id_admin,
+      u.name AS user_name,
+
+      ad.id AS id_admin_data,
+      ad.crm,
+      ad.specialty AS admin_specialty,
+      ad.presentation
+    FROM
+      create_service cs
+    JOIN
+      users u ON cs.user_id = u.id
+    JOIN
+      admin_data ad ON u.id = ad.user_id
+    WHERE
+      cs.id IN (${placeholders})
+  `;
+
+    try {
+      const rows = await db.allAsync(sql, service_Ids);
+      if (!rows || rows.length === 0) {
+        throw new Error(
+          "Nenhum administrador encontrado para os IDs fornecidos."
+        );
+      }
+      return rows;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  },
+
   getResumeAppointments: async (userId) => {
     const sql = `
     SELECT hc.*
@@ -229,7 +266,9 @@ const UserModel = {
       try {
         row.data = JSON.parse(row.data); // convertendo o campo data para objetos JSON, caso seja necessário
       } catch (err) {
-        throw new Error("Erro ao converter o campo data para JSON: " + err.message);
+        throw new Error(
+          "Erro ao converter o campo data para JSON: " + err.message
+        );
       }
     });
 

@@ -175,17 +175,46 @@ const UserService = {
     try {
       const resumeAppointments = await UserModel.getResumeAppointments(userId);
 
+      if (!resumeAppointments || resumeAppointments.length === 0) {
+        throw new Error("Nenhum resumo de agendamentos encontrado.");
+      }
+
+      const cleanedAppointments = resumeAppointments.map((appointment) => ({
+        ...appointment,
+        data: appointment.data.map(({ user_name, email, ...rest }) => rest),
+      }));
+
+
       const serviceIds = resumeAppointments.flatMap((appointment) =>
         appointment.data.map((item) => item.service_id)
       );
 
-      console.log(serviceIds); // Isso vai pegar todos os 'service_id' dentro de 'data'
+      const getServiceNames = await UserModel.getAdminBydIds(serviceIds);
 
-      if (!resumeAppointments) {
-        throw new Error("Nenhum resumo de agendamentos encontrado.");
-      }
+      if (!getServiceNames || getServiceNames.length === 0) throw new Error("Nenhum serviço encontrado para os IDs fornecidos.");
+      
+      const cleanedGetServiceNames = getServiceNames.map(({specialty, locality, id_admin_data, service_user_id, ...rest }) => rest);
 
-      return resumeAppointments;
+      const mergedAppointments = cleanedAppointments.map((appointment) => ({
+      ...appointment,
+      data: appointment.data.map((item) => {
+        const service = cleanedGetServiceNames.find(
+          (s) => s.id_service === item.service_id
+        );
+        return {
+            ...item,
+            ...service, // merge das informações do médico
+          };
+        }),
+      }));
+
+      const finalResumeAppointments = mergedAppointments.map((appointment) => ({
+        ...appointment,
+        data: appointment.data.map(({ id_service, ...rest }) => rest),
+      }));
+
+    return finalResumeAppointments;
+
     } catch (error) {
       throw new Error(
         "Erro ao buscar resumo de agendamentos: " + error.message

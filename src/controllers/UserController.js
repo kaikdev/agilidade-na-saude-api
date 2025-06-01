@@ -220,7 +220,7 @@ const UserController = {
     const resumeAppointments = await UserService.getResumeAppointments(UserId);
     return res.json(resumeAppointments); 
   } catch (error) {
-    return res.status(500).json({ error: "Erro ao buscar resumo de agendamentos: " + error.message });
+    return res.status(500).json({ error: error.message });
   }
 }
 
