@@ -85,30 +85,36 @@ const AdminController = {
   },
 
   updateAdmin: async (req, res) => {
-    const { id } = req.params;
-    const { name, email, password, crm, specialty, presentation } = req.body;
-    const userId = req.user?.id;
+    const id = parseInt(req.params.id);
+    const userId = req.user.id;
 
-    const newPassword = password;
-
-    // Verifica se o e-mail já está cadastrado
-    const existingUser = await UserModel.findByEmail(email);
-    if (existingUser) {
-      throw new Error("E-mail já cadastrado.");
+    if (id !== userId) {
+      return res.status(403).json({ error: "Acesso negado." });
     }
 
-    // Valida o e-mail
-    if (!UserRepository.validateEmail(email)) {
-      throw new Error("E-mail inválido.");
-    }
+    const { name, email, password, specialty, presentation } = req.body;
 
-    // Valida a senha
-    if (!UserRepository.validatePassword(password)) {
-      throw new Error("Senha fraca.");
+    try {
+
+      const updateAdmin = await AdminService.updateAdmin(
+        id,
+        userId,
+        name,
+        email,
+        password,
+        specialty,
+        presentation,
+      );
+
+      return res.status(200).json({
+        message: "Administrador atualizado com sucesso!",
+        data: updateAdmin,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        error: error.message,
+      });
     }
-    console.log("senha Nova", newPassword);
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    console.log("Nova Senha", hashedPassword);
   },
 
   //Pega todas as consulta de um usuario adm especifico

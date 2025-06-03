@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post("/admin", AdminController.createAdmin);//ok
 router.get("/admin/:id",  Auth.verifyToken, authorize(["admin"]), AdminController.getAdmById);//ok
-router.post("/admin/update/:id",  Auth.verifyToken, authorize(["admin"]), AdminController.updateAdmin);//ok
+router.put("/admin/update/:id",  Auth.verifyToken, authorize(["admin"]), AdminController.updateAdmin);//ok
 router.delete("/admin/delete/:id", Auth.verifyToken, authorize(["admin"]), AdminController.delete);//ok
 
 router.get("/admin/appointments/listAll", Auth.verifyToken, authorize(["admin"]), AdminController.getAllAppointments); //ok

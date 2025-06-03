@@ -47,13 +47,62 @@ const AdminService = {
       await AdminModel.createAdminData(userId, crm, specialty, presentation);
 
       return userId;
-
     } catch (error) {
       if (error.message.includes("UNIQUE constraint failed: users.cpf")) {
         throw new Error("Esse CPF já está cadastrado no sistema.");
       }
       throw error;
     }
+  },
+
+  updateAdmin: async ( id, userId, name, email, password, specialty, presentation, ) => {
+
+    // Verifica se o usuário existe
+    const user = await AdminModel.getAdminById(id); 
+    if (!user) {
+      throw new Error("Usuário não encontrado.");
+    }
+
+    // Verifica se o e-mail já está cadastrado
+    const existingUser = await UserModel.findByEmail(email);
+    if (existingUser) {
+      throw new Error("O email deve ser diferente do cadastrado.");
+    }
+
+    // Valida o e-mail
+    if (!UserRepository.validateEmail(email)) {
+      throw new Error("E-mail inválido.");
+    }
+
+    // Valida a senha
+    if (!UserRepository.validatePassword(password)) {
+      throw new Error("Senha fraca.");
+    }
+    
+  // Acessando o primeiro item do array
+  const userFromDB = user[0];
+
+  // Verifica se a nova senha é diferente da senha atual
+  const isSamePassword = await bcrypt.compare(password, userFromDB.password);
+  if (isSamePassword) {
+    throw new Error("A nova senha deve ser diferente da atual.");
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Atualiza o usuário
+    const updatedAdmin = await AdminModel.updateAdmin(
+        id,
+        userId,
+        name,
+        email,
+        hashedPassword,
+        specialty,
+        presentation
+    );
+
+    return updatedAdmin;
+
   },
 
   getAdminById: async (id) => {
@@ -74,12 +123,11 @@ const AdminService = {
   },
 
   createAppointment: async (adminData) => {
-
     const date = UserRepository.validateAndFormatInputDate(
       adminData.service_date
     );
     adminData.service_date = date.myDate;
-   
+
     try {
       const existingAppointments =
         await AdminModel.findAppointmentsByAdminIdAndDate(
@@ -95,7 +143,6 @@ const AdminService = {
     } catch (error) {
       throw new Error(`Erro ao criar serviço: ${error.message}`);
     }
-    
   },
 
   updateAppointment: async (body, id, userId) => {

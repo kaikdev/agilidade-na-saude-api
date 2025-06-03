@@ -10,6 +10,23 @@ const AdminModel = {
     }
   },
 
+ updateAdmin: async ( id, userId, name, email, hashedPassword, specialty, presentation  ) => {
+
+    const sql = `UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?`;
+    try {   
+      resultUser = await db.runAsync(sql, [ name, email, hashedPassword, id, ]);
+
+      const updateAdminDataSql = `UPDATE admin_data SET specialty = ?, presentation = ? WHERE user_id = ?`;
+      resultAdminData = await db.runAsync(updateAdminDataSql, [ specialty, presentation, userId, ]); 
+
+      return [resultUser, resultAdminData];
+    } catch (err) {
+      throw new Error( 
+        `Erro ao atualizar admin: ${err.message}`
+      );
+    }
+  },
+
   findAppointmentsByAdminIdAndDate: async (
     adminId,
     serviceDate,
