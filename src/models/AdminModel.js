@@ -173,6 +173,7 @@ const AdminModel = {
       u.id AS user_id,
       u.name AS user_name,
       u.email,
+      u.cpf,
 
       cs.id AS service_id,
       cs.specialty,
@@ -204,6 +205,7 @@ const AdminModel = {
       u.id AS user_id,
       u.name AS user_name,
       u.email,
+      u.cpf,
       u.birth_date,
 
       cs.id AS service_id,

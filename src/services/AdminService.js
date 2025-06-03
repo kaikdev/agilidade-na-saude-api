@@ -74,10 +74,12 @@ const AdminService = {
   },
 
   createAppointment: async (adminData) => {
+
     const date = UserRepository.validateAndFormatInputDate(
       adminData.service_date
     );
     adminData.service_date = date.myDate;
+   
     try {
       const existingAppointments =
         await AdminModel.findAppointmentsByAdminIdAndDate(
@@ -93,6 +95,7 @@ const AdminService = {
     } catch (error) {
       throw new Error(`Erro ao criar serviço: ${error.message}`);
     }
+    
   },
 
   updateAppointment: async (body, id, userId) => {

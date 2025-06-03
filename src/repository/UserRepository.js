@@ -42,24 +42,43 @@ const UserRepository = {
     return { formattedDate };
   },
 
-  validateAndFormatInputDate(inputDate) {
-    const [day, month, year] = inputDate.split("/");
-    const input = new Date(`${year}-${month}-${day}T00:00:00`);
+  validateAndFormatInputDate(inputDateTime) {
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Zera a hora para comparar só a data
+    const [datePart, timePart] = inputDateTime.split(" ");
 
-    console.log(today);
-    console.log(input);
-    if (input < today) {
-      throw new Error(
-        "A data para a consulta não pode ser menor que o dia vigente."
-      );
+    if (!datePart || !timePart) {
+      throw new Error("Formato inválido. Use: DD/MM/YYYY HH:MM");
     }
 
-    // Formata a data para o padrão do banco se necessário (ex: yyyy-mm-dd)
-    const formattedDate = `${year}-${month}-${day}`;
-    return { myDate: formattedDate };
+    const [day, month, year] = datePart.split("/").map(Number);
+    const [hours, minutes] = timePart.split(":").map(Number);
+
+    if (
+      isNaN(day) || isNaN(month) || isNaN(year) ||
+      isNaN(hours) || isNaN(minutes)
+    ) {
+      throw new Error("Data ou hora inválida.");
+    }
+
+    // Cria a data no fuso horario local local
+    const inputDate = new Date(year, month - 1, day, hours, minutes);
+
+    if (isNaN(inputDate.getTime())) {
+      throw new Error("Data ou hora inválida.");
+    }
+
+    const now = new Date();
+
+    if (inputDate <= now) {
+      throw new Error("A data/hora deve ser futura.");
+    }
+
+    const formattedDate = `${year.toString().padStart(4, '0')}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    const fullDateTime = `${formattedDate} ${formattedTime}`;
+
+    return { myDate: fullDateTime };
+    
   },
 
   priorates() {
@@ -96,9 +115,8 @@ const UserRepository = {
   },
 
   validateCpf: async (cpf) => {
-
     if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) {
-      return false; 
+      return false;
     }
 
     let soma = 0;
