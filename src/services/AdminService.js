@@ -20,8 +20,10 @@ const AdminService = {
       throw new Error("E-mail inválido.");
     }
 
-    if (! await UserRepository.validateCpf(cpf)) {
-      throw new Error("CPF inválido. O CPF não atende os parâmetros necessários.");
+    if (!(await UserRepository.validateCpf(cpf))) {
+      throw new Error(
+        "CPF inválido. O CPF não atende os parâmetros necessários."
+      );
     }
 
     // Valida a senha
@@ -45,8 +47,12 @@ const AdminService = {
       await AdminModel.createAdminData(userId, crm, specialty, presentation);
 
       return userId;
+
     } catch (error) {
-      throw new Error(`Erro ao criar admin: ${error.message}`);
+      if (error.message.includes("UNIQUE constraint failed: users.cpf")) {
+        throw new Error("Esse CPF já está cadastrado no sistema.");
+      }
+      throw error;
     }
   },
 
@@ -73,12 +79,15 @@ const AdminService = {
     );
     adminData.service_date = date.myDate;
     try {
-      const existingAppointments = await AdminModel.findAppointmentsByAdminIdAndDate(
-        adminData.user_id,
-        adminData.service_date
-      );
+      const existingAppointments =
+        await AdminModel.findAppointmentsByAdminIdAndDate(
+          adminData.user_id,
+          adminData.service_date
+        );
       if (existingAppointments && existingAppointments.length > 0) {
-        throw new Error("Já existe um agendamento para esta data com este administrador.");
+        throw new Error(
+          "Já existe um agendamento para esta data com este administrador."
+        );
       }
       await AdminModel.createAppointment(adminData);
     } catch (error) {
@@ -89,7 +98,9 @@ const AdminService = {
   updateAppointment: async (body, id, userId) => {
     const appointment = await AdminModel.getAppointmentsById(id, userId);
     if (!appointment) {
-      throw new Error("Você não tem permissão para editar este agendamento ou o agendamento não existe.");
+      throw new Error(
+        "Você não tem permissão para editar este agendamento ou o agendamento não existe."
+      );
     }
 
     if (body.service_date) {
@@ -101,11 +112,13 @@ const AdminService = {
       const existing = await AdminModel.findAppointmentsByAdminIdAndDate(
         userId,
         body.service_date,
-        id 
+        id
       );
 
       if (existing && existing.length > 0) {
-        throw new Error("Já existe outro agendamento para esta data com este administrador.");
+        throw new Error(
+          "Já existe outro agendamento para esta data com este administrador."
+        );
       }
     }
 
@@ -185,29 +198,37 @@ const AdminService = {
     }
   },
 
-  finalizeScheduledAppointments: async ( id, userId, role ) => {
+  finalizeScheduledAppointments: async (id, userId, role) => {
     try {
       const result = await AdminModel.finalizeScheduledAppointments(id);
 
-      if (result.changes === 0) throw new Error("Nenhum agendamento encontrado com esse ID.");
-  
-      const getAppointmentsByUserId = await UserModel.getAppointmentsByUserId(id, userId, role);
+      if (result.changes === 0)
+        throw new Error("Nenhum agendamento encontrado com esse ID.");
 
-      if( !getAppointmentsByUserId ){
+      const getAppointmentsByUserId = await UserModel.getAppointmentsByUserId(
+        id,
+        userId,
+        role
+      );
+
+      if (!getAppointmentsByUserId) {
         throw new Error("Nenhum agendamento encontrado para o usuário.");
       }
-      const createdResumePatient = await AdminModel.createdResumePatient(getAppointmentsByUserId);
+      const createdResumePatient = await AdminModel.createdResumePatient(
+        getAppointmentsByUserId
+      );
 
       if (!createdResumePatient) {
         throw new Error("Erro ao criar o resumo do agendamento.");
       }
 
-      const deletedQueryAppointment = await AdminModel.deleteQueryAppointmentById(id);
-      
+      const deletedQueryAppointment =
+        await AdminModel.deleteQueryAppointmentById(id);
+
       if (!deletedQueryAppointment) {
         throw new Error("Erro ao finalizar o agendamento.");
       }
-     
+
       return getAppointmentsByUserId;
     } catch (err) {
       throw new Error("Erro ao finalizar o agendamento: " + err.message);
