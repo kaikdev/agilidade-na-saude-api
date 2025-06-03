@@ -10,6 +10,7 @@ const AdminController = {
     const requiredFields = [
       "name",
       "email",
+      "cpf",
       "password",
       "crm",
       "specialty",

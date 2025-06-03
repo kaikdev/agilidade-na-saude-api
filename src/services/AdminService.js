@@ -6,7 +6,7 @@ const { CONSTRAINT } = require("sqlite3");
 
 const AdminService = {
   createAdmin: async (adminData) => {
-    const { name, email, password, role, crm, specialty, presentation } =
+    const { name, email, cpf, password, role, crm, specialty, presentation } =
       adminData;
 
     // Verifica se o e-mail já está cadastrado
@@ -18,6 +18,10 @@ const AdminService = {
     // Valida o e-mail
     if (!UserRepository.validateEmail(email)) {
       throw new Error("E-mail inválido.");
+    }
+
+    if (! await UserRepository.validateCpf(cpf)) {
+      throw new Error("CPF inválido. O CPF não atende os parâmetros necessários.");
     }
 
     // Valida a senha
@@ -32,6 +36,7 @@ const AdminService = {
       const userId = await UserModel.create(
         name,
         email,
+        cpf,
         hashedPassword,
         role,
         null
