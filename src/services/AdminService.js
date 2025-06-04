@@ -285,7 +285,6 @@ const AdminService = {
     }
   },
    getQueriesMyPatient: async (userId) => {
-
     try {
       const queries = await AdminModel.getQueriesMyPatient(userId);
       
@@ -296,6 +295,19 @@ const AdminService = {
       throw new Error("Erro ao buscar consultas do paciente: " + error.message);
     }
   },
+  prioritizePatientInQuerie: async (id, userId) => {
+    try {
+      const prioritize = await AdminModel.prioritizePatientInQuerie(id);
+
+      if (!prioritize || prioritize.length === 0) throw new Error("Agendamento não encontrado.");
+      
+      return prioritize;
+    } catch (error) {
+      throw new Error(
+        "Erro ao priorizar paciente na consulta: " + error.message
+      );
+    }
+  }
 };
 
 module.exports = AdminService;

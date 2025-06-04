@@ -303,7 +303,6 @@ const AdminModel = {
     }
   },
   getQueriesMyPatient: async (userId) => {
-
     try {
       const sql = `
       SELECT
@@ -322,7 +321,7 @@ const AdminModel = {
       JOIN users u ON sc.user_id = u.id
       JOIN create_service cs ON sc.service_id = cs.id     
       WHERE cs.user_id = ? AND DATE(cs.service_date) = DATE('now', 'localtime')
-      ORDER BY sc.created_at DESC;
+      ORDER BY sc.level ASC, sc.created_at ASC;
     `;
       const result = await db.allAsync(sql, [userId]);
       return result;
@@ -330,5 +329,14 @@ const AdminModel = {
       throw new Error("Erro ao buscar consultas no modelo: " + error.message);
     }
   },
+  prioritizePatientInQuerie: async (id) => {
+    const sql = `UPDATE scheduled_consultations SET level = -1 WHERE id = ?`;
+    try {
+      const result = await db.runAsync(sql, [id]);
+      return result;
+    } catch (err) {
+      throw new Error("Erro ao priorizar paciente: " + err.message);
+    }
+  }
 };
 module.exports = AdminModel;

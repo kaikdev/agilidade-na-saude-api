@@ -393,6 +393,23 @@ getQueriesMyPatient: async (req, res) => {
       });
     }
 },
+ prioritizePatientInQuerie: async (req, res) => {
+    const { id } = req.params;
+    const userId = req.user?.id;
+
+    try {
+      const prioritizedPatient = await AdminService.prioritizePatientInQuerie(id);
+
+      return res.status(200).json({
+        message: "Paciente priorizado com sucesso!",
+        data: prioritizedPatient,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        error: error.message,
+      });
+    }
+  },
 };
 
 module.exports = AdminController;

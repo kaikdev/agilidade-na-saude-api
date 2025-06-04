@@ -25,7 +25,7 @@ router.put("/admin/scheduled/appointments/finalize/:id", Auth.verifyToken, autho
 
 router.get("/admin/scheduled/getMyQueries", Auth.verifyToken, authorize(["admin"]), AdminController.getQueriesMyPatient); //ok
 
-router.put("/admin/appointments/prioritizePatient/:id", Auth.verifyToken, authorize(["admin"]), AdminController.prioritizePatientInWQuerie); //ok
+router.put("/admin/appointments/prioritizePatient/:id", Auth.verifyToken, authorize(["admin"]), AdminController.prioritizePatientInQuerie); //ok
 
 
 module.exports = router;
