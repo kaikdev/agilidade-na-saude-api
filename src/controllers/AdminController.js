@@ -371,6 +371,28 @@ finalizeScheduledAppointments: async (req, res) => {
     });
   }
 },
+getQueriesMyPatient: async (req, res) => {
+    const userId = req.user?.id;
+    try {
+      const queries = await AdminService.getQueriesMyPatient(userId);
+
+      const output = queries.map((appointment) => ({
+        ...appointment,
+        links: {
+          prioritizePatient: `http://localhost:3000/api/admin/appointments/prioritizePatient/${appointment.user_id}`,
+        },
+      }));
+
+      return res.status(200).json({
+        message: "Consultas encontradas!",
+        output,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: error.message,
+      });
+    }
+},
 };
 
 module.exports = AdminController;

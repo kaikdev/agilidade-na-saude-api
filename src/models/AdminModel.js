@@ -301,6 +301,34 @@ const AdminModel = {
     } catch (err) {
       throw new Error("Erro ao deletar agendamento: " + err.message);
     }
-  }
+  },
+  getQueriesMyPatient: async (userId) => {
+
+    try {
+      const sql = `
+      SELECT
+        sc.id AS scheduled_id,
+        sc.service_id,
+        sc.password,
+        sc.priority,
+
+        u.id AS user_id,
+        u.name AS user_name,
+
+        cs.id AS service_id,
+        cs.specialty
+
+      FROM scheduled_consultations sc
+      JOIN users u ON sc.user_id = u.id
+      JOIN create_service cs ON sc.service_id = cs.id     
+      WHERE cs.user_id = ? AND DATE(cs.service_date) = DATE('now', 'localtime')
+      ORDER BY sc.created_at DESC;
+    `;
+      const result = await db.allAsync(sql, [userId]);
+      return result;
+    } catch (error) {
+      throw new Error("Erro ao buscar consultas no modelo: " + error.message);
+    }
+  },
 };
 module.exports = AdminModel;

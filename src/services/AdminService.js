@@ -284,6 +284,18 @@ const AdminService = {
       throw new Error("Erro ao finalizar o agendamento: " + err.message);
     }
   },
+   getQueriesMyPatient: async (userId) => {
+
+    try {
+      const queries = await AdminModel.getQueriesMyPatient(userId);
+      
+      if (!queries) throw new Error("Nenhuma consulta encontrada para o paciente.");
+      
+      return queries;
+    } catch (error) {
+      throw new Error("Erro ao buscar consultas do paciente: " + error.message);
+    }
+  },
 };
 
 module.exports = AdminService;
