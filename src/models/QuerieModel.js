@@ -3,14 +3,13 @@ const db = require("../config/promisifiedDb");
 const QuerieModel = {
 
   getTodayPasswords: async () => {
-    console.log("Fetching today's passwords from the database...");
     try {
       const sql = `
-        SELECT
+       SELECT
           sc.password
         FROM scheduled_consultations sc
         JOIN create_service cs ON sc.service_id = cs.id
-        WHERE DATE(cs.service_date)
+        WHERE DATE(cs.service_date) = DATE('now', 'localtime')
           AND sc.finished = 0
         ORDER BY sc.level ASC, sc.created_at ASC;
       `;
