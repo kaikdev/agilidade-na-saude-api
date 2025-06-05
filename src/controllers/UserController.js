@@ -4,6 +4,8 @@ const UserService = require("../services/UserService");
 const logEvent = require("../services/LogService");
 const UserRepository = require("../repository/UserRepository");
 
+const baseUrl = process.env.BASE_API_URL;
+
 const UserController = {
   // Criar novo usuário
   createUser: async (req, res) => {
@@ -45,8 +47,8 @@ const UserController = {
       const output = {
         ...user,
         link: {
-          update: `http://localhost:3000/api/users/update/${user.id}`,
-          delete: `http://localhost:3000/api/users/delete/${user.id}`,
+          update: `${baseUrl}/api/users/update/${user.id}`,
+          delete: `${baseUrl}/api/users/delete/${user.id}`,
         },
       };
 
@@ -116,7 +118,7 @@ const UserController = {
         const appointmentsWithLinks = getAppointments.map((appointment) => ({
           ...appointment,
           data: {
-            create: `http://localhost:3000/api/users/appointments/createService/${appointment.id}`,
+            create: `${baseUrl}/api/users/appointments/createService/${appointment.id}`,
           },
         }));
         return res.status(200).json({

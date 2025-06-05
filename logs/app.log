@@ -275,3 +275,56 @@
 [2025-06-03T03:22:49.761Z] Erro durante o login - Usuário não encontrado.
 [2025-06-03T03:22:54.409Z] Login bem-sucedido - Usuário: Ariely.galicianne@hotmail.com
 [2025-06-04T03:05:46.074Z] Login bem-sucedido - Usuário: Ariely.galicianne@gmail.com
+[2025-06-05T01:37:49.173Z] Erro durante o login - Usuário não encontrado.
+[2025-06-05T01:56:57.889Z] Erro durante o login - Usuário não encontrado.
+[2025-06-05T02:57:37.079Z] Conta criada - Usuário ID: 1
+[2025-06-05T03:09:35.580Z] Conta criada - Administrador ID: 2
+[2025-06-05T03:11:54.089Z] Login bem-sucedido - Usuário: medico@gmail.com
+[2025-06-05T03:12:20.216Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-05T03:17:04.117Z] Senha redefinida com sucesso - Usuário ID: 1
+[2025-06-05T03:17:10.633Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-05T03:25:29.322Z] Login bem-sucedido - Usuário: medico@gmail.com
+[2025-06-05T03:25:51.537Z] Erro ao criar agendamento:
+[2025-06-05T03:25:58.505Z] Erro ao criar agendamento:
+[2025-06-05T03:26:16.694Z] Erro ao criar agendamento:
+[2025-06-05T03:31:19.345Z] Erro ao criar agendamento:
+[2025-06-05T03:47:24.374Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-05T03:55:58.717Z] Erro ao criar agendamento:
+[2025-06-05T03:56:05.094Z] Erro ao criar agendamento:
+[2025-06-05T03:56:09.706Z] Erro ao criar agendamento:
+[2025-06-05T03:56:13.217Z] Erro ao criar agendamento:
+[2025-06-05T04:28:57.548Z] Login bem-sucedido - Usuário: medico@gmail.com
+[2025-06-05T04:54:05.563Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 2
+[2025-06-05T04:54:07.908Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 1
+[2025-06-05T04:54:10.127Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 4
+[2025-06-05T04:54:11.892Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 5
+[2025-06-05T04:54:14.308Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 3
+[2025-06-05T04:57:57.351Z] Login bem-sucedido - Usuário: medico@gmail.com
+[2025-06-05T05:03:31.222Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:06:02.928Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:06:07.884Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:07:15.903Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:12:22.738Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:12:30.505Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:15:07.615Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:15:27.549Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:16:06.715Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:16:25.119Z] Erro ao atualizar agendamento:
+[2025-06-05T05:18:12.801Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:21:28.382Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:21:49.911Z] Agendamento excluído - Usuário ID: 2, Agendamento ID: 7
+[2025-06-05T05:21:57.192Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:24:00.049Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-05T05:34:34.076Z] Login bem-sucedido - Usuário: medico@gmail.com
+[2025-06-05T05:35:13.244Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:36:02.327Z] Agendamento atualizado com sucesso!
+[2025-06-05T05:36:21.734Z] Agendamento atualizado com sucesso!
+[2025-06-05T06:04:07.892Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-05T06:12:09.300Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-05T06:42:51.175Z] Login bem-sucedido - Usuário: medico@gmail.com
+[2025-06-05T06:52:56.697Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-05T07:06:10.864Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-05T07:07:07.696Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-05T07:07:31.664Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-05T07:08:14.932Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-05T07:13:17.267Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com

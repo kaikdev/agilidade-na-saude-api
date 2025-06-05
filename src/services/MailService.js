@@ -20,7 +20,7 @@ transporter.verify().then(() => {
 const MailService = {
   sendResetPasswordEmail: async (email, token) => {
     try {
-      const resetLink = `http://localhost:5173/?resetToken=${token}`; 
+      const resetLink = `https://agilidade-na-saude.vercel.app/?resetToken=${token}`; 
 
       const mailSubject = "Solicitação de Redefinição de Senha – Agilidade na Saúde";
 

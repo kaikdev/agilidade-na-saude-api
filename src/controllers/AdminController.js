@@ -4,6 +4,8 @@ const UserModel = require("../models/UserModel");
 const UserRepository = require("../repository/UserRepository");
 const bcrypt = require("bcryptjs");
 
+const baseUrl = process.env.BASE_API_URL;
+
 const AdminController = {
   // Criar novo administrador
   createAdmin: async (req, res) => {
@@ -70,8 +72,8 @@ const AdminController = {
     const AdminWithLinks = userAdmin.map(({ password,created_at,birth_date, ...admin }) => ({
         ...admin,
         links: {
-          update: `http://localhost:3000/api/admin/update/${admin.id}`,
-          delete: `http://localhost:3000/api/admin/delete/delete/${admin.id}`,
+          update: `${baseUrl}/api/admin/update/${admin.id}`,
+          delete: `${baseUrl}/api/admin/delete/delete/${admin.id}`,
         },
       }));
 
@@ -125,9 +127,9 @@ const AdminController = {
       const servicesWithLink = services.map(({created_at, ...appointment}) => ({
         ...appointment,
         link: {
-          getForId: `http://localhost:3000/api/admin/appointments/${appointment.id}`,
-          update: `http://localhost:3000/api/admin/appointments/update/${appointment.id}`,
-          delete: `http://localhost:3000/api/admin/appointments/delete/${appointment.id}`,
+          getForId: `${baseUrl}/api/admin/appointments/${appointment.id}`,
+          update: `${baseUrl}/api/admin/appointments/update/${appointment.id}`,
+          delete: `${baseUrl}/api/admin/appointments/delete/${appointment.id}`,
         },
       }));
       return res.json(servicesWithLink);
@@ -152,8 +154,8 @@ const AdminController = {
       const appointmentsWithLinks = {
         ...getAppointments,
         links: {
-          update: `http://localhost:3000/api/admin/appointments/update/${getAppointments.id}`,
-          delete: `http://localhost:3000/api/admin/appointments/delete/${getAppointments.id}`,
+          update: `${baseUrl}/api/admin/appointments/update/${getAppointments.id}`,
+          delete: `${baseUrl}/api/admin/appointments/delete/${getAppointments.id}`,
         },
       };
 
@@ -254,8 +256,8 @@ const AdminController = {
         const appointmentsWithLinks = appointments.map((appointment) => ({
           ...appointment,
           links: {
-            update: `http://localhost:3000/api/admin/appointments/update/${appointment.id}`,
-            delete: `http://localhost:3000/api/admin/appointments/delete/${appointment.id}`,
+            update: `${baseUrl}/api/admin/appointments/update/${appointment.id}`,
+            delete: `${baseUrl}/api/admin/appointments/delete/${appointment.id}`,
           },
         }));
 
@@ -314,7 +316,7 @@ const AdminController = {
       const output = scheduledAppointments.map((appointment) => ({
         ...appointment,
         links: {
-          getById: `http://localhost:3000/api/admin/scheduled/appointments/${appointment.user_id}`,
+          getById: `${baseUrl}/api/admin/scheduled/appointments/${appointment.user_id}`,
         },
       }));
       return res.status(200).json({
@@ -338,7 +340,7 @@ const AdminController = {
       const output = {
         ...scheduledAppointments,
         links: {
-          finalizeQueries: `http://localhost:3000/api/admin/scheduled/appointments/finalizeQueries/${scheduledAppointments.consultation_id}`,
+          finalizeQueries: `${baseUrl}/api/admin/scheduled/appointments/finalizeQueries/${scheduledAppointments.consultation_id}`,
         },
       };
 
@@ -379,7 +381,7 @@ getQueriesMyPatient: async (req, res) => {
       const output = queries.map((appointment) => ({
         ...appointment,
         links: {
-          prioritizePatient: `http://localhost:3000/api/admin/appointments/prioritizePatient/${appointment.user_id}`,
+          prioritizePatient: `${baseUrl}/api/admin/appointments/prioritizePatient/${appointment.user_id}`,
         },
       }));
 
