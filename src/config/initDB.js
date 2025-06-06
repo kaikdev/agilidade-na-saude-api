@@ -19,6 +19,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
         password TEXT NOT NULL,
         role TEXT NOT NULL DEFAULT 'user',
         birth_date DATE,
+        profile_image_path TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )`);
 

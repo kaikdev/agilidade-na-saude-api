@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const db = require("./config/initDB");
@@ -26,7 +27,7 @@ app.get("/", (req, res) => {
   res.json({ message: "API está funcionando!" });
 });
 
-const PORT = process.env.PORT || 2000;
+const PORT = process.env.PORT || 3000;
 // Só inicie o servidor se não estiver em ambiente de teste
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {

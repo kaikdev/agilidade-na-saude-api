@@ -21,16 +21,19 @@ const AdminController = {
 
     const adminData = req.body;
 
-    // Verifica se todos os campos obrigatórios estão preenchidos
+    // Caminho da Imagem
+    if (req.file) {
+      adminData.profileImagePath = `/uploads/admins/${req.file.filename}`;
+    }
+
+    // Verifica campos obrigatórios
     const missingFields = requiredFields.filter((field) => !adminData[field]);
     if (missingFields.length > 0) {
       return res.status(400).json({
-        error: `Os seguintes campos são obrigatórios: ${missingFields.join(
-          ", "
-        )}`,
+        error: `Os seguintes campos são obrigatórios: ${missingFields.join(", ")}`,
       });
     }
-    // Defina o role como 'admin' no controlador
+
     adminData.role = "admin";
 
     try {
@@ -41,7 +44,7 @@ const AdminController = {
       return res.status(201).json({
         success: true,
         message: "Administrador criado com sucesso!",
-        userId: userId,
+        userId,
       });
     } catch (err) {
       console.error("Erro no controller:", err);
@@ -54,10 +57,10 @@ const AdminController = {
 
   //pega as informação do usuario adm
   getAdmById: async (req, res) => {
-  const id = parseInt(req.params.id);
-  const userId = req.user?.id;
-    
-    if(id !== userId) {
+    const id = parseInt(req.params.id);
+    const userId = req.user?.id;
+
+    if (id !== userId) {
 
       return res.status(403).json({
         error: "Você não tem permissão para acessar essas informações.",
@@ -69,7 +72,7 @@ const AdminController = {
       if (!userAdmin) {
         return res.status(404).json({ error: "Usuário não encontrado." });
       }
-    const AdminWithLinks = userAdmin.map(({ password,created_at,birth_date, ...admin }) => ({
+      const AdminWithLinks = userAdmin.map(({ password, created_at, birth_date, ...admin }) => ({
         ...admin,
         links: {
           update: `${baseUrl}/api/admin/update/${admin.id}`,
@@ -124,7 +127,7 @@ const AdminController = {
     const id = req.user.id;
     try {
       const services = await AdminService.listAllAppointments(id);
-      const servicesWithLink = services.map(({created_at, ...appointment}) => ({
+      const servicesWithLink = services.map(({ created_at, ...appointment }) => ({
         ...appointment,
         link: {
           getForId: `${baseUrl}/api/admin/appointments/${appointment.id}`,
@@ -146,8 +149,8 @@ const AdminController = {
 
     try {
       const getAppointments = await AdminService.getAppointmentsById(id, userId);
-      
-      if(getAppointments.length === 0){
+
+      if (getAppointments.length === 0) {
         throw new Error("Você não tem permissão para acessar este agendamento, agendamento não corresponde ao seu usúario");
       }
 
@@ -296,7 +299,7 @@ const AdminController = {
     const { id } = req.params;
     const userId = req.user?.id;
     try {
-      const message = await AdminService.deleteAppointment(id,userId);
+      const message = await AdminService.deleteAppointment(id, userId);
       logEvent(
         `Agendamento excluído - Usuário ID: ${userId}, Agendamento ID: ${id}`
       );
@@ -354,26 +357,26 @@ const AdminController = {
       });
     }
   },
- // AdminController.js
-finalizeScheduledAppointments: async (req, res) => {
-  const { id } = req.params;
-  const userId = req.user?.id;
-  const role = "admin";
-  
-  try {
-    const scheduledAppointments = await AdminService.finalizeScheduledAppointments(id, userId, role);
+  // AdminController.js
+  finalizeScheduledAppointments: async (req, res) => {
+    const { id } = req.params;
+    const userId = req.user?.id;
+    const role = "admin";
 
-    return res.status(200).json({
-      message: "Agendamentos encontrados!",
-      appointments: scheduledAppointments,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message:error.message,
-    });
-  }
-},
-getQueriesMyPatient: async (req, res) => {
+    try {
+      const scheduledAppointments = await AdminService.finalizeScheduledAppointments(id, userId, role);
+
+      return res.status(200).json({
+        message: "Agendamentos encontrados!",
+        appointments: scheduledAppointments,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: error.message,
+      });
+    }
+  },
+  getQueriesMyPatient: async (req, res) => {
     const userId = req.user?.id;
     try {
       const queries = await AdminService.getQueriesMyPatient(userId);
@@ -394,8 +397,8 @@ getQueriesMyPatient: async (req, res) => {
         message: error.message,
       });
     }
-},
- prioritizePatientInQuerie: async (req, res) => {
+  },
+  prioritizePatientInQuerie: async (req, res) => {
     const { id } = req.params;
     const userId = req.user?.id;
 

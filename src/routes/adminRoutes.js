@@ -5,11 +5,16 @@ const authorize = require("../middlewares/authorize");
 
 const router = express.Router();
 
+const upload = require("../middlewares/uploadMiddleware");
+
 // Create User Admin/Doctor
 
-router.post("/admin", AdminController.createAdmin);//ok
+router.post("/admin", upload.single("profileImage"), AdminController.createAdmin);//ok
+
 router.get("/admin/:id",  Auth.verifyToken, authorize(["admin"]), AdminController.getAdmById);//ok
+
 router.put("/admin/update/:id",  Auth.verifyToken, authorize(["admin"]), AdminController.updateAdmin);//ok
+
 router.delete("/admin/delete/:id", Auth.verifyToken, authorize(["admin"]), AdminController.delete);//ok
 
 router.get("/admin/appointments/listAll", Auth.verifyToken, authorize(["admin"]), AdminController.getAllAppointments); //ok

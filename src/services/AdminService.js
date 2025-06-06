@@ -6,8 +6,7 @@ const { CONSTRAINT } = require("sqlite3");
 
 const AdminService = {
   createAdmin: async (adminData) => {
-    const { name, email, cpf, password, role, crm, specialty, presentation } =
-      adminData;
+    const { name, email, cpf, password, role, crm, specialty, presentation, profileImagePath } = adminData;
 
     // Verifica se o e-mail já está cadastrado
     const existingUser = await UserModel.findByEmail(email);
@@ -41,13 +40,15 @@ const AdminService = {
         cpf,
         hashedPassword,
         role,
-        null
+        null,
+        profileImagePath
       );
 
       await AdminModel.createAdminData(userId, crm, specialty, presentation);
 
       return userId;
-    } catch (error) {
+    } 
+    catch (error) {
       if (error.message.includes("UNIQUE constraint failed: users.cpf")) {
         throw new Error("Esse CPF já está cadastrado no sistema.");
       }

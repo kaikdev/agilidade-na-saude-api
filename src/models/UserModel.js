@@ -2,8 +2,8 @@ const db = require("../config/promisifiedDb");
 
 const UserModel = {
   // Criar um novo usuário
-  create: async (name, email, cpf, password, role, birth_date) => {
-    const sql = `INSERT INTO users (name, email, cpf, password, role, birth_date) VALUES (?, ?, ?, ?, ?, ?)`;
+  create: async (name, email, cpf, password, role, birth_date, profileImagePath) => {
+    const sql = `INSERT INTO users (name, email, cpf, password, role, birth_date, profile_image_path) VALUES (?, ?, ?, ?, ?, ?, ?)`;
     try {
       const result = await db.runAsync(sql, [
         name,
@@ -12,6 +12,7 @@ const UserModel = {
         password,
         role,
         birth_date,
+        profileImagePath,
       ]);
       if (!result || !result.lastID) {
         throw new Error("Não foi possível obter o ID do usuário criado");
@@ -21,7 +22,7 @@ const UserModel = {
       console.error("Erro no UserModel.create:", {
         error: err,
         query: sql,
-        params: [name, email, cpf, "***", role, birth_date],
+        params: [name, email, cpf, "***", role, birth_date, profileImagePath],
       });
       throw err;
     }
