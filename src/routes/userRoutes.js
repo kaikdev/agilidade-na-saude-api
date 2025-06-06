@@ -6,8 +6,10 @@ const authorize = require("../middlewares/authorize");
 
 const router = express.Router();
 
+const upload = require('../middlewares/uploadMiddleware');
+
 // Definição das rotas de usuário publicas
-router.post("/users", UserController.createUser); // Criar usuário
+router.post("/users", upload.single("documentImage"), UserController.createUser); // Criar usuário
 
 // Aplicar autenticação em todas as rotas
 router.get("/users/:id", Auth.verifyToken, authorize(["user"]), UserController.getUserById);  // Qualquer usuário autenticado pode ver seu próprio perfil

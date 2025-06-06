@@ -5,7 +5,9 @@ const e = require("express");
 
 const UserService = {
   // Criar novo usuário com hash de senha
-  createUser: async (name, email, cpf, password, role, birth_date) => {
+  createUser: async (userData) => {
+    const { name, email, cpf, password, role, birth_date, documentImagePath } = userData;
+
     // Verifica se o e-mail já está cadastrado
     const existingUser = await UserModel.findByEmail(email);
     if (existingUser) {
@@ -44,21 +46,20 @@ const UserService = {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
-      // Criação do usuário
       const userId = await UserModel.create(
         name,
         email,
         cpf,
         hashedPassword,
         role,
-        birthDateValidation.formattedDate
+        birthDateValidation.formattedDate,
+        documentImagePath
       );
       return userId;
     } catch (error) {
       if (error.message.includes("UNIQUE constraint failed: users.cpf")) {
         throw new Error("Esse CPF já está cadastrado no sistema.");
       }
-      // Outros erros
       throw error;
     }
   },
@@ -192,7 +193,7 @@ const UserService = {
       const resumeAppointments = await UserModel.getResumeAppointments(userId);
 
       if (!resumeAppointments || resumeAppointments.length === 0) throw new Error("Nenhum resumo de agendamentos encontrado.");
-      
+
       const cleanedAppointments = resumeAppointments.map((appointment) => ({
         ...appointment,
         data: appointment.data.map(({ user_name, email, ...rest }) => rest),
@@ -205,17 +206,17 @@ const UserService = {
       const getServiceNames = await UserModel.getAdminBydIds(serviceIds);
 
       if (!getServiceNames || getServiceNames.length === 0) throw new Error("Nenhum serviço encontrado para os IDs fornecidos.");
-      
-      const cleanedGetServiceNames = getServiceNames.map(({specialty, locality, id_admin_data, service_user_id, ...rest }) => rest);
-      
+
+      const cleanedGetServiceNames = getServiceNames.map(({ specialty, locality, id_admin_data, service_user_id, ...rest }) => rest);
+
       //merge
       const mergedAppointments = cleanedAppointments.map((appointment) => ({
-      ...appointment,
-      data: appointment.data.map((item) => {
-        const service = cleanedGetServiceNames.find(
-          (s) => s.id_service === item.service_id
-        );
-        return {
+        ...appointment,
+        data: appointment.data.map((item) => {
+          const service = cleanedGetServiceNames.find(
+            (s) => s.id_service === item.service_id
+          );
+          return {
             ...item,
             ...service, // merge das informações do médico com o resumo do agendamento
           };
@@ -227,7 +228,7 @@ const UserService = {
         data: appointment.data.map(({ id_service, id_admin, ...rest }) => rest),
       }));
 
-    return finalResumeAppointments;
+      return finalResumeAppointments;
 
     } catch (error) {
       throw new Error(

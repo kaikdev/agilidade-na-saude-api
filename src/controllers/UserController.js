@@ -9,23 +9,28 @@ const baseUrl = process.env.BASE_API_URL;
 const UserController = {
   // Criar novo usuário
   createUser: async (req, res) => {
-    const { name, email, cpf, password, role, birth_date } = req.body;
+    const userData = req.body;
 
-    if (!name || !email || !cpf || !password || !role || !birth_date) {
-      return res
-        .status(400)
-        .json({ error: "Todos os campos são obrigatórios." });
+    if (req.file) {
+      userData.documentImagePath = `/uploads/documents/${req.file.filename}`;
+    }
+
+    const requiredFields = ["name", "email", "cpf", "password", "role", "birth_date"];
+    const missingFields = requiredFields.filter((field) => !userData[field]);
+
+    if (!userData.documentImagePath) {
+      missingFields.push("documentImage");
+    }
+
+    if (missingFields.length > 0) {
+      return res.status(400).json({
+        error: `Os seguintes campos são obrigatórios: ${missingFields.join(", ")}`
+      });
     }
 
     try {
-      const userId = await UserService.createUser(
-        name,
-        email,
-        cpf,
-        password,
-        role,
-        birth_date
-      );
+      const userId = await UserService.createUser(userData);
+
       logEvent(`Conta criada - Usuário ID: ${userId}`);
       res.status(201).json({ message: "Usuário criado com sucesso!", userId });
     } catch (err) {
@@ -217,15 +222,15 @@ const UserController = {
     }
   },
   getResumeAppointments: async (req, res) => {
-  const UserId = req.user?.id;
-  
-  try {
-    const resumeAppointments = await UserService.getResumeAppointments(UserId);
-    return res.json(resumeAppointments); 
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
+    const UserId = req.user?.id;
+
+    try {
+      const resumeAppointments = await UserService.getResumeAppointments(UserId);
+      return res.json(resumeAppointments);
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
   }
-}
 
 };
 
