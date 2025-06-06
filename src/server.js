@@ -15,12 +15,14 @@ const adminRoutes = require("./routes/adminRoutes");// Rotas de Admin
 const queriesRoutes = require("./routes/queriesRoutes");//Rota da fila
 const authRoutes = require("./routes/authRoutes");// Rotas de autenticação
 const passwordRoutes = require("./routes/passwordRoutes");// Rotas de alteração de senha
+const contactRoutes = require("./routes/contactRoutes");// Rotas Mensaem de Contato
 
 app.use("/api", userRoutes);
 app.use("/api", adminRoutes);
 app.use("/api", queriesRoutes);
 app.use("/api", authRoutes);
 app.use("/api", passwordRoutes);
+app.use("/api", contactRoutes);
 
 // Rota inicial de teste
 app.get("/", (req, res) => {

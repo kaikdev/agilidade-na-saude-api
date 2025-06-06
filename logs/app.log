@@ -337,3 +337,6 @@
 [2025-06-06T03:39:22.728Z] Conta criada - Administrador ID: 5
 [2025-06-06T03:52:36.985Z] Conta criada - Usuário ID: 6
 [2025-06-06T03:53:42.115Z] Login bem-sucedido - Usuário: pacienteref@gmail.com
+[2025-06-06T04:52:05.889Z] Falha no login - Senha incorreta para o email: medico@gmail.com
+[2025-06-06T04:52:12.030Z] Login bem-sucedido - Usuário: medico@gmail.com
+[2025-06-06T05:07:53.005Z] Conta criada - Usuário ID: 7
