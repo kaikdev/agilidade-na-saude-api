@@ -344,3 +344,11 @@
 [2025-06-06T07:18:13.011Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
 [2025-06-06T07:27:55.851Z] Agendamento atualizado com sucesso!
 [2025-06-06T07:27:58.952Z] Agendamento excluído - Usuário ID: 1, Agendamento ID: 2
+[2025-06-07T02:24:15.844Z] Conta criada - Usuário ID: 2
+[2025-06-07T02:24:22.751Z] Login bem-sucedido - Usuário: paciente@gmail.com
+[2025-06-07T02:35:15.920Z] Login bem-sucedido - Usuário: paciente@gmail.com
+[2025-06-07T03:00:15.695Z] Falha no login - Senha incorreta para o email: paciente@gmail.com
+[2025-06-07T03:00:23.232Z] Login bem-sucedido - Usuário: paciente@gmail.com
+[2025-06-07T03:24:46.687Z] Conta criada - Administrador ID: 3
+[2025-06-07T03:24:51.585Z] Login bem-sucedido - Usuário: medico@gmail.com
+[2025-06-07T03:25:39.049Z] Login bem-sucedido - Usuário: paciente@gmail.com

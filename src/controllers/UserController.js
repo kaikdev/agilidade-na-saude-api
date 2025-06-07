@@ -221,6 +221,7 @@ const UserController = {
       return res.status(500).json({ error: "Erro ao buscar agendamentos." });
     }
   },
+  
   getResumeAppointments: async (req, res) => {
     const UserId = req.user?.id;
 

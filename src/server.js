@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const db = require("./config/initDB");
 const app = express();
+const path = require('path');
 
 // Configurações básicas do servidor
 app.use(cors());
@@ -16,6 +17,9 @@ const queriesRoutes = require("./routes/queriesRoutes");//Rota da fila
 const authRoutes = require("./routes/authRoutes");// Rotas de autenticação
 const passwordRoutes = require("./routes/passwordRoutes");// Rotas de alteração de senha
 const contactRoutes = require("./routes/contactRoutes");// Rotas Mensaem de Contato
+
+//    Isso "mapeia" a rota '/uploads' para a pasta física 'src/uploads'
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/api", userRoutes);
 app.use("/api", adminRoutes);
