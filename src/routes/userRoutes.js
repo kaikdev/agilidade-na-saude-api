@@ -13,7 +13,7 @@ router.post("/users", upload.single("documentImage"), UserController.createUser)
 
 // Aplicar autenticação em todas as rotas
 router.get("/users/:id", Auth.verifyToken, authorize(["user"]), UserController.getUserById);  // Qualquer usuário autenticado pode ver seu próprio perfil
-router.put("/users/:id", Auth.verifyToken, authorize(["user"]), UserController.deleteUser);  // Excluir conta própria
+router.delete("/users/delete/:id", Auth.verifyToken, authorize(["user"]), UserController.deleteUser);  // Excluir conta própria
 
 // inscrição do usuario na fila de atendimento
 router.get("/users/appointments/list", Auth.verifyToken, authorize(["user"]), UserController.appointmentsList);

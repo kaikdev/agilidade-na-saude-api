@@ -62,7 +62,7 @@ const UserController = {
       };
 
       res.json(output);
-    } 
+    }
     catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -91,18 +91,21 @@ const UserController = {
 
   // Excluir usuário
   deleteUser: async (req, res) => {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
+
+    const userId = req.user?.id;
 
     if (id !== userId) {
-      return res.status(403).json({ error: "Acesso negado." });
+      return res.status(403).json({ error: "Acesso negado. Você só pode excluir sua própria conta." });
     }
 
     try {
       const message = await UserService.deleteUser(id);
-      logEvent(`Conta excluída - Usuário ID: ${id}`);
       res.json({ message });
-    } catch (err) {
-      res.status(400).json({ error: err.message });
+    } 
+    catch (err) {
+      const statusCode = err.message === "Usuário não encontrado." ? 404 : 500;
+      res.status(statusCode).json({ error: err.message });
     }
   },
 
