@@ -49,19 +49,21 @@ const UserController = {
     try {
       const user = await UserService.getUserById(id, userId);
 
+      if (!user) {
+        return res.status(404).json({ error: "Usuário não encontrado." });
+      }
+
       const output = {
         ...user,
-        link: {
+        links: {
           update: `${baseUrl}/api/users/update/${user.id}`,
           delete: `${baseUrl}/api/users/delete/${user.id}`,
         },
       };
 
-      if (!user) {
-        return res.status(404).json({ error: "Usuário não encontrado." });
-      }
-      res.json(user);
-    } catch (err) {
+      res.json(output);
+    } 
+    catch (err) {
       res.status(500).json({ error: err.message });
     }
   },
@@ -221,7 +223,7 @@ const UserController = {
       return res.status(500).json({ error: "Erro ao buscar agendamentos." });
     }
   },
-  
+
   getResumeAppointments: async (req, res) => {
     const UserId = req.user?.id;
 

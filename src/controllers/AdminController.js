@@ -61,7 +61,6 @@ const AdminController = {
     const userId = req.user?.id;
 
     if (id !== userId) {
-
       return res.status(403).json({
         error: "Você não tem permissão para acessar essas informações.",
       });

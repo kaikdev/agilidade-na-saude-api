@@ -37,7 +37,7 @@ const UserModel = {
 
   // Buscar usuário pelo ID
   findById: async (id) => {
-    const sql = `SELECT id, name, email, cpf, birth_date FROM users WHERE id = ?`;
+    const sql = `SELECT id, name, email, cpf, birth_date, profile_image_path FROM users WHERE id = ?`;
     const user = await db.getAsync(sql, [id]);
     return user;
   },
@@ -68,6 +68,7 @@ const UserModel = {
     const users = await db.allAsync(sql);
     return users;
   },
+
   getAllAppointments: async () => {
     const sql = `
             SELECT 
@@ -95,6 +96,7 @@ const UserModel = {
       );
     }
   },
+
   listAllPassword: async (password) => {
     const sql =
       "SELECT password FROM scheduled_consultations WHERE password = ?";
@@ -105,6 +107,7 @@ const UserModel = {
       throw new Error("Erro ao consultar senhas: " + err.message);
     }
   },
+
   getAllAppointmentsById: async (id) => {
     const sql = "SELECT * FROM create_service WHERE id = ?";
     try {
@@ -114,6 +117,7 @@ const UserModel = {
       throw new Error("Erro ao consultar o banco de dados: " + err.message);
     }
   },
+
   checkPatientInQueue: async (serviceId, userId) => {
     const sql = `
         SELECT * 
