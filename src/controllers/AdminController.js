@@ -75,7 +75,7 @@ const AdminController = {
         ...admin,
         links: {
           update: `${baseUrl}/api/admin/update/${admin.id}`,
-          delete: `${baseUrl}/api/admin/delete/delete/${admin.id}`,
+          delete: `${baseUrl}/api/admin/delete/${admin.id}`,
         },
       }));
 
@@ -281,16 +281,21 @@ const AdminController = {
   },
 
   delete: async (req, res) => {
-    const { id } = req.params;
+    const id = parseInt(req.params.id, 10);
     const userId = req.user?.id;
+
+    if (id !== userId) {
+      return res.status(403).json({ error: "Acesso negado. Você só pode excluir sua própria conta." });
+    }
+
     try {
       const message = await AdminService.deleteAdmin(id);
-      logEvent(
-        `Agendamento excluído - Usuário ID: ${userId}, Agendamento ID: ${id}`
-      );
+      logEvent(`Conta de Admin excluída - Admin ID: ${id}`);
       res.json({ message });
-    } catch (err) {
-      res.status(400).json({ error: err.message });
+    } 
+    catch (err) {
+      const statusCode = err.message === "Administrador não encontrado." ? 404 : 500;
+      res.status(statusCode).json({ error: err.message });
     }
   },
 
@@ -356,6 +361,7 @@ const AdminController = {
       });
     }
   },
+
   // AdminController.js
   finalizeScheduledAppointments: async (req, res) => {
     const { id } = req.params;
@@ -375,6 +381,7 @@ const AdminController = {
       });
     }
   },
+
   //Modificado
   getQueriesMyPatient: async (req, res) => {
     const userId = req.user?.id;
@@ -383,7 +390,7 @@ const AdminController = {
     //console.log("here is the code")
     //console.log(serviceId)
     try {
-      const queries = await AdminService.getQueriesMyPatient(userId,serviceId);
+      const queries = await AdminService.getQueriesMyPatient(userId, serviceId);
 
       const output = queries.map((appointment) => ({
         ...appointment,
@@ -402,6 +409,7 @@ const AdminController = {
       });
     }
   },
+
   prioritizePatientInQuerie: async (req, res) => {
     const { id } = req.params;
     const userId = req.user?.id;

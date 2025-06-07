@@ -47,7 +47,7 @@ const AdminService = {
       await AdminModel.createAdminData(userId, crm, specialty, presentation);
 
       return userId;
-    } 
+    }
     catch (error) {
       if (error.message.includes("UNIQUE constraint failed: users.cpf")) {
         throw new Error("Esse CPF já está cadastrado no sistema.");
@@ -56,10 +56,10 @@ const AdminService = {
     }
   },
 
-  updateAdmin: async ( id, userId, name, email, password, specialty, presentation, ) => {
+  updateAdmin: async (id, userId, name, email, password, specialty, presentation,) => {
 
     // Verifica se o usuário existe
-    const user = await AdminModel.getAdminById(id); 
+    const user = await AdminModel.getAdminById(id);
     if (!user) {
       throw new Error("Usuário não encontrado.");
     }
@@ -79,27 +79,27 @@ const AdminService = {
     if (!UserRepository.validatePassword(password)) {
       throw new Error("Senha fraca.");
     }
-    
-  // Acessando o primeiro item do array
-  const userFromDB = user[0];
 
-  // Verifica se a nova senha é diferente da senha atual
-  const isSamePassword = await bcrypt.compare(password, userFromDB.password);
-  if (isSamePassword) {
-    throw new Error("A nova senha deve ser diferente da atual.");
-  }
+    // Acessando o primeiro item do array
+    const userFromDB = user[0];
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+    // Verifica se a nova senha é diferente da senha atual
+    const isSamePassword = await bcrypt.compare(password, userFromDB.password);
+    if (isSamePassword) {
+      throw new Error("A nova senha deve ser diferente da atual.");
+    }
 
-      // Atualiza o usuário
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Atualiza o usuário
     const updatedAdmin = await AdminModel.updateAdmin(
-        id,
-        userId,
-        name,
-        email,
-        hashedPassword,
-        specialty,
-        presentation
+      id,
+      userId,
+      name,
+      email,
+      hashedPassword,
+      specialty,
+      presentation
     );
 
     return updatedAdmin;
@@ -112,6 +112,21 @@ const AdminService = {
       throw new Error("Usuário não encontrado.");
     }
     return user;
+  },
+
+  deleteAdmin: async (id) => {
+    const admin = await AdminModel.getAdminById(id);
+    if (!admin || admin.length === 0) {
+      throw new Error("Administrador não encontrado.");
+    }
+
+    const changes = await AdminModel.deleteById(id);
+
+    if (changes === 0) {
+      throw new Error("Falha ao excluir o usuário principal. Verifique a consistência do banco de dados.");
+    }
+
+    return "Administrador excluído com sucesso.";
   },
 
   listAllAppointments: async (id) => {
@@ -220,6 +235,7 @@ const AdminService = {
 
     return;
   },
+
   getScheduledAppointments: async (userId) => {
     const service = await AdminModel.findAllAppointments(userId);
     const allServicesId = service.map((service) => service.id);
@@ -236,6 +252,7 @@ const AdminService = {
       throw new Error("Erro ao buscar agendamentos: " + error.message);
     }
   },
+
   getScheduledAppointmentsById: async (id) => {
     try {
       const scheduledAppointments =
@@ -285,18 +302,20 @@ const AdminService = {
       throw new Error("Erro ao finalizar o agendamento: " + err.message);
     }
   },
+
   //Modificado
-  getQueriesMyPatient: async (userId,serviceId) => {
+  getQueriesMyPatient: async (userId, serviceId) => {
     try {
-      const queries = await AdminModel.getQueriesMyPatient(userId,serviceId);
-      
+      const queries = await AdminModel.getQueriesMyPatient(userId, serviceId);
+
       if (!queries) throw new Error("Nenhuma consulta encontrada para o paciente.");
-      
+
       return queries;
     } catch (error) {
       throw new Error("Erro ao buscar consultas do paciente: " + error.message);
     }
   },
+
   prioritizePatientInQuerie: async (id) => {
     console.log("fase 2")
     //console.log(`${id} - ${userId}`)
@@ -304,7 +323,7 @@ const AdminService = {
       const prioritize = await AdminModel.prioritizePatientInQuerie(id);
 
       if (!prioritize || prioritize.length === 0) throw new Error("Agendamento não encontrado.");
-      
+
       return prioritize;
     } catch (error) {
       throw new Error(

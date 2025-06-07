@@ -377,3 +377,12 @@
 [2025-06-07T06:11:22.336Z] Login bem-sucedido - Usuário: paciente@gmail.com
 [2025-06-07T06:18:02.956Z] Conta criada - Usuário ID: 5
 [2025-06-07T06:18:12.926Z] Login bem-sucedido - Usuário: paciente@gmail.com
+[2025-06-07T06:34:26.643Z] Login bem-sucedido - Usuário: medico@gmail.com
+[2025-06-07T06:34:33.938Z] Agendamento atualizado com sucesso!
+[2025-06-07T06:34:37.848Z] Agendamento excluído - Usuário ID: 3, Agendamento ID: 3
+[2025-06-07T06:42:41.350Z] Conta de Admin excluída - Admin ID: 3
+[2025-06-07T06:44:10.940Z] Conta criada - Administrador ID: 6
+[2025-06-07T06:44:16.044Z] Login bem-sucedido - Usuário: medico@gmail.com
+[2025-06-07T06:44:27.243Z] Conta de Admin excluída - Admin ID: 6
+[2025-06-07T06:45:11.286Z] Conta criada - Usuário ID: 7
+[2025-06-07T06:45:17.989Z] Login bem-sucedido - Usuário: paciente@gmail.com

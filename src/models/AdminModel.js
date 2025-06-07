@@ -10,18 +10,18 @@ const AdminModel = {
     }
   },
 
- updateAdmin: async ( id, userId, name, email, hashedPassword, specialty, presentation  ) => {
+  updateAdmin: async (id, userId, name, email, hashedPassword, specialty, presentation) => {
 
     const sql = `UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?`;
-    try {   
-      resultUser = await db.runAsync(sql, [ name, email, hashedPassword, id, ]);
+    try {
+      resultUser = await db.runAsync(sql, [name, email, hashedPassword, id,]);
 
       const updateAdminDataSql = `UPDATE admin_data SET specialty = ?, presentation = ? WHERE user_id = ?`;
-      resultAdminData = await db.runAsync(updateAdminDataSql, [ specialty, presentation, userId, ]); 
+      resultAdminData = await db.runAsync(updateAdminDataSql, [specialty, presentation, userId,]);
 
       return [resultUser, resultAdminData];
     } catch (err) {
-      throw new Error( 
+      throw new Error(
         `Erro ao atualizar admin: ${err.message}`
       );
     }
@@ -65,6 +65,26 @@ const AdminModel = {
     }
 
     return result;
+  },
+
+  // Deletar um administrador pelo ID
+  deleteById: async (id) => {
+    try {
+      await db.runAsync("BEGIN TRANSACTION;");
+
+      await db.runAsync(`DELETE FROM admin_data WHERE user_id = ?`, [id]);
+
+      const result = await db.runAsync(`DELETE FROM users WHERE id = ?`, [id]);
+
+      await db.runAsync("COMMIT;");
+
+      return result.changes;
+    } 
+    catch (err) {
+      await db.runAsync("ROLLBACK;");
+      console.error("Erro na transação de exclusão do admin:", err);
+      throw new Error("Erro ao deletar administrador do banco de dados.");
+    }
   },
 
   createAppointment: async (appointmentData) => {
@@ -282,7 +302,7 @@ const AdminModel = {
       throw new Error("Erro ao buscar fila no modelo: " + err.message);
     }
   },
-  
+
   createdResumePatient: async (getAppointmentsByUserId) => {
     const sql = `INSERT INTO historical_consultation (data) VALUES (?)`;
     try {
@@ -293,6 +313,7 @@ const AdminModel = {
       throw new Error(`Erro ao criar histórico da consulta: ${err.message}`);
     }
   },
+
   deleteQueryAppointmentById: async (id) => {
     const sql = "DELETE FROM scheduled_consultations WHERE id = ?";
     try {
@@ -302,8 +323,9 @@ const AdminModel = {
       throw new Error("Erro ao deletar agendamento: " + err.message);
     }
   },
+
   //Modificado
-  getQueriesMyPatient: async (userId,serviceId) => {
+  getQueriesMyPatient: async (userId, serviceId) => {
     try {
       const sql = `
       SELECT
@@ -326,12 +348,13 @@ const AdminModel = {
       ORDER BY sc.level ASC, sc.created_at ASC;
     `;
       console.log(`inserindo ${userId} - ${serviceId}`)
-      const result = await db.allAsync(sql, [userId,serviceId]);
+      const result = await db.allAsync(sql, [userId, serviceId]);
       return result;
     } catch (error) {
       throw new Error("Erro ao buscar consultas no modelo: " + error.message);
     }
   },
+
   prioritizePatientInQuerie: async (id) => {
     //const sql = `UPDATE scheduled_consultations SET level = -1 WHERE id = ?`;
     console.log("alterando")
