@@ -376,15 +376,20 @@ const AdminController = {
       });
     }
   },
+  //Modificado
   getQueriesMyPatient: async (req, res) => {
     const userId = req.user?.id;
+    const serviceId = req.params['id'];
+    //const serviceId = req.user?.id;
+    //console.log("here is the code")
+    //console.log(serviceId)
     try {
-      const queries = await AdminService.getQueriesMyPatient(userId);
+      const queries = await AdminService.getQueriesMyPatient(userId,serviceId);
 
       const output = queries.map((appointment) => ({
         ...appointment,
         links: {
-          prioritizePatient: `${baseUrl}/api/admin/appointments/prioritizePatient/${appointment.user_id}`,
+          prioritizePatient: `${baseUrl}/api/admin/appointments/prioritizePatient/${appointment.scheduled_id}`,
         },
       }));
 
@@ -401,6 +406,10 @@ const AdminController = {
   prioritizePatientInQuerie: async (req, res) => {
     const { id } = req.params;
     const userId = req.user?.id;
+
+    //console.log(req.user)
+    //console.log("priorizando")
+    //console.log(`${id} - ${userId}`)
 
     try {
       const prioritizedPatient = await AdminService.prioritizePatientInQuerie(id);

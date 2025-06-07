@@ -302,7 +302,8 @@ const AdminModel = {
       throw new Error("Erro ao deletar agendamento: " + err.message);
     }
   },
-  getQueriesMyPatient: async (userId) => {
+  //Modificado
+  getQueriesMyPatient: async (userId,serviceId) => {
     try {
       const sql = `
       SELECT
@@ -310,6 +311,7 @@ const AdminModel = {
         sc.service_id,
         sc.password,
         sc.priority,
+        sc.level as level,
 
         u.id AS user_id,
         u.name AS user_name,
@@ -320,17 +322,20 @@ const AdminModel = {
       FROM scheduled_consultations sc
       JOIN users u ON sc.user_id = u.id
       JOIN create_service cs ON sc.service_id = cs.id     
-      WHERE cs.user_id = ? AND DATE(cs.service_date) = DATE('now', 'localtime')
+      WHERE cs.user_id = ? AND sc.service_id = ?
       ORDER BY sc.level ASC, sc.created_at ASC;
     `;
-      const result = await db.allAsync(sql, [userId]);
+      console.log(`inserindo ${userId} - ${serviceId}`)
+      const result = await db.allAsync(sql, [userId,serviceId]);
       return result;
     } catch (error) {
       throw new Error("Erro ao buscar consultas no modelo: " + error.message);
     }
   },
   prioritizePatientInQuerie: async (id) => {
-    const sql = `UPDATE scheduled_consultations SET level = -1 WHERE id = ?`;
+    //const sql = `UPDATE scheduled_consultations SET level = -1 WHERE id = ?`;
+    console.log("alterando")
+    const sql = `UPDATE scheduled_consultations SET level = -1 WHERE scheduled_consultations.id = ?`;
     try {
       const result = await db.runAsync(sql, [id]);
       return result;

@@ -285,9 +285,10 @@ const AdminService = {
       throw new Error("Erro ao finalizar o agendamento: " + err.message);
     }
   },
-   getQueriesMyPatient: async (userId) => {
+  //Modificado
+  getQueriesMyPatient: async (userId,serviceId) => {
     try {
-      const queries = await AdminModel.getQueriesMyPatient(userId);
+      const queries = await AdminModel.getQueriesMyPatient(userId,serviceId);
       
       if (!queries) throw new Error("Nenhuma consulta encontrada para o paciente.");
       
@@ -296,7 +297,9 @@ const AdminService = {
       throw new Error("Erro ao buscar consultas do paciente: " + error.message);
     }
   },
-  prioritizePatientInQuerie: async (id, userId) => {
+  prioritizePatientInQuerie: async (id) => {
+    console.log("fase 2")
+    //console.log(`${id} - ${userId}`)
     try {
       const prioritize = await AdminModel.prioritizePatientInQuerie(id);
 

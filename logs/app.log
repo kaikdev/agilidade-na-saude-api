@@ -340,3 +340,7 @@
 [2025-06-06T04:52:05.889Z] Falha no login - Senha incorreta para o email: medico@gmail.com
 [2025-06-06T04:52:12.030Z] Login bem-sucedido - Usuário: medico@gmail.com
 [2025-06-06T05:07:53.005Z] Conta criada - Usuário ID: 7
+[2025-06-06T07:18:03.321Z] Conta criada - Administrador ID: 1
+[2025-06-06T07:18:13.011Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-06T07:27:55.851Z] Agendamento atualizado com sucesso!
+[2025-06-06T07:27:58.952Z] Agendamento excluído - Usuário ID: 1, Agendamento ID: 2
