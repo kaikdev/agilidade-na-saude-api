@@ -13,6 +13,9 @@ router.post("/users", upload.single("documentImage"), UserController.createUser)
 
 // Aplicar autenticação em todas as rotas
 router.get("/users/:id", Auth.verifyToken, authorize(["user"]), UserController.getUserById);  // Qualquer usuário autenticado pode ver seu próprio perfil
+
+router.put("/users/update/:id", Auth.verifyToken, authorize(["user"]), upload.single('profileImage'), UserController.updateUser); // Atualizar Dados
+
 router.delete("/users/delete/:id", Auth.verifyToken, authorize(["user"]), UserController.deleteUser);  // Excluir conta própria
 
 // inscrição do usuario na fila de atendimento

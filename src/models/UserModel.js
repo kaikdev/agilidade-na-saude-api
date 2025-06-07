@@ -43,9 +43,22 @@ const UserModel = {
   },
 
   // Atualizar dados do usuário
-  update: async (id, name, email) => {
-    const sql = `UPDATE users SET name = ?, email = ? WHERE id = ?`;
-    const result = await db.runAsync(sql, [name, email, id]);
+  update: async (id, updateData) => {
+    const fields = Object.keys(updateData);
+    
+    if (fields.length === 0) {
+      return 0;
+    }
+
+    const setClause = fields.map(field => `${field} = ?`).join(', ');
+
+    const values = Object.values(updateData);
+
+    const sql = `UPDATE users SET ${setClause} WHERE id = ?`;
+
+    const params = [...values, id];
+
+    const result = await db.runAsync(sql, params);
     return result.changes;
   },
 

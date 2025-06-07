@@ -83,11 +83,13 @@ const UserService = {
   },
 
   // Atualizar dados do usuário
-  updateUser: async (id, name, email) => {
-    const changes = await UserModel.update(id, name, email);
+  updateUser: async (id, updateData) => {
+    const changes = await UserModel.update(id, updateData);
+
     if (changes === 0) {
-      throw new Error("Usuário não encontrado ou sem alterações.");
+      throw new Error("Usuário não encontrado ou nenhum dado foi alterado.");
     }
+
     return "Usuário atualizado com sucesso.";
   },
 
@@ -114,10 +116,12 @@ const UserService = {
     const users = await UserModel.findAll();
     return users;
   },
+
   appointmentsList: async () => {
     const appointments = await UserModel.getAllAppointments();
     return appointments;
   },
+
   listAllPassword: async (password) => {
     try {
       const passwords = await UserModel.listAllPassword(password);
@@ -126,6 +130,7 @@ const UserService = {
       throw new Error("Erro ao listar senhas: " + error.message);
     }
   },
+
   getAppointmentsById: async (id) => {
     try {
       const appointment = await UserModel.getAllAppointmentsById(id);
@@ -134,6 +139,7 @@ const UserService = {
       throw new Error("Erro ao buscar agendamento: " + error.message);
     }
   },
+
   insertPatientInQueue: async (data) => {
     const { serviceId, userId, priority, level, password } = data;
 
@@ -169,6 +175,7 @@ const UserService = {
     const result = await UserModel.updateQtdAttendance(newQtd, serviceId);
     return result;
   },
+
   appointmentsScheduled: async (userId, role) => {
     try {
       console.log(

@@ -70,20 +70,36 @@ const UserController = {
 
   // Atualizar usuário
   updateUser: async (req, res) => {
-    const { id } = req.params;
-    const { name, email } = req.body;
+    const id = parseInt(req.params.id, 10);
+    const userId = req.user?.id;
 
     if (id !== userId) {
-      return res.status(403).json({ error: "Acesso negado." });
+      return res.status(403).json({ error: "Acesso negado. Você só pode atualizar sua própria conta." });
     }
 
-    if (!name || !email) {
-      return res.status(400).json({ error: "Nome e e-mail são obrigatórios." });
+    const updateData = {};
+
+    const { name, email, cpf, birth_date } = req.body;
+    if (name) updateData.name = name;
+    if (email) updateData.email = email;
+    if (cpf) updateData.cpf = cpf;
+    if (birth_date) updateData.birth_date = birth_date;
+
+    if (req.file) {
+      updateData.profile_image_path = `/uploads/documents/${req.file.filename}`;
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({ error: "Nenhum dado fornecido para atualização." });
     }
 
     try {
-      const message = await UserService.updateUser(id, name, email);
-      res.json({ message });
+      const message = await UserService.updateUser(id, updateData);
+
+      const updatedUser = await UserService.getUserById(id);
+
+      res.json({ message, user: updatedUser });
+
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
@@ -102,7 +118,7 @@ const UserController = {
     try {
       const message = await UserService.deleteUser(id);
       res.json({ message });
-    } 
+    }
     catch (err) {
       const statusCode = err.message === "Usuário não encontrado." ? 404 : 500;
       res.status(statusCode).json({ error: err.message });
