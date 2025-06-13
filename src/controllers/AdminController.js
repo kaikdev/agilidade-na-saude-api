@@ -89,35 +89,45 @@ const AdminController = {
   },
 
   updateAdmin: async (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.id, 10);
     const userId = req.user.id;
 
     if (id !== userId) {
-      return res.status(403).json({ error: "Acesso negado." });
+      return res.status(403).json({ error: "Acesso negado. Você só pode atualizar sua própria conta." });
     }
 
-    const { name, email, password, specialty, presentation } = req.body;
+    const updateData = {};
+
+    const { name, email, password, cpf, crm, specialty, presentation } = req.body;
+
+    if (name) updateData.name = name;
+    if (email) updateData.email = email;
+    if (password) updateData.password = password;
+    if (cpf) updateData.cpf = cpf;
+    if (crm) updateData.crm = crm;
+    if (specialty) updateData.specialty = specialty;
+    if (presentation) updateData.presentation = presentation;
+
+    if (req.file) {
+      updateData.profile_image_path = `/uploads/admins/${req.file.filename}`;
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({ error: "Nenhum dado fornecido para atualização." });
+    }
 
     try {
+      await AdminService.updateAdmin(id, updateData);
 
-      const updateAdmin = await AdminService.updateAdmin(
-        id,
-        userId,
-        name,
-        email,
-        password,
-        specialty,
-        presentation,
-      );
+      const updatedAdmin = await AdminService.getAdminById(id);
 
-      return res.status(200).json({
+      res.json({
         message: "Administrador atualizado com sucesso!",
-        data: updateAdmin,
+        user: updatedAdmin[0]
       });
+
     } catch (error) {
-      return res.status(500).json({
-        error: error.message,
-      });
+      res.status(400).json({ error: error.message });
     }
   },
 
@@ -292,7 +302,7 @@ const AdminController = {
       const message = await AdminService.deleteAdmin(id);
       logEvent(`Conta de Admin excluída - Admin ID: ${id}`);
       res.json({ message });
-    } 
+    }
     catch (err) {
       const statusCode = err.message === "Administrador não encontrado." ? 404 : 500;
       res.status(statusCode).json({ error: err.message });

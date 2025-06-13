@@ -13,7 +13,7 @@ router.post("/admin", upload.single("profileImage"), AdminController.createAdmin
 
 router.get("/admin/:id",  Auth.verifyToken, authorize(["admin"]), AdminController.getAdmById);//ok
 
-router.put("/admin/update/:id",  Auth.verifyToken, authorize(["admin"]), AdminController.updateAdmin);//ok
+router.put("/admin/update/:id", Auth.verifyToken, authorize(["admin"]), upload.single('profileImage'), AdminController.updateAdmin);//ok
 
 router.delete("/admin/delete/:id", Auth.verifyToken, authorize(["admin"]), AdminController.delete);//ok
 

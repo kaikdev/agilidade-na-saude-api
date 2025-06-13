@@ -56,54 +56,33 @@ const AdminService = {
     }
   },
 
-  updateAdmin: async (id, userId, name, email, password, specialty, presentation,) => {
+  updateAdmin: async (id, updateData) => {
+    if (updateData.email) {
+      if (!UserRepository.validateEmail(updateData.email)) {
+        throw new Error("Formato de e-mail inválido.");
+      }
+   
+      const existingUser = await UserModel.findByEmail(updateData.email);
 
-    // Verifica se o usuário existe
-    const user = await AdminModel.getAdminById(id);
-    if (!user) {
-      throw new Error("Usuário não encontrado.");
+      if (existingUser && existingUser.id !== id) {
+        throw new Error("Este e-mail já está em uso por outra conta.");
+      }
     }
 
-    // Verifica se o e-mail já está cadastrado
-    const existingUser = await UserModel.findByEmail(email);
-    if (existingUser) {
-      throw new Error("O email deve ser diferente do cadastrado.");
+    if (updateData.password) {
+      if (!UserRepository.validatePassword(updateData.password)) {
+        throw new Error("Senha fraca. Deve ter no mínimo 8 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.");
+      }
+      
+      updateData.password = await bcrypt.hash(updateData.password, 10);
     }
 
-    // Valida o e-mail
-    if (!UserRepository.validateEmail(email)) {
-      throw new Error("E-mail inválido.");
+    const changes = await AdminModel.update(id, updateData);
+    if (changes === 0) {
+      throw new Error("Administrador não encontrado ou nenhum dado foi alterado.");
     }
 
-    // Valida a senha
-    if (!UserRepository.validatePassword(password)) {
-      throw new Error("Senha fraca.");
-    }
-
-    // Acessando o primeiro item do array
-    const userFromDB = user[0];
-
-    // Verifica se a nova senha é diferente da senha atual
-    const isSamePassword = await bcrypt.compare(password, userFromDB.password);
-    if (isSamePassword) {
-      throw new Error("A nova senha deve ser diferente da atual.");
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Atualiza o usuário
-    const updatedAdmin = await AdminModel.updateAdmin(
-      id,
-      userId,
-      name,
-      email,
-      hashedPassword,
-      specialty,
-      presentation
-    );
-
-    return updatedAdmin;
-
+    return "Administrador atualizado com sucesso.";
   },
 
   getAdminById: async (id) => {

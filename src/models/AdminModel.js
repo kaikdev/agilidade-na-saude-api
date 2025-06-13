@@ -10,20 +10,52 @@ const AdminModel = {
     }
   },
 
-  updateAdmin: async (id, userId, name, email, hashedPassword, specialty, presentation) => {
+  // Atualizar Admin em ambas as tabelas (users e admin_data)
+  update: async (id, updateData) => {
+    const userFields = {};
+    const adminDataFields = {};
+    const userTableKeys = ['name', 'email', 'cpf', 'password', 'profile_image_path'];
+    const adminTableKeys = ['crm', 'specialty', 'presentation'];
 
-    const sql = `UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?`;
+    Object.keys(updateData).forEach(key => {
+      if (userTableKeys.includes(key)) {
+        userFields[key] = updateData[key];
+      } else if (adminTableKeys.includes(key)) {
+        adminDataFields[key] = updateData[key];
+      }
+    });
+
+    if (Object.keys(userFields).length === 0 && Object.keys(adminDataFields).length === 0) {
+      return 0;
+    }
+
     try {
-      resultUser = await db.runAsync(sql, [name, email, hashedPassword, id,]);
+      await db.runAsync("BEGIN TRANSACTION;");
 
-      const updateAdminDataSql = `UPDATE admin_data SET specialty = ?, presentation = ? WHERE user_id = ?`;
-      resultAdminData = await db.runAsync(updateAdminDataSql, [specialty, presentation, userId,]);
+      let changes = 0;
 
-      return [resultUser, resultAdminData];
-    } catch (err) {
-      throw new Error(
-        `Erro ao atualizar admin: ${err.message}`
-      );
+      if (Object.keys(userFields).length > 0) {
+        const setUserClause = Object.keys(userFields).map(f => `${f} = ?`).join(', ');
+        const userValues = Object.values(userFields);
+        const userSql = `UPDATE users SET ${setUserClause} WHERE id = ?`;
+        const userResult = await db.runAsync(userSql, [...userValues, id]);
+        changes += userResult.changes;
+      }
+
+      if (Object.keys(adminDataFields).length > 0) {
+        const setAdminClause = Object.keys(adminDataFields).map(f => `${f} = ?`).join(', ');
+        const adminValues = Object.values(adminDataFields);
+        const adminSql = `UPDATE admin_data SET ${setAdminClause} WHERE user_id = ?`;
+        const adminResult = await db.runAsync(adminSql, [...adminValues, id]);
+        changes += adminResult.changes;
+      }
+
+      await db.runAsync("COMMIT;");
+      return changes;
+    } 
+    catch (err) {
+      await db.runAsync("ROLLBACK;");
+      throw new Error(`Erro ao atualizar dados do administrador: ${err.message}`);
     }
   },
 
@@ -79,7 +111,7 @@ const AdminModel = {
       await db.runAsync("COMMIT;");
 
       return result.changes;
-    } 
+    }
     catch (err) {
       await db.runAsync("ROLLBACK;");
       console.error("Erro na transação de exclusão do admin:", err);
