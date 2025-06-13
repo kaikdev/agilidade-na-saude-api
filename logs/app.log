@@ -392,3 +392,40 @@
 [2025-06-07T07:28:53.808Z] Login bem-sucedido - Usuário: paciente@gmail.com
 [2025-06-13T01:46:56.674Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
 [2025-06-13T02:34:28.393Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-13T02:59:14.056Z] Erro durante o login - Usuário não encontrado.
+[2025-06-13T02:59:17.877Z] Erro durante o login - Usuário não encontrado.
+[2025-06-13T02:59:58.807Z] Conta criada - Usuário ID: 9
+[2025-06-13T03:00:02.808Z] Login bem-sucedido - Usuário: paciente@gmail.com
+[2025-06-13T03:21:48.885Z] Senha redefinida com sucesso - Usuário ID: 1
+[2025-06-13T03:23:28.165Z] Conta criada - Usuário ID: 10
+[2025-06-13T03:23:35.616Z] Login bem-sucedido - Usuário: kaikgfx2@gmail.com
+[2025-06-13T03:26:08.896Z] Senha redefinida com sucesso - Usuário ID: 1
+[2025-06-13T03:26:30.110Z] Login bem-sucedido - Usuário: kaikgfx2@gmail.com
+[2025-06-13T03:26:40.158Z] Falha no login - Senha incorreta para o email: kaikgfx2@gmail.com
+[2025-06-13T03:28:33.340Z] Senha redefinida com sucesso - Usuário ID: 10
+[2025-06-13T03:28:42.334Z] Falha no login - Senha incorreta para o email: kaikgfx2@gmail.com
+[2025-06-13T03:29:45.849Z] Falha no login - Senha incorreta para o email: kaikgfx2@gmail.com
+[2025-06-13T03:30:04.062Z] Senha redefinida com sucesso - Usuário ID: 10
+[2025-06-13T03:30:11.372Z] Falha no login - Senha incorreta para o email: kaikgfx2@gmail.com
+[2025-06-13T03:32:21.381Z] Senha redefinida com sucesso - Usuário ID: 10
+[2025-06-13T03:33:03.747Z] Falha no login - Senha incorreta para o email: kaikgfx2@gmail.com
+[2025-06-13T03:33:14.717Z] Falha no login - Senha incorreta para o email: kaikgfx2@gmail.com
+[2025-06-13T03:33:30.828Z] Falha no login - Senha incorreta para o email: kaikgfx2@gmail.com
+[2025-06-13T03:33:40.517Z] Falha no login - Senha incorreta para o email: kaikgfx2@gmail.com
+[2025-06-13T03:33:44.000Z] Falha no login - Senha incorreta para o email: kaikgfx2@gmail.com
+[2025-06-13T03:35:52.791Z] Conta criada - Usuário ID: 1
+[2025-06-13T03:35:58.374Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-13T03:37:03.468Z] Senha redefinida com sucesso - Usuário ID: 1
+[2025-06-13T03:37:13.790Z] Falha no login - Senha incorreta para o email: kaikgfx@gmail.com
+[2025-06-13T03:37:22.125Z] Falha no login - Senha incorreta para o email: kaikgfx@gmail.com
+[2025-06-13T03:37:28.676Z] Falha no login - Senha incorreta para o email: kaikgfx@gmail.com
+[2025-06-13T03:37:33.053Z] Falha no login - Senha incorreta para o email: kaikgfx@gmail.com
+[2025-06-13T03:55:37.192Z] Erro no servidor ao tentar redefinir senha. Erro: UserRepository is not defined
+[2025-06-13T03:55:42.788Z] Erro no servidor ao tentar redefinir senha. Erro: UserRepository is not defined
+[2025-06-13T03:55:58.942Z] Erro no servidor ao tentar redefinir senha. Erro: UserRepository is not defined
+[2025-06-13T03:57:13.205Z] Senha redefinida com sucesso - Usuário ID: 1
+[2025-06-13T03:57:20.320Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-13T03:58:10.040Z] Senha redefinida com sucesso - Usuário ID: 1
+[2025-06-13T03:58:15.258Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com
+[2025-06-13T04:05:15.654Z] Senha redefinida com sucesso - Usuário ID: 1
+[2025-06-13T04:05:20.308Z] Login bem-sucedido - Usuário: kaikgfx@gmail.com

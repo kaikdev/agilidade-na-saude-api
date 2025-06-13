@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const UserService = require("../services/UserService");
 const MailService = require("../services/MailService");
 const logEvent = require("../services/LogService");
+const UserRepository = require("../repository/UserRepository");
 require("dotenv").config();
 
 const PasswordController = {
@@ -85,29 +86,44 @@ const PasswordController = {
         return res.status(400).json({ error: "Token e nova senha são obrigatórios." });
       }
 
+      // Validação
+      if (!UserRepository.validatePassword(newPassword)) {
+        return res.status(400).json({
+          error: "Senha fraca. A nova senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma minúscula, um número e um caractere especial."
+        });
+      }
+
       let decoded;
+
       try {
         decoded = jwt.verify(resetToken, process.env.JWT_SECRET);
-      } catch (error) {
+      } 
+      catch (error) {
         logEvent(`Token inválido ou expirado ao tentar redefinir senha. Token: ${resetToken}`);
+        
         return res.status(400).json({ error: "Token inválido ou expirado. Solicite um novo link de redefinição." });
       }
 
       const userExists = await UserService.getUserById(decoded.id);
       if (!userExists) {
         logEvent(`Usuário do token de redefinição não encontrado: ${decoded.id}`);
+        
         return res.status(400).json({ error: "Link de redefinição inválido ou usuário não encontrado." });
       }
 
       const hashedPassword = await bcrypt.hash(newPassword, 10);
+
       await UserService.updatePassword(decoded.id, hashedPassword);
 
       logEvent(`Senha redefinida com sucesso - Usuário ID: ${decoded.id}`);
+      
       res.json({ message: "Senha redefinida com sucesso! Você já pode fazer login com sua nova senha." });
-
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Erro ao redefinir senha:", error);
+      
       logEvent(`Erro no servidor ao tentar redefinir senha. Erro: ${error.message}`);
+      
       res.status(500).json({ error: "Erro ao redefinir senha. Tente novamente mais tarde." });
     }
   }
