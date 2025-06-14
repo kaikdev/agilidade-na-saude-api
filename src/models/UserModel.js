@@ -45,7 +45,7 @@ const UserModel = {
   // Atualizar dados do usuário
   update: async (id, updateData) => {
     const fields = Object.keys(updateData);
-    
+
     if (fields.length === 0) {
       return 0;
     }
@@ -85,18 +85,24 @@ const UserModel = {
   getAllAppointments: async () => {
     const sql = `
             SELECT 
-              cs.*,  -- Seleciona todas as colunas da tabela create_service
-              u.name AS provider_name,
-              u.profile_image_path AS provider_image_url,
-              ad.specialty AS provider_specialty,
-              ad.crm AS provider_crm,
-              ad.presentation AS provider_presentation
+                cs.*,
+                u.name AS provider_name,
+                u.profile_image_path AS provider_image_url,
+                ad.specialty AS provider_specialty,
+                ad.crm AS provider_crm,
+                ad.presentation AS provider_presentation
             FROM 
-              create_service cs
+                create_service cs
             LEFT JOIN 
-              users u ON cs.user_id = u.id
+                users u ON cs.user_id = u.id
             LEFT JOIN 
-              admin_data ad ON cs.user_id = ad.user_id
+                admin_data ad ON cs.user_id = ad.user_id
+            WHERE
+                -- Filtra para mostrar apenas atendimentos com data futura
+                cs.service_date > datetime('now', 'localtime')
+            ORDER BY
+                -- Ordena os atendimentos, mostrando os mais próximos primeiro
+                cs.service_date ASC
         `;
     try {
       const data = await db.allAsync(sql);
