@@ -11,6 +11,9 @@ const upload = require("../middlewares/uploadMiddleware");
 
 router.post("/admin", upload.single("profileImage"), AdminController.createAdmin);//ok
 
+// Consultar Histórico de Atendimentos
+router.get("/admin/history", Auth.verifyToken, authorize(["admin"]), AdminController.getHistory);
+
 router.get("/admin/:id",  Auth.verifyToken, authorize(["admin"]), AdminController.getAdmById);//ok
 
 router.put("/admin/update/:id", Auth.verifyToken, authorize(["admin"]), upload.single('profileImage'), AdminController.updateAdmin);//ok

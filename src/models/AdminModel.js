@@ -443,5 +443,16 @@ const AdminModel = {
       throw new Error("Erro ao limpar fila de atendidos: " + err.message);
     }
   },
+
+  getAllHistory: async () => {
+    const sql = `SELECT * FROM historical_consultation ORDER BY id DESC`;
+    try {
+      const data = await db.allAsync(sql);
+      return data;
+    } catch (err) {
+      throw new Error("Erro ao buscar dados do histórico no banco de dados.");
+    }
+  },
+
 };
 module.exports = AdminModel;

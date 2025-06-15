@@ -438,7 +438,26 @@ const AdminController = {
       res.status(400).json({ error: err.message });
     }
   },
-  
+
+  getHistory: async (req, res) => {
+    const adminId = req.user?.id;
+
+    try {
+      const historyRecords = await AdminService.getAdminHistory(adminId);
+      res.json({
+        message: "Histórico de atendimentos recuperado com sucesso.",
+        data: historyRecords
+      });
+    } 
+    catch (err) {
+      if (err.message.includes("Nenhum histórico")) {
+        return res.status(404).json({ message: err.message, data: [] });
+      }
+      
+      res.status(500).json({ error: "Erro interno ao buscar o histórico." });
+    }
+  },
+
 };
 
 module.exports = AdminController;

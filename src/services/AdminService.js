@@ -252,7 +252,7 @@ const AdminService = {
     if (result.changes === 0) {
       throw new Error("Nenhum agendamento encontrado com esse ID para finalizar.");
     }
-    
+
     return { success: true, message: "Paciente marcado como finalizado." };
   },
 
@@ -317,6 +317,31 @@ const AdminService = {
     await AdminModel.deleteAttendedFromQueue(service_id);
 
     return historyData;
+  },
+
+  getAdminHistory: async (adminId) => {
+    const allHistory = await AdminModel.getAllHistory();
+
+    if (!allHistory || allHistory.length === 0) {
+      throw new Error("Nenhum histórico de atendimento encontrado no sistema.");
+    }
+
+    const adminHistory = allHistory.filter(record => {
+      try {
+        const parsedData = JSON.parse(record.data);
+        return parsedData.adminId === adminId;
+      } 
+      catch (e) {
+        console.error(`Erro ao parsear JSON do histórico ID ${record.id}:`, e);
+        return false;
+      }
+    });
+
+    if (adminHistory.length === 0) {
+      throw new Error("Nenhum histórico de atendimento encontrado para este administrador.");
+    }
+    
+    return adminHistory.map(record => JSON.parse(record.data));
   },
 
 };
