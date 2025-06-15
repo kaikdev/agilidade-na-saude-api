@@ -61,7 +61,7 @@ const AdminService = {
       if (!UserRepository.validateEmail(updateData.email)) {
         throw new Error("Formato de e-mail inválido.");
       }
-   
+
       const existingUser = await UserModel.findByEmail(updateData.email);
 
       if (existingUser && existingUser.id !== id) {
@@ -73,7 +73,7 @@ const AdminService = {
       if (!UserRepository.validatePassword(updateData.password)) {
         throw new Error("Senha fraca. Deve ter no mínimo 8 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.");
       }
-      
+
       updateData.password = await bcrypt.hash(updateData.password, 10);
     }
 
@@ -240,7 +240,8 @@ const AdminService = {
         throw new Error("Nenhum agendamento encontrado.");
       }
       return scheduledAppointments;
-    } catch (error) {
+    }
+    catch (error) {
       throw new Error(error.message);
     }
   },
@@ -282,7 +283,6 @@ const AdminService = {
     }
   },
 
-  //Modificado
   getQueriesMyPatient: async (userId, serviceId) => {
     try {
       const queries = await AdminModel.getQueriesMyPatient(userId, serviceId);
@@ -296,8 +296,6 @@ const AdminService = {
   },
 
   prioritizePatientInQuerie: async (id) => {
-    console.log("fase 2")
-    //console.log(`${id} - ${userId}`)
     try {
       const prioritize = await AdminModel.prioritizePatientInQuerie(id);
 
@@ -309,7 +307,17 @@ const AdminService = {
         "Erro ao priorizar paciente na consulta: " + error.message
       );
     }
-  }
+  },
+
+  getServicesWithActiveQueues: async (adminId) => {
+    const services = await AdminModel.getServicesWithActiveQueues(adminId);
+
+    if (!services || services.length === 0) {
+      throw new Error("Nenhum atendimento com fila ativa encontrado para este profissional.");
+    }
+
+    return services;
+  },
 };
 
 module.exports = AdminService;

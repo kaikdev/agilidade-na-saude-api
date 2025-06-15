@@ -52,7 +52,7 @@ const AdminModel = {
 
       await db.runAsync("COMMIT;");
       return changes;
-    } 
+    }
     catch (err) {
       await db.runAsync("ROLLBACK;");
       throw new Error(`Erro ao atualizar dados do administrador: ${err.message}`);
@@ -356,7 +356,6 @@ const AdminModel = {
     }
   },
 
-  //Modificado
   getQueriesMyPatient: async (userId, serviceId) => {
     try {
       const sql = `
@@ -397,6 +396,32 @@ const AdminModel = {
     } catch (err) {
       throw new Error("Erro ao priorizar paciente: " + err.message);
     }
-  }
+  },
+
+  getServicesWithActiveQueues: async (adminId) => {
+    const sql = `
+        SELECT DISTINCT
+            cs.id AS service_id,
+            cs.specialty,
+            cs.locality,
+            cs.service_date
+        FROM 
+            create_service cs
+        INNER JOIN 
+            scheduled_consultations sc ON cs.id = sc.service_id
+        WHERE 
+            cs.user_id = ?
+            AND cs.service_date > datetime('now', 'localtime')
+        ORDER BY
+            cs.service_date ASC;
+    `;
+    try {
+      const data = await db.allAsync(sql, [adminId]);
+      return data;
+    } catch (err) {
+      console.error("Erro no Model - getServicesWithActiveQueues:", err.message);
+      throw new Error("Erro ao buscar serviços com filas ativas no banco de dados.");
+    }
+  },
 };
 module.exports = AdminModel;

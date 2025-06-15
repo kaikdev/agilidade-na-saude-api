@@ -326,25 +326,27 @@ const AdminController = {
   getScheduledAppointments: async (req, res) => {
     const userId = req.user?.id;
     try {
-      const scheduledAppointments = await AdminService.getScheduledAppointments(
-        userId
-      );
+      const servicesWithQueues = await AdminService.getServicesWithActiveQueues(userId);
 
-      const output = scheduledAppointments.map((appointment) => ({
-        ...appointment,
+      const output = servicesWithQueues.map((service) => ({
+        ...service,
         links: {
-          getById: `${baseUrl}/api/admin/scheduled/appointments/${appointment.user_id}`,
+          manageQueue: `${baseUrl}/api/admin/scheduled/getMyQueries/${service.service_id}`,
         },
       }));
+
       return res.status(200).json({
-        message: "Agendamentos encontrados!",
-        appointments: output,
+        message: "Atendimentos com filas ativas encontrados!",
+        services: output,
       });
     } catch (error) {
-      console.error("Erro ao buscar agendamentos:", error);
-      return res.status(500).json({
-        message: "Erro ao buscar os agendamentos.",
-      });
+      console.error("Erro ao buscar atendimentos com filas:", error);
+
+      if (error.message.includes("Nenhum")) {
+        return res.status(404).json({ message: error.message, services: [] });
+      }
+
+      return res.status(500).json({ message: "Erro ao buscar os atendimentos." });
     }
   },
 
@@ -372,73 +374,56 @@ const AdminController = {
     }
   },
 
-  // AdminController.js
-  finalizeScheduledAppointments: async (req, res) => {
-    const { id } = req.params;
-    const userId = req.user?.id;
-    const role = "admin";
-
-    try {
-      const scheduledAppointments = await AdminService.finalizeScheduledAppointments(id, userId, role);
-
-      return res.status(200).json({
-        message: "Agendamentos encontrados!",
-        appointments: scheduledAppointments,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        message: error.message,
-      });
-    }
-  },
-
-  //Modificado
   getQueriesMyPatient: async (req, res) => {
-    const userId = req.user?.id;
+    const adminId = req.user?.id;
     const serviceId = req.params['id'];
-    //const serviceId = req.user?.id;
-    //console.log("here is the code")
-    //console.log(serviceId)
-    try {
-      const queries = await AdminService.getQueriesMyPatient(userId, serviceId);
 
-      const output = queries.map((appointment) => ({
-        ...appointment,
+    try {
+      const patientsInQueue = await AdminService.getQueriesMyPatient(adminId, serviceId);
+
+      const output = patientsInQueue.map((patient) => ({
+        ...patient,
         links: {
-          prioritizePatient: `${baseUrl}/api/admin/appointments/prioritizePatient/${appointment.scheduled_id}`,
+          prioritizePatient: `${baseUrl}/api/admin/appointments/prioritizePatient/${patient.scheduled_id}`,
         },
       }));
 
+      const nextPatient = output.length > 0 ? output[0] : null;
+
       return res.status(200).json({
-        message: "Consultas encontradas!",
-        output,
+        message: "Pacientes na fila de atendimento encontrados!",
+        queue: output,
+        next_patient_to_finalize: nextPatient
       });
     } catch (error) {
-      return res.status(500).json({
-        message: error.message,
+      res.status(500).json({ message: error.message });
+    }
+  },
+
+  finalizeScheduledAppointments: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      await AdminService.finalizeScheduledAppointments(id);
+
+      return res.status(200).json({
+        message: "Atendimento finalizado com sucesso! A fila andou.",
       });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
     }
   },
 
   prioritizePatientInQuerie: async (req, res) => {
     const { id } = req.params;
-    const userId = req.user?.id;
-
-    //console.log(req.user)
-    //console.log("priorizando")
-    //console.log(`${id} - ${userId}`)
 
     try {
-      const prioritizedPatient = await AdminService.prioritizePatientInQuerie(id);
-
+      await AdminService.prioritizePatientInQuerie(id);
       return res.status(200).json({
         message: "Paciente priorizado com sucesso!",
-        data: prioritizedPatient,
       });
     } catch (error) {
-      return res.status(500).json({
-        error: error.message,
-      });
+      res.status(500).json({ error: error.message });
     }
   },
 };
