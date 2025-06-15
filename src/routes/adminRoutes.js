@@ -34,5 +34,7 @@ router.get("/admin/scheduled/getMyQueries/:id", Auth.verifyToken, authorize(["ad
 
 router.put("/admin/appointments/prioritizePatient/:id", Auth.verifyToken, authorize(["admin"]), AdminController.prioritizePatientInQuerie); //ok
 
+// Encerrar e Arquivar um Atendimento
+router.post("/admin/service/archive/:service_id", Auth.verifyToken, authorize(["admin"]), AdminController.archiveService);
 
 module.exports = router;

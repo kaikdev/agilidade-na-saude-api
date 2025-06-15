@@ -426,6 +426,19 @@ const AdminController = {
       res.status(500).json({ error: error.message });
     }
   },
+
+  archiveService: async (req, res) => {
+    const { service_id } = req.params;
+    const adminId = req.user?.id;
+
+    try {
+      const historyReport = await AdminService.archiveService(service_id, adminId);
+      res.json({ message: "Atendimento encerrado e histórico gerado com sucesso!", data: historyReport });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  },
+  
 };
 
 module.exports = AdminController;

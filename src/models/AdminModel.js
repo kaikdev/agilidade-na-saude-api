@@ -305,12 +305,9 @@ const AdminModel = {
     try {
       const result = await db.runAsync(sql, [id]);
 
-      if (result.changes === 0) {
-        throw new Error("Nenhum agendamento encontrado com esse ID.");
-      }
-
-      return { id, finished: 1 };
-    } catch (err) {
+      return result;
+    }
+    catch (err) {
       throw new Error(
         "Erro ao atualizar o status do agendamento: " + err.message
       );
@@ -359,26 +356,25 @@ const AdminModel = {
   getQueriesMyPatient: async (userId, serviceId) => {
     try {
       const sql = `
-      SELECT
-        sc.id AS scheduled_id,
-        sc.service_id,
-        sc.password,
-        sc.priority,
-        sc.level as level,
-
-        u.id AS user_id,
-        u.name AS user_name,
-
-        cs.id AS service_id,
-        cs.specialty
-
-      FROM scheduled_consultations sc
-      JOIN users u ON sc.user_id = u.id
-      JOIN create_service cs ON sc.service_id = cs.id     
-      WHERE cs.user_id = ? AND sc.service_id = ?
-      ORDER BY sc.level ASC, sc.created_at ASC;
-    `;
-      console.log(`inserindo ${userId} - ${serviceId}`)
+            SELECT
+                sc.id AS scheduled_id,
+                sc.service_id,
+                sc.password,
+                sc.priority,
+                sc.level as level,
+                u.id AS user_id,
+                u.name AS user_name,
+                cs.specialty
+            FROM scheduled_consultations sc
+            JOIN users u ON sc.user_id = u.id
+            JOIN create_service cs ON sc.service_id = cs.id
+            WHERE 
+                cs.user_id = ? 
+                AND sc.service_id = ? 
+                AND sc.finished = 0 -- ADICIONADO: Filtra para mostrar apenas pacientes não finalizados
+            ORDER BY 
+                sc.level ASC, sc.created_at ASC;
+        `;
       const result = await db.allAsync(sql, [userId, serviceId]);
       return result;
     } catch (error) {
@@ -421,6 +417,30 @@ const AdminModel = {
     } catch (err) {
       console.error("Erro no Model - getServicesWithActiveQueues:", err.message);
       throw new Error("Erro ao buscar serviços com filas ativas no banco de dados.");
+    }
+  },
+
+  getAttendedPatientsByServiceId: async (serviceId, adminId) => {
+    const sql = `
+        SELECT sc.*, u.name as user_name, u.cpf
+        FROM scheduled_consultations sc
+        JOIN users u ON sc.user_id = u.id
+        JOIN create_service cs ON sc.service_id = cs.id
+        WHERE sc.service_id = ? AND cs.user_id = ? AND sc.finished = 1
+    `;
+    try {
+      return await db.allAsync(sql, [serviceId, adminId]);
+    } catch (err) {
+      throw new Error("Erro ao buscar pacientes atendidos: " + err.message);
+    }
+  },
+
+  deleteAttendedFromQueue: async (serviceId) => {
+    const sql = "DELETE FROM scheduled_consultations WHERE service_id = ? AND finished = 1";
+    try {
+      return await db.runAsync(sql, [serviceId]);
+    } catch (err) {
+      throw new Error("Erro ao limpar fila de atendidos: " + err.message);
     }
   },
 };

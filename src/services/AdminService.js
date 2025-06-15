@@ -246,41 +246,14 @@ const AdminService = {
     }
   },
 
-  finalizeScheduledAppointments: async (id, userId, role) => {
-    try {
-      const result = await AdminModel.finalizeScheduledAppointments(id);
+  finalizeScheduledAppointments: async (id) => {
+    const result = await AdminModel.finalizeScheduledAppointments(id);
 
-      if (result.changes === 0)
-        throw new Error("Nenhum agendamento encontrado com esse ID.");
-
-      const getAppointmentsByUserId = await UserModel.getAppointmentsByUserId(
-        id,
-        userId,
-        role
-      );
-
-      if (!getAppointmentsByUserId) {
-        throw new Error("Nenhum agendamento encontrado para o usuário.");
-      }
-      const createdResumePatient = await AdminModel.createdResumePatient(
-        getAppointmentsByUserId
-      );
-
-      if (!createdResumePatient) {
-        throw new Error("Erro ao criar o resumo do agendamento.");
-      }
-
-      const deletedQueryAppointment =
-        await AdminModel.deleteQueryAppointmentById(id);
-
-      if (!deletedQueryAppointment) {
-        throw new Error("Erro ao finalizar o agendamento.");
-      }
-
-      return getAppointmentsByUserId;
-    } catch (err) {
-      throw new Error("Erro ao finalizar o agendamento: " + err.message);
+    if (result.changes === 0) {
+      throw new Error("Nenhum agendamento encontrado com esse ID para finalizar.");
     }
+    
+    return { success: true, message: "Paciente marcado como finalizado." };
   },
 
   getQueriesMyPatient: async (userId, serviceId) => {
@@ -318,6 +291,34 @@ const AdminService = {
 
     return services;
   },
+
+  archiveService: async (service_id, adminId) => {
+    const attendedPatients = await AdminModel.getAttendedPatientsByServiceId(service_id, adminId);
+
+    if (!attendedPatients || attendedPatients.length === 0) {
+      throw new Error("Nenhum paciente atendido encontrado para este serviço. Não é possível gerar histórico.");
+    }
+
+    const historyData = {
+      serviceId: service_id,
+      adminId: adminId,
+      archivedAt: new Date().toISOString(),
+      totalPatients: attendedPatients.length,
+      patients: attendedPatients.map(p => ({
+        name: p.user_name,
+        cpf: p.cpf,
+        priority: p.priority,
+        password: p.password
+      }))
+    };
+
+    await AdminModel.createdResumePatient(historyData);
+
+    await AdminModel.deleteAttendedFromQueue(service_id);
+
+    return historyData;
+  },
+
 };
 
 module.exports = AdminService;
