@@ -243,6 +243,28 @@ const UserService = {
       );
     }
   },
+
+  getQueueStatusForUser: async (scheduledId, userId) => {
+    const userAppointment = await UserModel.getUserAppointmentDetails(scheduledId, userId);
+
+    if (!userAppointment) {
+      throw new Error("Agendamento não encontrado ou você não tem permissão para acessá-lo.");
+    }
+
+    const fullQueue = await UserModel.getQueueForService(userAppointment.service_id);
+
+    const userIndex = fullQueue.findIndex(patient => patient.scheduled_id === scheduledId);
+
+    if (userIndex === -1) {
+      throw new Error("Não foi possível encontrar sua posição na fila.");
+    }
+    
+    return {
+      yourPosition: userIndex + 1,
+      peopleInFront: userIndex,
+      totalInQueue: fullQueue.length
+    };
+  },
 };
 
 module.exports = UserService;

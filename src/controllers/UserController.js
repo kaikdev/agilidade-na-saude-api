@@ -1,5 +1,3 @@
-
-
 const UserService = require("../services/UserService");
 const logEvent = require("../services/LogService");
 const UserRepository = require("../repository/UserRepository");
@@ -252,7 +250,27 @@ const UserController = {
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }
-  }
+  },
+
+  getQueueStatus: async (req, res) => {
+    const scheduledId = parseInt(req.params.scheduled_id, 10);
+
+    const userId = req.user?.id;
+
+    try {
+      const queueStatus = await UserService.getQueueStatusForUser(scheduledId, userId);
+      res.json({
+        message: "Status da fila recuperado com sucesso.",
+        data: queueStatus
+      });
+    } catch (err) {
+      if (err.message.includes("não encontrado")) {
+        return res.status(404).json({ error: err.message });
+      }
+      
+      res.status(500).json({ error: "Erro interno ao buscar o status da fila." });
+    }
+  },
 
 };
 

@@ -26,6 +26,9 @@ router.get("/users/appointments/scheduled", Auth.verifyToken, authorize(["user"]
 //Pegar o resumo das consultas do usuário
 router.get("/users/Appointments/getResume", Auth.verifyToken, authorize(["user"]), UserController.getResumeAppointments); // Listar agendamentos do usuário autenticado
 
+// Acompanhar sua posição na fila de um atendimento
+router.get("/users/queue/status/:scheduled_id", Auth.verifyToken, authorize(["user"]), UserController.getQueueStatus);
+
 // Rotas restritas a administradores
 router.get("/users", Auth.verifyToken, authorize(["admin"]), UserController.listUsers);  // Apenas admin pode listar todos os usuários
 

@@ -299,6 +299,31 @@ const UserModel = {
 
     return rows;
   },
+
+  getUserAppointmentDetails: async (scheduledId, userId) => {
+    const sql = `
+            SELECT service_id
+            FROM scheduled_consultations
+            WHERE id = ? AND user_id = ? AND finished = 0`;
+    try {
+      return await db.getAsync(sql, [scheduledId, userId]);
+    } catch (err) {
+      throw new Error("Erro ao buscar detalhes do agendamento do usuário.");
+    }
+  },
+
+  getQueueForService: async (serviceId) => {
+    const sql = `
+            SELECT id as scheduled_id
+            FROM scheduled_consultations
+            WHERE service_id = ? AND finished = 0
+            ORDER BY level ASC, created_at ASC`;
+    try {
+      return await db.allAsync(sql, [serviceId]);
+    } catch (err) {
+      throw new Error("Erro ao buscar a fila completa do serviço.");
+    }
+  },
 };
 
 module.exports = UserModel;
