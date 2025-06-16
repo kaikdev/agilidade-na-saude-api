@@ -138,7 +138,21 @@ const AdminModel = {
   },
 
   findAllAppointments: async (id) => {
-    const sql = `SELECT * FROM create_service WHERE user_id = ?`;
+    const sql = `
+            SELECT 
+                cs.*
+            FROM 
+                create_service cs
+            WHERE 
+                cs.user_id = ? AND
+                NOT EXISTS (
+                    SELECT 1
+                    FROM historical_consultation hc
+                    WHERE json_extract(hc.data, '$.serviceId') = CAST(cs.id AS TEXT)
+                )
+            ORDER BY
+                cs.service_date ASC
+        `;
     const users = await db.allAsync(sql, [id]);
     return users;
   },
