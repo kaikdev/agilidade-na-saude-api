@@ -302,9 +302,16 @@ const UserModel = {
 
   getUserAppointmentDetails: async (scheduledId, userId) => {
     const sql = `
-            SELECT service_id
-            FROM scheduled_consultations
-            WHERE id = ? AND user_id = ? AND finished = 0`;
+            SELECT 
+                sc.service_id,
+                cs.specialty,
+                cs.locality
+            FROM 
+                scheduled_consultations sc
+            JOIN 
+                create_service cs ON sc.service_id = cs.id
+            WHERE 
+                sc.id = ? AND sc.user_id = ? AND sc.finished = 0`;
     try {
       return await db.getAsync(sql, [scheduledId, userId]);
     } catch (err) {

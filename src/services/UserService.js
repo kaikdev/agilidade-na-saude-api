@@ -248,7 +248,7 @@ const UserService = {
     const userAppointment = await UserModel.getUserAppointmentDetails(scheduledId, userId);
 
     if (!userAppointment) {
-      throw new Error("Agendamento não encontrado ou você não tem permissão para acessá-lo.");
+      throw new Error("Agendamento não encontrado ou você não está mais na fila de espera.");
     }
 
     const fullQueue = await UserModel.getQueueForService(userAppointment.service_id);
@@ -258,8 +258,10 @@ const UserService = {
     if (userIndex === -1) {
       throw new Error("Não foi possível encontrar sua posição na fila.");
     }
-    
+
     return {
+      specialty: userAppointment.specialty,
+      locality: userAppointment.locality,
       yourPosition: userIndex + 1,
       peopleInFront: userIndex,
       totalInQueue: fullQueue.length
