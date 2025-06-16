@@ -138,10 +138,11 @@ const AdminController = {
       const services = await AdminService.listAllAppointments(id);
       const servicesWithLink = services.map(({ created_at, ...appointment }) => ({
         ...appointment,
-        link: {
+        links: {
           getForId: `${baseUrl}/api/admin/appointments/${appointment.id}`,
           update: `${baseUrl}/api/admin/appointments/update/${appointment.id}`,
           delete: `${baseUrl}/api/admin/appointments/delete/${appointment.id}`,
+          displayScreen: `${baseUrl}/api/display/${appointment.display_uuid}`
         },
       }));
       return res.json(servicesWithLink);
@@ -448,12 +449,12 @@ const AdminController = {
         message: "Histórico de atendimentos recuperado com sucesso.",
         data: historyRecords
       });
-    } 
+    }
     catch (err) {
       if (err.message.includes("Nenhum histórico")) {
         return res.status(404).json({ message: err.message, data: [] });
       }
-      
+
       res.status(500).json({ error: "Erro interno ao buscar o histórico." });
     }
   },

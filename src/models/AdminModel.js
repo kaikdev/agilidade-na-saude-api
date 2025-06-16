@@ -121,7 +121,7 @@ const AdminModel = {
 
   createAppointment: async (appointmentData) => {
     const sql =
-      "INSERT INTO create_service (user_id, specialty, locality, qtd_attendance, service_date) VALUES (?, ?, ?, ?, ?)";
+      "INSERT INTO create_service (user_id, specialty, locality, qtd_attendance, service_date, display_uuid) VALUES (?, ?, ?, ?, ?, ?)";
     try {
       const result = await db.runAsync(sql, [
         appointmentData.user_id,
@@ -129,6 +129,7 @@ const AdminModel = {
         appointmentData.locality,
         appointmentData.qtd_attendance,
         appointmentData.service_date,
+        appointmentData.display_uuid,
       ]);
       return result;
     } catch (err) {
@@ -153,7 +154,6 @@ const AdminModel = {
     }
   },
 
-  // No seu AdminModel
   updateAppointment: async (updateData, id) => {
     try {
       // Var partes dinâmicas da query
@@ -219,7 +219,6 @@ const AdminModel = {
     }
   },
 
-  // AdminModel.js
   deleteAppointmentById: async (id, userId) => {
     const sql = "DELETE FROM create_service WHERE id = ? AND user_id = ?";
     try {
@@ -300,11 +299,10 @@ const AdminModel = {
   },
 
   finalizeScheduledAppointments: async (id) => {
-    const sql = `UPDATE scheduled_consultations SET finished = 1 WHERE id = ?`;
+    const sql = `UPDATE scheduled_consultations SET finished = 1, finished_at = datetime('now', 'localtime') WHERE id = ?`;
 
     try {
       const result = await db.runAsync(sql, [id]);
-
       return result;
     }
     catch (err) {

@@ -40,9 +40,11 @@ const db = new sqlite3.Database(dbPath, (err) => {
         locality TEXT NOT NULL,
         qtd_attendance INTEGER NOT NULL,
         service_date INTEGER NOT NULL,
+        display_uuid TEXT UNIQUE, -- <-- COLUNA ADICIONADA AQUI
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       )`);
+
       db.run(`CREATE TABLE IF NOT EXISTS scheduled_consultations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
@@ -51,10 +53,12 @@ const db = new sqlite3.Database(dbPath, (err) => {
         priority TEXT NOT NULL,
         level INTEGER NOT NULL,
         finished INT DEFAULT 0,
+        finished_at DATETIME, -- <-- COLUNA ADICIONADA AQUI
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
         FOREIGN KEY (service_id) REFERENCES create_service(id) ON DELETE CASCADE
       )`);
+
       db.run(`CREATE TABLE IF NOT EXISTS historical_consultation (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         data TEXT 

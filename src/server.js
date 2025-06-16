@@ -17,6 +17,7 @@ const queriesRoutes = require("./routes/queriesRoutes");//Rota da fila
 const authRoutes = require("./routes/authRoutes");// Rotas de autenticação
 const passwordRoutes = require("./routes/passwordRoutes");// Rotas de alteração de senha
 const contactRoutes = require("./routes/contactRoutes");// Rotas Mensaem de Contato
+const displayRoutes = require("./routes/displayRoutes");// Rota da Tela das Fila
 
 // '/uploads' para a pasta física 'src/uploads'
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -27,6 +28,7 @@ app.use("/api", queriesRoutes);
 app.use("/api", authRoutes);
 app.use("/api", passwordRoutes);
 app.use("/api", contactRoutes);
+app.use("/api", displayRoutes);
 
 // Rota inicial de teste
 app.get("/", (req, res) => {

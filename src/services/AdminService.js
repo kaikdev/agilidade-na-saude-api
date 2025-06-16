@@ -121,7 +121,10 @@ const AdminService = {
     const date = UserRepository.validateAndFormatInputDate(
       adminData.service_date
     );
+
     adminData.service_date = date.myDate;
+
+    adminData.display_uuid = crypto.randomUUID();
 
     try {
       const existingAppointments =
@@ -129,13 +132,16 @@ const AdminService = {
           adminData.user_id,
           adminData.service_date
         );
+
       if (existingAppointments && existingAppointments.length > 0) {
         throw new Error(
           "Já existe um agendamento para esta data com este administrador."
         );
       }
+
       await AdminModel.createAppointment(adminData);
-    } catch (error) {
+    }
+    catch (error) {
       throw new Error(`Erro ao criar serviço: ${error.message}`);
     }
   },
@@ -330,7 +336,7 @@ const AdminService = {
       try {
         const parsedData = JSON.parse(record.data);
         return parsedData.adminId === adminId;
-      } 
+      }
       catch (e) {
         console.error(`Erro ao parsear JSON do histórico ID ${record.id}:`, e);
         return false;
@@ -340,7 +346,7 @@ const AdminService = {
     if (adminHistory.length === 0) {
       throw new Error("Nenhum histórico de atendimento encontrado para este administrador.");
     }
-    
+
     return adminHistory.map(record => JSON.parse(record.data));
   },
 
